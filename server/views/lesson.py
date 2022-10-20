@@ -1,7 +1,7 @@
 from flask_restx import Namespace, Resource
 
-from server.models.lesson import LessonSchema, Lesson
-from server.setup_db import db
+from models.lesson import LessonSchema, Lesson
+from setup_db import db
 
 lesson_ns = Namespace('lessons')
 

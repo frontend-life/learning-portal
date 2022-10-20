@@ -1,6 +1,6 @@
 from marshmallow import Schema, fields
 
-from server.setup_db import db
+from setup_db import db
 
 
 # Create a table
