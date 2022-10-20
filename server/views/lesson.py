@@ -10,9 +10,9 @@ lesson_schema = LessonSchema()
 lessons_schema = LessonSchema(many=True)
 
 
-# Get all lessons
 @lesson_ns.route('/')
 class LessonsViews(Resource):
+	# Get all lessons
 	def get(self):
 		try:
 			lessons = db.session.query(Lesson).all()
@@ -21,9 +21,9 @@ class LessonsViews(Resource):
 			return e, 404
 
 
-# Get one lesson by id
 @lesson_ns.route('/<int:pk>')
 class LessonViews(Resource):
+	# Get one lesson by id
 	def get(self, pk):
 		try:
 			lesson = db.session.query(Lesson).get(pk)
@@ -31,6 +31,7 @@ class LessonViews(Resource):
 		except Exception as e:
 			return e
 
+	# Update lesson by id
 	def put(self, pk):
 		data = request.json
 		try:
@@ -39,6 +40,7 @@ class LessonViews(Resource):
 		except Exception as e:
 			return e
 
+	# Update lesson by id
 	def patch(self, pk):
 		data = request.json
 		try:
