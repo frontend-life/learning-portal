@@ -36,7 +36,9 @@ class LessonViews(Resource):
 		data = request.json
 		try:
 			db.session.query(Lesson).filter(Lesson.id == pk).update(data)
-			return f'Lesson-{pk} updated', 201
+			db.session.commit()
+			lesson = db.session.query(Lesson).get(pk)
+			return lesson_schema.dump(lesson), 201
 		except Exception as e:
 			return e
 
@@ -45,6 +47,8 @@ class LessonViews(Resource):
 		data = request.json
 		try:
 			db.session.query(Lesson).filter(Lesson.id == pk).update(data)
-			return f'Lesson-{pk} updated', 201
+			db.session.commit()
+			lesson = db.session.query(Lesson).get(pk)
+			return lesson_schema.dump(lesson), 201
 		except Exception as e:
 			return e

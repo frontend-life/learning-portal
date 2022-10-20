@@ -1,5 +1,6 @@
 from server.models.lesson import Lesson
 
+
 # Fill table lesson
 def create_data(app, db):
 	"""
