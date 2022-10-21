@@ -1,3 +1,4 @@
+from flask import request
 from flask_restx import Namespace, Resource
 
 from server.models.lesson import LessonSchema, Lesson
@@ -15,6 +16,13 @@ class LessonsViews(Resource):
 	def get(self):
 		lessons = db.session.query(Lesson).all()
 		return lessons_schema.dump(lessons), 200
+
+	def post(self):
+		data = request.json
+		lesson = Lesson(**data)
+		db.session.add(lesson)
+		db.session.commit()
+		return lesson_schema.dump(lesson), 200
 
 
 # Get one lesson by id

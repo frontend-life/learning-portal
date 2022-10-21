@@ -28,4 +28,4 @@ if __name__ == '__main__':
 	app = create_app(config)
 	configure_app(app)
 	# create_data(app, db)
-	app.run()
+	app.run(port=8080)
