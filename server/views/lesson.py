@@ -22,7 +22,7 @@ class LessonsViews(Resource):
 		lesson = Lesson(**data)
 		db.session.add(lesson)
 		db.session.commit()
-		return lesson_schema.dump(lesson), 200
+		return lesson_schema.dump(lesson), 201
 
 
 # Get one lesson by id
