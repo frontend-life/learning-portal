@@ -1,10 +1,10 @@
 from flask import Flask
 from flask_restx import Api
 
-from server.config import Config
-from server.create_data import create_data
-from server.setup_db import db
-from server.views.lesson import lesson_ns
+from config import Config
+from create_data import create_data
+from setup_db import db
+from views.lesson import lesson_ns
 
 
 # Function to create flask application
@@ -28,4 +28,4 @@ if __name__ == '__main__':
 	app = create_app(config)
 	configure_app(app)
 	# create_data(app, db)
-	app.run()
+	app.run(port=8080)
