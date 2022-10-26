@@ -20,6 +20,13 @@ class LessonsViews(Resource):
 		except Exception as e:
 			return e, 404
 
+	def post(self):
+		data = request.json
+		lesson = Lesson(**data)
+		db.session.add(lesson)
+		db.session.commit()
+		return lesson_schema.dump(lesson), 201
+
 
 @lesson_ns.route('/<int:pk>')
 class LessonViews(Resource):
