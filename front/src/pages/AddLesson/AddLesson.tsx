@@ -1,5 +1,6 @@
 import { Box, Button, TextField, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
+import { post } from '../../utils/axios';
 
 import './AddLesson.css';
 
@@ -10,7 +11,9 @@ export const AddLesson = () => {
         formState: { errors }
     } = useForm();
 
-    const onSubmit = (data) => console.log(data);
+    const onSubmit = (data) => {
+        post('/lesson', data);
+    };
 
     return (
         <div className="AddLesson">
