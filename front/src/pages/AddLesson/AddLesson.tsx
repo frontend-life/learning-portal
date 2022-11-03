@@ -1,6 +1,6 @@
 import { Box, Button, TextField, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import { post } from '../../utils/axios';
+import { myRequest } from '../../utils/axios';
 
 import './AddLesson.css';
 
@@ -12,7 +12,7 @@ export const AddLesson = () => {
     } = useForm();
 
     const onSubmit = (data) => {
-        post('/lesson', data);
+        myRequest.post('/lesson', data);
     };
 
     return (

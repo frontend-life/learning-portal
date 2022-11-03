@@ -1,8 +1,51 @@
 .App {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   flex-grow: 1;
   height: 100vh; 
 }
+.NavBar {
+  height: 100vh;
+  background-color: black;
+}
+.NavBar__li {
+  display: block;
+  padding: 20px;
+  background-color: gray;
+  color: white;
+  cursor: pointer;
+  transition: background-color linear .3s;
+}
+.NavBar__li:hover {
+  background-color: black;
+}
 
+.Lessons {
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 30px;
+}
+.Lesson__item {
+  height: 400px;
+  width: 300px;
+  border-radius: 12px;
+  border: 1px solid grey;
+  background-color: bisque;
+  margin: 20px;
+  cursor: pointer;
+}
+.Lesson__item--blocked {
+  pointer-events: none;
+}
+.Lesson__itemImage {
+  height: 300px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: green;
+}
+.Lesson__title {
+  text-align: center;
+}
