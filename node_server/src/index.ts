@@ -1,7 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-import { connectToServer, lessonsCollection } from "./db/connect.js";
+import { connectToServer, lessonsCollection, usersCol } from "./db/connect.js";
 const app = express();
 const port = 8000;
 
@@ -27,6 +27,20 @@ app.use("/lesson", lessonRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
+});
+
+app.post("/registration", async (req, res) => {
+  const { email, name, password } = req.body;
+  const dbResult = await usersCol().findOne({ email: email });
+  if (!dbResult) {
+    const result = await usersCol().insertOne(req.body);
+    const response = { ...result, ...req.body };
+    console.log(response);
+    res.json(response);
+  } else {
+    res.send("Oopps!");
+  }
+  // res.send("Hello World!");
 });
 
 app.listen(port, () => {

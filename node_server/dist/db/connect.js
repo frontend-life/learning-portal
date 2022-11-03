@@ -1,8 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.lessonsCollection = exports.connectToServer = void 0;
+exports.usersCol = exports.lessonsCollection = exports.connectToServer = void 0;
 const { MongoClient, ServerApiVersion } = require("mongodb");
-const uri = `mongodb+srv://${process.env.mongodb_cluster_user}:${process.env.mongodb_cluster_password}@cluster0.c5musei.mongodb.net/?retryWrites=true&w=majority`;
+const uri = process.env.MODE === "dev"
+    ? "mongodb://localhost:27017"
+    : `mongodb+srv://${process.env.mongodb_cluster_user}:${process.env.mongodb_cluster_password}@cluster0.c5musei.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -25,3 +27,5 @@ const getDb = function () {
 };
 const lessonsCollection = () => getDb().collection("lessons");
 exports.lessonsCollection = lessonsCollection;
+const usersCol = () => getDb().collection("users");
+exports.usersCol = usersCol;

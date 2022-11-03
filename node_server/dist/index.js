@@ -23,9 +23,7 @@ const lessonRouter = express.Router();
 lessonRouter
     .route("/")
     .get((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log();
     const lessons = yield (0, connect_js_1.lessonsCollection)().find({}).limit(50).toArray();
-    console.log(lessons);
     return res.send(lessons);
 }))
     .post((req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -34,9 +32,22 @@ lessonRouter
 }));
 app.use("/lesson", lessonRouter);
 app.get("/", (req, res) => {
-    console.log("wefwef");
     res.send("Hello World!");
 });
+app.post("/registration", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { email, name, password } = req.body;
+    const dbResult = yield (0, connect_js_1.usersCol)().findOne({ email: email });
+    if (!dbResult) {
+        const result = yield (0, connect_js_1.usersCol)().insertOne(req.body);
+        const response = Object.assign(Object.assign({}, result), req.body);
+        console.log(response);
+        res.json(response);
+    }
+    else {
+        res.send("Oopps!");
+    }
+    // res.send("Hello World!");
+}));
 app.listen(port, () => {
     console.log(`Example app listening on port http://localhost:${port}`);
 });

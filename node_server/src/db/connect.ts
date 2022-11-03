@@ -28,3 +28,4 @@ const getDb = function () {
 };
 
 export const lessonsCollection = () => getDb().collection("lessons");
+export const usersCol = () => getDb().collection("users");
