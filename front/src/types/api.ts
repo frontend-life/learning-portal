@@ -5,3 +5,8 @@ export interface ILesson {
     title: string;
     _id: string;
 }
+
+export interface ITrack {
+    _id: string;
+    track_name: string;
+}

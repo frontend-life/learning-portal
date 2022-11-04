@@ -28,4 +28,5 @@ const getDb = function () {
 };
 
 export const lessonsCollection = () => getDb().collection("lessons");
+export const tracksCol = () => getDb().collection("tracks");
 export const usersCol = () => getDb().collection("users");

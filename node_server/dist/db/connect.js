@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.usersCol = exports.lessonsCollection = exports.connectToServer = void 0;
+exports.usersCol = exports.tracksCol = exports.lessonsCollection = exports.connectToServer = void 0;
 const { MongoClient, ServerApiVersion } = require("mongodb");
 const uri = process.env.MODE === "dev"
     ? "mongodb://localhost:27017"
@@ -27,5 +27,7 @@ const getDb = function () {
 };
 const lessonsCollection = () => getDb().collection("lessons");
 exports.lessonsCollection = lessonsCollection;
+const tracksCol = () => getDb().collection("tracks");
+exports.tracksCol = tracksCol;
 const usersCol = () => getDb().collection("users");
 exports.usersCol = usersCol;

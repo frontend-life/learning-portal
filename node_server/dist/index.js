@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+const { ObjectId } = require("mongodb");
 const connect_js_1 = require("./db/connect.js");
 const app = express();
 const port = 8000;
@@ -30,7 +31,26 @@ lessonRouter
     const result = yield (0, connect_js_1.lessonsCollection)().insertOne(req.body);
     res.json(result);
 }));
+const trackRouter = express.Router();
+trackRouter
+    .route("/")
+    .get((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const tracks = yield (0, connect_js_1.tracksCol)().find({}).limit(50).toArray();
+    return res.send(tracks);
+}))
+    .post((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield (0, connect_js_1.tracksCol)().insertOne(req.body);
+    res.json(result);
+}))
+    .put((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(req.body._id);
+    const result = yield (0, connect_js_1.tracksCol)().updateOne({ "_id": new ObjectId(req.body._id) }, { $set: { "track_name": req.body.track_name } });
+    console.log(result);
+    res.json(result);
+}));
+;
 app.use("/lesson", lessonRouter);
+app.use("/track", trackRouter);
 app.get("/", (req, res) => {
     res.send("Hello World!");
 });

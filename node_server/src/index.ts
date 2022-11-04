@@ -1,7 +1,13 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-import { connectToServer, lessonsCollection, usersCol } from "./db/connect.js";
+const { ObjectId } = require("mongodb");
+import {
+  connectToServer,
+  lessonsCollection,
+  tracksCol,
+  usersCol,
+} from "./db/connect.js";
 const app = express();
 const port = 8000;
 
@@ -23,7 +29,29 @@ lessonRouter
     res.json(result);
   });
 
+const trackRouter = express.Router();
+trackRouter
+  .route("/")
+  .get(async (req, res) => {
+    const tracks = await tracksCol().find({}).limit(50).toArray();
+    return res.send(tracks);
+  })
+  .post(async (req, res) => {
+    const result = await tracksCol().insertOne(req.body);
+    res.json(result);
+  })
+  .put(async (req, res) => {
+    console.log(req.body._id);
+    const result = await tracksCol().updateOne(
+      { "_id" : new ObjectId(req.body._id) },
+      { $set: { "track_name" : req.body.track_name } }
+    );
+    console.log(result)
+    res.json(result);
+  });;
+
 app.use("/lesson", lessonRouter);
+app.use("/track", trackRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
