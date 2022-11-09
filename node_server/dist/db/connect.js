@@ -17,7 +17,7 @@ const connectToServer = function (callback) {
             return callback && callback(err);
         }
         dbConnection = db.db("frontend-portal");
-        console.log("Successfully connected to MongoDB.");
+        console.log("Successfully connected to MongoDB 11.");
         return callback && callback();
     });
 };
