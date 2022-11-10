@@ -1,6 +1,6 @@
 import { Typography, Stack, TextField } from '@mui/material';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
-import MainBlockWrapper from '../../MainBlockWrapper';
+import MainBlockWrapper from '../../components/MainBlockWrapper/MainBlockWrapper';
 
 function Lesson() {
     const { id } = useParams();
@@ -10,7 +10,7 @@ function Lesson() {
     }
     console.log('erwre');
     return (
-        <MainBlockWrapper>
+        <MainBlockWrapper title="Урок">
             <Stack spacing={2}>
                 <Typography variant="h1">Lesson: 1</Typography>
                 <Typography variant="subtitle1">Description</Typography>

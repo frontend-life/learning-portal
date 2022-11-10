@@ -11,12 +11,13 @@ import {
 } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import './App.css';
-import MainBlockWrapper from './MainBlockWrapper';
+import MainBlockWrapper from './components/MainBlockWrapper/MainBlockWrapper';
 import { AddLesson } from './pages/AddLesson/AddLesson';
 import Lesson from './pages/Lesson/Lesson';
 import { ILesson, ITrack } from './types/api';
 import { myRequest } from './utils/axios';
-import { ErrorBoundary } from './ErrorBoundary';
+import { ErrorBoundary } from './utils/ErrorBoundary';
+import { AuthPage } from './pages/Auth/AuthPage';
 
 const urls = [
     {
@@ -29,7 +30,7 @@ const urls = [
     },
     {
         path: '/auth',
-        Element: Auth
+        Element: AuthPage
     },
     {
         path: '/lesson',
@@ -72,7 +73,7 @@ function App() {
                                     element={<Dashboard />}
                                 />
                                 <Route path="/about" element={<AboutPage />} />
-                                <Route path="/auth" element={<Auth />} />
+                                <Route path="/auth" element={<AuthPage />} />
                                 <Route
                                     path="/lesson/:id"
                                     element={<Lesson />}
@@ -108,25 +109,7 @@ function AboutPage() {
 function Dashboard() {
     return <h1>Dashboard</h1>;
 }
-function Auth() {
-    const { register, handleSubmit } = useForm();
-    const onSubmit = (data) => {
-        myRequest.post('/registration', data).then((res) => {
-            console.log(res);
-        });
-    };
-    return (
-        <MainBlockWrapper>
-            <Stack spacing={4}>
-                <h1>Регистрация</h1>
-                <TextField {...register('email')} label="Email" />
-                <TextField {...register('password')} label="Password" />
-                <TextField {...register('name')} label="NickName" />
-                <Button onClick={handleSubmit(onSubmit)}>Registration</Button>
-            </Stack>
-        </MainBlockWrapper>
-    );
-}
+
 function Lessons() {
     let navigate = useNavigate();
     const [lessons, setLessons] = useState<ILesson[]>([]);
