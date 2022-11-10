@@ -1,4 +1,4 @@
-import './MainBlockWrapper.css';
+import s from './MainBlockWrapper.module.css';
 
 function Header({ children }) {
     return <div>{children}</div>;
@@ -6,7 +6,7 @@ function Header({ children }) {
 
 function MainBlockWrapper({ children, title }) {
     return (
-        <div>
+        <div className={s.root}>
             <Header>{title}</Header>
             {children}
         </div>
