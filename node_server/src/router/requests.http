@@ -19,7 +19,7 @@ content-type: application/json
 
 ### get me
 GET http://localhost:8000/user/me
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzZhZjQ4MmM3NmY5MmM0OTlkYmZmZTMiLCJpYXQiOjE2Njc5NTM4MDR9.EXsvVVbMPT2caaSB1aCXhN642Quc0YBZBiZ7Ro7aUp0
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzZkN2ZlMjMxZmNlMjQ5MTA3MDgzODgiLCJpYXQiOjE2NjgxMjA1NzJ9.l7I230j2k0NZ1liQFC2kKI68Repf-82hHg5QkFKB24o
 
 ### create lesson
 POST http://localhost:8000/lesson/create
