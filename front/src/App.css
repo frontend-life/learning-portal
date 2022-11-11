@@ -1,38 +1,51 @@
 .App {
-  text-align: center;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-grow: 1;
+  height: 100vh; 
+}
+.NavBar {
+  height: 100vh;
+  background-color: black;
+}
+.NavBar__li {
+  display: block;
+  padding: 20px;
+  background-color: gray;
+  color: white;
+  cursor: pointer;
+  transition: background-color linear .3s;
+}
+.NavBar__li:hover {
+  background-color: black;
 }
 
-.App-logo {
-  height: 40vmin;
+.Lessons {
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 30px;
+}
+.Lesson__item {
+  height: 400px;
+  width: 300px;
+  border-radius: 12px;
+  border: 1px solid grey;
+  background-color: bisque;
+  margin: 20px;
+  cursor: pointer;
+}
+.Lesson__item--blocked {
   pointer-events: none;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.Lesson__itemImage {
+  height: 300px;
+  width: 100%;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  background-color: green;
 }
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.Lesson__title {
+  text-align: center;
 }

@@ -1,0 +1,19 @@
+#!/bin/bash
+
+mkdir $1 && cd "$_"
+
+cat <<EOT >> $1.tsx
+import s from './$1.module.css';
+
+export const $1 = () => {
+    return (
+        <></>
+    );
+}
+EOT
+
+cat <<EOT >> $1.module.css
+.root {
+
+}
+EOT

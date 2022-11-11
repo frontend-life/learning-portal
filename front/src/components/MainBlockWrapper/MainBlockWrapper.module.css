@@ -1,0 +1,28 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    min-height: 100vh;
+}
+
+.header {
+    height: 118px;
+    background-color: #0B0C10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 30px;
+}
+
+.text {
+    font-size: 48px;
+    color: #66FCF1;
+}
+
+.content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
