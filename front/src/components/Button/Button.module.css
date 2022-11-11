@@ -1,0 +1,15 @@
+.root {
+    width: 303px;
+    height: 80px;
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #000000;
+    background: #66FCF1;
+    border-radius: 13px;
+    font-family: MrAmazin;
+    cursor: pointer;
+}

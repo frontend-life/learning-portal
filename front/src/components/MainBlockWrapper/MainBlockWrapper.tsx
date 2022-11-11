@@ -10,7 +10,7 @@ function MainBlockWrapper({ children, title }) {
                 <div className={s.text}>{title}</div>
                 <MenuSvg />
             </header>
-            {children}
+            <main className={s.content}>{children}</main>
         </div>
     );
 }
