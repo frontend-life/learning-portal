@@ -1,7 +1,8 @@
 import { useLayoutEffect, useRef } from 'react';
-import lottie from 'lottie-web';
-import drums from './drums.json';
+// import lottie from 'lottie-web';
+// import drums from './drums.json';
 import s from './LoadingAnimation.module.css';
+import '@dotlottie/player-component';
 
 type Props = {
     onEnd?: () => void;
@@ -15,24 +16,23 @@ export const LoadingAnimation = ({ onEnd, timeoutMS = 3000 }: Props) => {
         if (!ref.current) {
             return;
         }
-        const animation = lottie.loadAnimation({
-            container: ref.current, // the dom element
-            renderer: 'svg',
-            loop: true,
-            autoplay: true,
-            animationData: drums // the animation data
-        });
 
         const timeotId = onEnd && setTimeout(onEnd, timeoutMS);
         return () => {
             timeotId && clearTimeout(timeotId);
-            animation && animation.destroy();
         };
     }, []);
 
     return (
         <div className={s.container}>
-            <div className={s.root} ref={ref}></div>
+            <div className={s.root} ref={ref}>
+                <dotlottie-player
+                    src="/dot_drums.lottie" // in public folder
+                    autoplay
+                    loop
+                    style={{ height: '100%', width: '100%' }}
+                />
+            </div>
         </div>
     );
 };
