@@ -19,6 +19,7 @@ import { AddLesson } from './pages/AddLesson/AddLesson';
 import { useEffect, useState } from 'react';
 import UserDetailsProvider, { useUserContext } from './store/UserDetails';
 import { PATHS } from './utils/paths';
+import { LoadingAnimation } from './components/LoadingAnimation/LoadingAnimation';
 
 const urls = [
     {
@@ -58,6 +59,16 @@ const urls = [
 ];
 
 function App() {
+    const [startAnimation, setStartAnimation] = useState(true);
+    if (startAnimation) {
+        return (
+            <LoadingAnimation
+                onEnd={() => {
+                    setStartAnimation(false);
+                }}
+            />
+        );
+    }
     return (
         <div className="App">
             <BrowserRouter>
