@@ -7,7 +7,8 @@
 
 .header {
     height: 118px;
-    background-color: #0B0C10;
+    min-height: 118px;
+    background-color: #0b0c10;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -16,7 +17,7 @@
 
 .text {
     font-size: 48px;
-    color: #66FCF1;
+    color: #66fcf1;
 }
 
 .content {
