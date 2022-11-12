@@ -1,6 +1,4 @@
 import { Button, TextField, Typography, Box } from '@mui/material';
-import { Stack } from '@mui/system';
-import { useEffect, useState } from 'react';
 import {
     BrowserRouter,
     Routes,
@@ -11,41 +9,50 @@ import {
 } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import './App.css';
-import MainBlockWrapper from './components/MainBlockWrapper/MainBlockWrapper';
-import { AddLesson } from './pages/AddLesson/AddLesson';
-import Lesson from './pages/Lesson/Lesson';
 import { ILesson, ITrack } from './types/api';
 import { myRequest } from './utils/axios';
 import { ErrorBoundary } from './utils/ErrorBoundary';
-import { AuthPage } from './pages/Auth/AuthPage';
+import { SignUpPage } from './pages/SignUpPage/SignUpPage';
+import { SignInPage } from './pages/SignInPage/SignInPage';
+import Lesson from './pages/Lesson/Lesson';
+import { AddLesson } from './pages/AddLesson/AddLesson';
+import { useEffect, useState } from 'react';
+import UserDetailsProvider, { useUserContext } from './store/UserDetails';
+import { PATHS } from './utils/paths';
 
 const urls = [
     {
-        path: '/dashboard',
+        path: PATHS.dashboard,
         Element: Dashboard
     },
     {
-        path: '/about',
+        path: PATHS.about,
         Element: AboutPage
     },
     {
-        path: '/auth',
-        Element: AuthPage
+        path: PATHS.signup,
+        Element: SignUpPage,
+        isPublic: true
     },
     {
-        path: '/lesson',
+        path: PATHS.signin,
+        Element: SignInPage,
+        isPublic: true
+    },
+    {
+        path: PATHS.lesson,
         Element: Lesson
     },
     {
-        path: '/lessons',
+        path: PATHS.lessons,
         Element: Lessons
     },
     {
-        path: '/add_lesson',
+        path: PATHS.add_lesson,
         Element: AddLesson
     },
     {
-        path: '/tracks',
+        path: PATHS.tracks,
         Element: TracksPage
     }
 ];
@@ -63,40 +70,56 @@ function App() {
                         );
                     })}
                 </nav>
-                <div style={{ height: '100vh', overflow: 'auto', flex: 1 }}>
-                    <ErrorBoundary>
-                        <Routes>
-                            <Route path="/">
-                                <Route index element={<Landing />} />
-                                <Route
-                                    path="/dashboard"
-                                    element={<Dashboard />}
-                                />
-                                <Route path="/about" element={<AboutPage />} />
-                                <Route path="/auth" element={<AuthPage />} />
-                                <Route
-                                    path="/lesson/:id"
-                                    element={<Lesson />}
-                                />
-                                <Route path="/lessons" element={<Lessons />} />
-                                <Route
-                                    path="/add_lesson"
-                                    element={<AddLesson />}
-                                />
-                                <Route
-                                    path="/tracks"
-                                    element={<TracksPage />}
-                                />
-                                <Route
-                                    path="*"
-                                    element={<Navigate to="/" replace={true} />}
-                                />
-                            </Route>
-                        </Routes>
-                    </ErrorBoundary>
-                </div>
+                <UserDetailsProvider>
+                    <div style={{ height: '100vh', overflow: 'auto', flex: 1 }}>
+                        <ErrorBoundary>
+                            <AuthenticatedRoutes />
+                        </ErrorBoundary>
+                    </div>
+                </UserDetailsProvider>
             </BrowserRouter>
         </div>
+    );
+}
+
+function AuthenticatedRoutes() {
+    const user = useUserContext();
+
+    return (
+        <Routes>
+            <Route path="/">
+                <Route index element={<Landing />} />
+                {urls.map(({ path, Element, isPublic }) => {
+                    if (isPublic) {
+                        return (
+                            <Route
+                                key={path}
+                                path={path}
+                                element={<Element />}
+                            />
+                        );
+                    }
+                    if (!user.userDetails.isSignedIn) {
+                        return (
+                            <Route
+                                key={path}
+                                path={path}
+                                element={
+                                    <Navigate
+                                        to={PATHS.signin}
+                                        replace={true}
+                                    />
+                                }
+                            />
+                        );
+                    }
+                    return (
+                        <Route key={path} path={path} element={<Element />} />
+                    );
+                })}
+                <Route path="*" element={<Navigate to="/" replace={true} />} />
+            </Route>
+        </Routes>
     );
 }
 
