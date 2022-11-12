@@ -1,13 +1,14 @@
 # learning-portal
 Learning portal for people who want to became front-end developer
 
-GitFlow  нашего проекта:
+GitFlow 
 
-1. Пулишь себе дев ветку
-2. Создаешь ветку для выполнения задачи, называя ее PE-1/new-feature (где PE-1 - это id задачи из Jira, а new-feature - это короткое описание задачи)
-3. Делаешь задачу, коммитишь (подробные и частые коммиты лучше редких и непонятных)
-4. Задача сделана локально. Делаешь пуш в удаленный репозиторий
-5. В github создаешь пул реквест своей ветки задачи в dev ветку, указываешь меня в ревьюерах - 
-6. Я провожу ревью кода, делаю апрув, что код хороший - и ты делаешь мерж своей ветки и dev 
+1. Pull dev branch
+2. Create branch in pattern -> PE-1/new-feature (PE-1 - id of task from Jira, new-feature - is short description)
+3. Do what you need as you can as you want where you want :)
+3.1 Commit (long detailed msg better short unclear msg)
+4. Task done? Push your branch
+5. Create MR
+6. Point me in reviewers 
 
-Если какой-то пункт не понятен или не знаешь - пиши, все подробно объясню)
+ASk for help if yu need ;) and have fun
