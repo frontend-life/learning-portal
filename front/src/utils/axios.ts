@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const myRequest = axios.create({
-    baseURL: 'http://localhost:8000/',
+    baseURL: 'http://localhost:8000',
     timeout: 1000
 });
 
@@ -10,8 +10,8 @@ myRequest.interceptors.request.use(
         const token = localStorage.getItem('token');
         config.headers = {
             ...config.headers,
-            'Authorization': `Bearer ${token}`
-        }
+            Authorization: `Bearer ${token}`
+        };
         return config;
     },
     function (error) {
@@ -26,5 +26,7 @@ myRequest.interceptors.response.use(
     },
     (error) => {
         console.log('Here will be error caching');
+        // Do something with request error
+        return Promise.reject(error.response);
     }
 );

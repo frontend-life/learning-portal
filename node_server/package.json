@@ -30,7 +30,7 @@
     "start": "node dist/index.js",
     "mongo_start": "sudo systemctl start mongod",
     "mongo_stop": "sudo systemctl stop mongod",
-    "dev": "concurrently \"npx tsc --watch\" \"MODE=dev nodemon -q dist/index.js\"",
-    "serve:dev": "ts-node-dev src/index.ts"
+    "dev:old": "concurrently \"npx tsc --watch\" \"MODE=dev nodemon -q dist/index.js\"",
+    "dev": "yarn mongo_start && ts-node-dev src/index.ts"
   }
 }
