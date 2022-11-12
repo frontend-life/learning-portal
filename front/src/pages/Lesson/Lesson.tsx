@@ -1,5 +1,5 @@
 import { Typography, Stack, TextField } from '@mui/material';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import MainBlockWrapper from '../../components/MainBlockWrapper/MainBlockWrapper';
 
 function Lesson() {
