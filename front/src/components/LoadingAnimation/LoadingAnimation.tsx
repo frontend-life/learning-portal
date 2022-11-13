@@ -9,7 +9,7 @@ type Props = {
     timeoutMS?: number;
 };
 
-export const LoadingAnimation = ({ onEnd, timeoutMS = 3000 }: Props) => {
+export const LoadingAnimation = ({ onEnd, timeoutMS = 1000 }: Props) => {
     const ref = useRef(null);
 
     useLayoutEffect(() => {

@@ -1,0 +1,20 @@
+.root {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 840px;
+    height: 624px;
+
+    background-color: #0b0c10;
+
+    display: flex;
+    align-items: center;
+    padding-left: 121px;
+}
+
+.text {
+    font-size: 50px;
+    color: var(--primary-color);
+    margin-left: 50px;
+}
