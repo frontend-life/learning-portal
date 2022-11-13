@@ -1,3 +1,4 @@
+import { getToken } from './auth';
 import axios from 'axios';
 
 export const myRequest = axios.create({
@@ -7,7 +8,7 @@ export const myRequest = axios.create({
 
 myRequest.interceptors.request.use(
     function (config) {
-        const token = localStorage.getItem('token');
+        const token = getToken();
         config.headers = {
             ...config.headers,
             Authorization: `Bearer ${token}`

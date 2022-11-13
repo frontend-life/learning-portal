@@ -1,32 +1,26 @@
-import {
-    Box,
-    Button,
-    FormControl,
-    Grid,
-    InputLabel,
-    MenuItem,
-    Select,
-    TextField,
-    Typography
-} from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { ITrack } from '../../types/api';
+import { Button } from '../../components/Button/Button';
+import { Input } from '../../components/Input/Input';
+import MainBlockWrapper from '../../components/MainBlockWrapper/MainBlockWrapper';
+import { Select } from '../../components/Select/Select';
+import { useSuccessAdd } from '../../components/SuccessAdd/SuccessAdd';
+import { ILesson, ITrack } from '../../types/api';
 import { myRequest } from '../../utils/axios';
 
-import './AddLesson.css';
+import s from './AddLesson.module.css';
 
 export const AddLesson = () => {
+    const { isSuccess, turnOn, SuccessAdd } = useSuccessAdd();
     const [tracks, setTracks] = useState<ITrack[]>([]);
     const {
         register,
         handleSubmit,
-        formState: { errors },
-        watch
+        formState: { errors }
     } = useForm();
 
     const onSubmit = (data) => {
-        myRequest.post('/lesson', data);
+        myRequest.post('/lesson/create', data).then(turnOn);
     };
 
     useEffect(() => {
@@ -36,89 +30,75 @@ export const AddLesson = () => {
     }, []);
 
     return (
-        <div className="AddLesson">
-            <Typography variant="h1" gutterBottom textAlign="center">
-                Add lesson
-            </Typography>
-            <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-                <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                        <FormControl fullWidth>
-                            <InputLabel id="demo-simple-select-label">
-                                Track
-                            </InputLabel>
-                            <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                label="Age"
-                                {...register('track', {
-                                    value: ''
-                                })}
-                                required
-                            >
-                                <MenuItem value="">
-                                    <em>None</em>
-                                </MenuItem>
-                                {tracks.map((track) => {
-                                    return (
-                                        <MenuItem
-                                            key={track._id}
-                                            value={track._id}
-                                        >
-                                            {track.track_name}
-                                        </MenuItem>
-                                    );
-                                })}
-                            </Select>
-                        </FormControl>
-                        <TextField
-                            label="Lesson title"
-                            {...register('title')}
-                            required
-                        />
-                        <TextField
-                            label="Lesson description"
-                            {...register('description')}
-                            multiline
-                            maxRows={8}
-                            rows={8}
-                        />
-                        <TextField
-                            label="Lesson homework"
-                            {...register('homework')}
-                            multiline
-                            maxRows={8}
-                            rows={8}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            required
-                            label={
-                                !!errors.link?.message
-                                    ? errors.link?.message?.toString()
-                                    : 'Lesson youtube link'
-                            }
-                            {...register('link')}
-                            error={!!errors.link?.message}
-                        />
-
-                        <iframe
-                            title="lesson_from_youtube"
-                            width="420"
-                            height="315"
-                            src={
-                                'https://www.youtube.com/embed/' + watch('link')
-                            }
-                            frameBorder="0"
-                            allowFullScreen
-                        />
-                        <Button type="submit" variant="contained">
-                            Add lesson
-                        </Button>
-                    </Grid>
-                </Grid>
-            </Box>
-        </div>
+        <MainBlockWrapper alignMain="left">
+            <div className={s.root}>
+                <h1 className={s.headerText}>Добавить урок</h1>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <Select
+                        labelAlign="left"
+                        htmlProps={{ label: 'Track' }}
+                        rhfProps={{
+                            ...register('track')
+                        }}
+                        options={tracks.map((t) => ({
+                            id: t._id,
+                            text: t.track_name
+                        }))}
+                    />
+                    <Input
+                        labelAlign="left"
+                        inputProps={{ label: 'Lesson title' }}
+                        rhfProps={{
+                            ...register('title', {
+                                required: true
+                            })
+                        }}
+                        error={errors.title?.message as string}
+                    />
+                    <Input
+                        labelAlign="left"
+                        inputProps={{ label: 'Lesson description' }}
+                        rhfProps={{
+                            ...register('description', {
+                                required: true
+                            })
+                        }}
+                        error={errors.description?.message as string}
+                    />
+                    <Input
+                        labelAlign="left"
+                        inputProps={{ label: 'Lesson homework' }}
+                        rhfProps={{
+                            ...register('homework', {
+                                required: true
+                            })
+                        }}
+                        error={errors.homework?.message as string}
+                    />
+                    <Input
+                        labelAlign="left"
+                        inputProps={{ label: 'Lesson youtube link' }}
+                        rhfProps={{
+                            ...register('link', {
+                                required: true
+                            })
+                        }}
+                        error={errors.link?.message as string}
+                    />
+                    {/* in future <iframe
+                        title="lesson_from_youtube"
+                        width="420"
+                        height="315"
+                        src={'https://www.youtube.com/embed/' + watch('link')}
+                        frameBorder="0"
+                        allowFullScreen
+                    /> */}
+                    <div style={{ marginTop: '40px' }}>
+                        <Button type="submit">Добавить урок</Button>
+                    </div>
+                </form>
+                {isSuccess && <SuccessAdd />}
+            </div>
+        </MainBlockWrapper>
     );
 };
