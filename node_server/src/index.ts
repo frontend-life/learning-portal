@@ -4,6 +4,7 @@ import cors from "cors";
 
 import userRouter from "./router/user";
 import lessonRouter from "./router/lesson";
+import courseRouter from "./router/course";
 
 import("./db/mongoose");
 
@@ -22,6 +23,7 @@ app.use(cors());
 
 app.use(userRouter);
 app.use(lessonRouter);
+app.use(courseRouter);
 
 const port = process.env.PORT || 3000;
 

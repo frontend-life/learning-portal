@@ -1,21 +1,22 @@
+import { Align } from '../../types/components';
+import { Control, Controller } from 'react-hook-form';
 import s from './Select.module.css';
+import { useEffect } from 'react';
 
 type Option = {
-    id: any;
+    id: string;
     text: string;
 };
 
 type Props = {
     options: Option[];
-    // onChange: (o: Option) => void;
-    rhfProps: any;
     htmlProps?: React.HTMLProps<HTMLSelectElement>;
-    labelAlign?: 'left' | 'right' | 'center';
+    labelAlign?: Align;
+    control: Control;
 };
 
 export const Select = (props: Props) => {
-    const { options, htmlProps, rhfProps, labelAlign = 'center' } = props;
-    const noOptions = options.length === 0;
+    const { options, htmlProps, control, labelAlign = 'center' } = props;
     const getLabel = () => {
         if (htmlProps?.label) {
             return (
@@ -27,14 +28,51 @@ export const Select = (props: Props) => {
         return null;
     };
     return (
-        <div className={s.wrapper}>
+        <Controller
+            name="course"
+            control={control}
+            render={({ field: { value, onChange, onBlur } }) => {
+                return (
+                    <div className={s.wrapper}>
+                        <SelectInside
+                            getLabel={getLabel}
+                            onChange={onChange}
+                            options={options}
+                            value={value}
+                        />
+                    </div>
+                );
+            }}
+        />
+    );
+};
+
+function SelectInside({ getLabel, onChange, options, value }) {
+    const noOptions = options.length === 0;
+
+    useEffect(() => {
+        onChange(noOptions ? 'No options' : options[0!].id);
+    }, [options, noOptions]);
+
+    return (
+        <>
             {getLabel()}
             <select
                 className={`${s.root} ${noOptions && s.rootNoClick}`}
-                {...rhfProps}
+                onChange={(e) => {
+                    const id = options.find(
+                        (o) => o.text === e.target.value
+                    )?.id;
+                    onChange(id);
+                }}
+                value={
+                    noOptions
+                        ? 'No options'
+                        : options.find((o) => o.id === value)?.text
+                }
             >
                 {noOptions && (
-                    <option key="no options" selected disabled>
+                    <option key="no options" disabled>
                         No options
                     </option>
                 )}
@@ -43,6 +81,6 @@ export const Select = (props: Props) => {
                         return <option key={o.id}>{o.text}</option>;
                     })}
             </select>
-        </div>
+        </>
     );
-};
+}

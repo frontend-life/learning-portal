@@ -9,7 +9,7 @@ import {
 } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import './App.css';
-import { ILesson, ITrack } from './types/api';
+import { ILesson, ICourse } from './types/api';
 import { myRequest } from './utils/axios';
 import { ErrorBoundary } from './utils/ErrorBoundary';
 import { SignUpPage } from './pages/SignUpPage/SignUpPage';
@@ -53,11 +53,11 @@ const urls = [
     {
         path: PATHS.add_lesson,
         Element: AddLesson
-    },
-    {
-        path: PATHS.tracks,
-        Element: TracksPage
     }
+    // { /* Courses for future*/
+    //     path: PATHS.courses,
+    //     Element: TracksPage
+    // }
 ];
 
 function App() {
@@ -189,12 +189,12 @@ function Lessons() {
 }
 
 function TracksPage() {
-    const [tracks, setTracks] = useState<ITrack[]>([]);
+    const [tracks, setTracks] = useState<ICourse[]>([]);
     const { register, handleSubmit } = useForm();
 
     const onSubmit = (data) => {
         myRequest.post('/track', data).then((result: any) => {
-            const newTrack: ITrack = {
+            const newTrack: ICourse = {
                 ...data,
                 _id: result.insertedId
             };
@@ -204,7 +204,7 @@ function TracksPage() {
 
     useEffect(() => {
         myRequest.get('/track').then((data) => {
-            setTracks(data as unknown as ITrack[]);
+            setTracks(data as unknown as ICourse[]);
         });
     }, []);
 
@@ -230,7 +230,7 @@ function TracksPage() {
     );
 }
 
-function TrackRaw({ track }: { track: ITrack }) {
+function TrackRaw({ track }: { track: ICourse }) {
     const [trackData, setTrackData] = useState(track);
     const [isEditing, setIsEditing] = useState(false);
     if (isEditing) {
@@ -246,7 +246,7 @@ function TrackRaw({ track }: { track: ITrack }) {
     }
     return (
         <h3 onClick={() => setIsEditing(true)} key={trackData._id}>
-            {trackData.track_name}
+            {trackData.title}
         </h3>
     );
 }
@@ -255,8 +255,8 @@ function TrackEdit({
     track,
     onCloseEditing
 }: {
-    track: ITrack;
-    onCloseEditing: (data: ITrack) => void;
+    track: ICourse;
+    onCloseEditing: (data: ICourse) => void;
 }) {
     const { register, handleSubmit, watch } = useForm({
         defaultValues: track
@@ -271,11 +271,11 @@ function TrackEdit({
         <Box component="form" onSubmit={handleSubmit(onSubmit)}>
             <TextField
                 label="New track title"
-                {...register('track_name')}
+                {...register('title')}
                 required
             />
             <Button
-                disabled={track.track_name === watch('track_name')}
+                disabled={track.title === watch('title')}
                 type="submit"
                 variant="contained"
             >

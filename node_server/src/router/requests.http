@@ -19,21 +19,38 @@ content-type: application/json
 
 ### get me
 GET http://localhost:8000/user/me
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzZkN2ZlMjMxZmNlMjQ5MTA3MDgzODgiLCJpYXQiOjE2NjgxMjA1NzJ9.l7I230j2k0NZ1liQFC2kKI68Repf-82hHg5QkFKB24o
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzZkN2ZlMjMxZmNlMjQ5MTA3MDgzODgiLCJpYXQiOjE2NjgzMTg3NjV9.ha84RRMXERSTpNdVO7cujB4DMXLGHX0c1d0zvWW4OqQ
 
 ### create lesson
 POST http://localhost:8000/lesson/create
 content-type: application/json
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzZhZGMzM2VlYjJjY2M2MWU1Zjc4ZTQiLCJpYXQiOjE2Njc5NTEwMTV9.CxcDLPWeaRElLM-yMbxG0eub2BzN4py5zcD4Iu6gldU
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzZkN2ZlMjMxZmNlMjQ5MTA3MDgzODgiLCJpYXQiOjE2NjgzMTg3NjV9.ha84RRMXERSTpNdVO7cujB4DMXLGHX0c1d0zvWW4OqQ
 
 {
     "title": "tom's title 2",
     "description": "tom1@tom.com is the right email",
     "homework": "41 chapter",
-    "link": "google.com"
+    "link": "google.com",
+    "course": "6365a102dae5113bca0c8fb6"
 }
 
 ### fetch lessons
 GET http://localhost:8000/lesson/lessons
 content-type: application/json
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzZhZGMzM2VlYjJjY2M2MWU1Zjc4ZTQiLCJpYXQiOjE2Njc5NTEwMTV9.CxcDLPWeaRElLM-yMbxG0eub2BzN4py5zcD4Iu6gldU
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzZkN2ZlMjMxZmNlMjQ5MTA3MDgzODgiLCJpYXQiOjE2NjgzMTg3NjV9.ha84RRMXERSTpNdVO7cujB4DMXLGHX0c1d0zvWW4OqQ
+
+
+
+### create course
+POST http://localhost:8000/course/create
+content-type: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzZkN2ZlMjMxZmNlMjQ5MTA3MDgzODgiLCJpYXQiOjE2NjgzMTg3NjV9.ha84RRMXERSTpNdVO7cujB4DMXLGHX0c1d0zvWW4OqQ
+
+{
+    "title": "Git",
+}
+
+### fetch courses
+GET http://localhost:8000/course/courses
+content-type: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzZkN2ZlMjMxZmNlMjQ5MTA3MDgzODgiLCJpYXQiOjE2NjgzMTg3NjV9.ha84RRMXERSTpNdVO7cujB4DMXLGHX0c1d0zvWW4OqQ

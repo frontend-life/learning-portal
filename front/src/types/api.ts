@@ -6,7 +6,9 @@ export interface ILesson {
     _id: string;
 }
 
-export interface ITrack {
+export interface ICourse {
     _id: string;
-    track_name: string;
+    title: string;
+    course: string;
+    owner: string;
 }

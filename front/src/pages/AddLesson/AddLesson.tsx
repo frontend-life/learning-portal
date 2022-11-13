@@ -5,17 +5,18 @@ import { Input } from '../../components/Input/Input';
 import MainBlockWrapper from '../../components/MainBlockWrapper/MainBlockWrapper';
 import { Select } from '../../components/Select/Select';
 import { useSuccessAdd } from '../../components/SuccessAdd/SuccessAdd';
-import { ILesson, ITrack } from '../../types/api';
+import { ICourse } from '../../types/api';
 import { myRequest } from '../../utils/axios';
 
 import s from './AddLesson.module.css';
 
 export const AddLesson = () => {
     const { isSuccess, turnOn, SuccessAdd } = useSuccessAdd();
-    const [tracks, setTracks] = useState<ITrack[]>([]);
+    const [courses, setCourses] = useState<ICourse[]>([]);
     const {
         register,
         handleSubmit,
+        control,
         formState: { errors }
     } = useForm();
 
@@ -24,8 +25,8 @@ export const AddLesson = () => {
     };
 
     useEffect(() => {
-        myRequest.get('/track').then((tracks) => {
-            setTracks(tracks as unknown as ITrack[]);
+        myRequest.get('/course/courses').then((tracks) => {
+            setCourses(tracks as unknown as ICourse[]);
         });
     }, []);
 
@@ -37,12 +38,10 @@ export const AddLesson = () => {
                     <Select
                         labelAlign="left"
                         htmlProps={{ label: 'Track' }}
-                        rhfProps={{
-                            ...register('track')
-                        }}
-                        options={tracks.map((t) => ({
+                        control={control}
+                        options={courses.map((t) => ({
                             id: t._id,
-                            text: t.track_name
+                            text: t.title
                         }))}
                     />
                     <Input
