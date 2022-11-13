@@ -17,9 +17,11 @@ import { SignInPage } from './pages/SignInPage/SignInPage';
 import Lesson from './pages/Lesson/Lesson';
 import { AddLesson } from './pages/AddLesson/AddLesson';
 import { useEffect, useState } from 'react';
-import UserDetailsProvider, { useUserContext } from './store/UserDetails';
+import { useUserContext } from './store/UserDetails';
 import { PATHS } from './utils/paths';
 import { LoadingAnimation } from './components/LoadingAnimation/LoadingAnimation';
+import { LogoutButton } from './components/LogoutButton/LogoutButton';
+import { getToken } from './utils/auth';
 
 const urls = [
     {
@@ -59,8 +61,13 @@ const urls = [
 ];
 
 function App() {
+    const user = useUserContext();
     const [startAnimation, setStartAnimation] = useState(true);
     if (startAnimation) {
+        if (!user.userDetails.isSignedIn && getToken()) {
+            user.setUserDetails((prev) => ({ ...prev, isSignedIn: true }));
+            return null;
+        }
         return (
             <LoadingAnimation
                 onEnd={() => {
@@ -81,13 +88,12 @@ function App() {
                         );
                     })}
                 </nav>
-                <UserDetailsProvider>
-                    <div style={{ height: '100vh', overflow: 'auto', flex: 1 }}>
-                        <ErrorBoundary>
-                            <AuthenticatedRoutes />
-                        </ErrorBoundary>
-                    </div>
-                </UserDetailsProvider>
+                <div style={{ height: '100vh', overflow: 'auto', flex: 1 }}>
+                    <ErrorBoundary>
+                        <AuthenticatedRoutes />
+                        <LogoutButton />
+                    </ErrorBoundary>
+                </div>
             </BrowserRouter>
         </div>
     );
@@ -135,7 +141,7 @@ function AuthenticatedRoutes() {
 }
 
 function Landing() {
-    return <h1>Landing</h1>;
+    return <h1>Landing for everyone</h1>;
 }
 function AboutPage() {
     return <h1>AboutPage</h1>;
