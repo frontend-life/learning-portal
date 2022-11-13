@@ -26,7 +26,8 @@ export const SignInPage = () => {
             .post('/user/signin', data)
             .then((res: any) => {
                 setUserDetails((prev) => ({ ...prev, isSignedIn: true }));
-                setToken(res.authtoken);
+                console.log(data);
+                setToken(res.authToken);
                 nav(PATHS.dashboard);
             })
             .catch((e) => {

@@ -1,6 +1,6 @@
+import { TopRightMenu } from '../TopRightMenu/TopRightMenu';
 import { Logo } from './logo';
 import s from './MainBlockWrapper.module.css';
-import { MenuSvg } from './menuSvg';
 
 function MainBlockWrapper({ children, title }) {
     return (
@@ -8,7 +8,7 @@ function MainBlockWrapper({ children, title }) {
             <header className={s.header}>
                 <Logo />
                 <div className={s.text}>{title}</div>
-                <MenuSvg />
+                <TopRightMenu />
             </header>
             <main className={s.content}>{children}</main>
         </div>
