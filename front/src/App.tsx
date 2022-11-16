@@ -22,11 +22,16 @@ import { PATHS } from './utils/paths';
 import { LoadingAnimation } from './components/LoadingAnimation/LoadingAnimation';
 import { LogoutButton } from './components/LogoutButton/LogoutButton';
 import { getToken } from './utils/auth';
+import { ProfilePage } from './pages/ProfilePage/ProfilePage';
 
 const urls = [
     {
         path: PATHS.dashboard,
         Element: Dashboard
+    },
+    {
+        path: PATHS.profile,
+        Element: ProfilePage
     },
     {
         path: PATHS.about,
