@@ -1,5 +1,5 @@
 import s from './SalaryCounter.module.css';
 
-export const SalaryCounter = () => {
-    return <div className={s.salaryCounter}>259765</div>;
+export const SalaryCounter = ({ value }: { value: number }) => {
+    return <div className={s.salaryCounter}>{value}</div>;
 };
