@@ -22,12 +22,9 @@ import { PATHS } from './utils/paths';
 import { LoadingAnimation } from './components/LoadingAnimation/LoadingAnimation';
 import { getToken } from './utils/auth';
 import { ProfilePage } from './pages/ProfilePage/ProfilePage';
+import { Lessons } from './pages/Lessons/Lessons';
 
 const urls = [
-    {
-        path: PATHS.dashboard,
-        Element: Dashboard
-    },
     {
         path: PATHS.profile,
         Element: ProfilePage
@@ -148,47 +145,6 @@ function Landing() {
 }
 function AboutPage() {
     return <h1>AboutPage</h1>;
-}
-function Dashboard() {
-    return <h1>Dashboard</h1>;
-}
-
-function Lessons() {
-    let navigate = useNavigate();
-    const [lessons, setLessons] = useState<ILesson[]>([]);
-    useEffect(() => {
-        myRequest.get<any, ILesson[]>('/lesson').then((data) => {
-            setLessons(data);
-            console.log(data);
-        });
-    }, []);
-
-    const handleClick = (lessonId: string) => {
-        console.log('/lesson/' + lessonId);
-        navigate('/lesson/' + lessonId);
-    };
-
-    return (
-        <div className="Lessons">
-            {lessons.map((lesson) => {
-                return (
-                    <div
-                        className="Lesson__item"
-                        onClick={() => {
-                            handleClick(lesson._id);
-                        }}
-                    >
-                        <div className="Lesson__itemImage">
-                            Здесь будет картинка урока
-                        </div>
-                        <p className="Lesson__title" key={lesson._id}>
-                            {lesson.title}
-                        </p>
-                    </div>
-                );
-            })}
-        </div>
-    );
 }
 
 function TracksPage() {

@@ -1,12 +1,14 @@
 import { Typography, Stack, TextField } from '@mui/material';
 import { Navigate, useParams } from 'react-router-dom';
 import MainBlockWrapper from '../../components/MainBlockWrapper/MainBlockWrapper';
+import { PATHS } from '../../utils/paths';
 
 function Lesson() {
     const { id } = useParams();
     console.log(id);
     if (!id) {
-        return <Navigate to="/dashboard" replace={true} />;
+        alert('No lesson');
+        return <Navigate to={PATHS.profile} replace={true} />;
     }
     console.log('erwre');
     return (

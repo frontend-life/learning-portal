@@ -3,6 +3,9 @@ export interface ILesson {
     homework: string;
     link: string;
     title: string;
+    isDone: boolean;
+    isClosed: boolean;
+    isOpen: boolean;
     _id: string;
 }
 

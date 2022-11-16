@@ -28,7 +28,7 @@ export const SignInPage = () => {
                 setUserDetails((prev) => ({ ...prev, isSignedIn: true }));
                 console.log(data);
                 setToken(res.authToken);
-                nav(PATHS.dashboard);
+                nav(PATHS.profile);
             })
             .catch((e) => {
                 alert(e.data.message);

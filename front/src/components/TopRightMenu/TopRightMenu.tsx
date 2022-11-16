@@ -8,23 +8,27 @@ import { useLogout } from '../../utils/auth';
 
 const items = [
     {
-        text: 'Войти',
+        text: 'Sign In',
         link: PATHS.signin
     },
     {
-        text: 'Уроки',
+        text: 'Sign Up',
+        link: PATHS.signup
+    },
+    {
+        text: 'Lessons',
         link: PATHS.lessons
     },
     {
-        text: 'Рейтинг',
-        link: PATHS.rating
+        text: 'Profile',
+        link: PATHS.profile
     },
     {
-        text: 'Добавить',
+        text: 'add lesson',
         link: PATHS.add_lesson
     },
     {
-        text: 'Выйти'
+        text: 'Log Out'
     }
 ];
 
