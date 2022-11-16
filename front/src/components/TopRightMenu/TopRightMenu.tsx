@@ -4,6 +4,7 @@ import { useUserContext } from '../../store/UserDetails';
 
 import { MenuSvg } from './menuSvg';
 import s from './TopRightMenu.module.css';
+import { useLogout } from '../../utils/auth';
 
 const items = [
     {
@@ -21,11 +22,15 @@ const items = [
     {
         text: 'Добавить',
         link: PATHS.add_lesson
+    },
+    {
+        text: 'Выйти'
     }
 ];
 
 export const TopRightMenu = () => {
     const user = useUserContext();
+    const { logOut } = useLogout();
 
     return (
         <div
@@ -36,6 +41,17 @@ export const TopRightMenu = () => {
             <MenuSvg />
             <div className={s.menu}>
                 {items.map((i) => {
+                    if (!i.link) {
+                        return (
+                            <span
+                                onClick={logOut}
+                                key={i.text}
+                                className={s.item}
+                            >
+                                {i.text}
+                            </span>
+                        );
+                    }
                     return (
                         <Link key={i.link} className={s.item} to={i.link}>
                             {i.text}

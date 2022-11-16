@@ -20,7 +20,6 @@ import { useEffect, useState } from 'react';
 import { useUserContext } from './store/UserDetails';
 import { PATHS } from './utils/paths';
 import { LoadingAnimation } from './components/LoadingAnimation/LoadingAnimation';
-import { LogoutButton } from './components/LogoutButton/LogoutButton';
 import { getToken } from './utils/auth';
 import { ProfilePage } from './pages/ProfilePage/ProfilePage';
 
@@ -96,7 +95,6 @@ function App() {
                 <div style={{ height: '100vh', overflow: 'auto', flex: 1 }}>
                     <ErrorBoundary>
                         <AuthenticatedRoutes />
-                        <LogoutButton />
                     </ErrorBoundary>
                 </div>
             </BrowserRouter>
