@@ -38,7 +38,7 @@ export function Lessons() {
 
     return (
         <MainBlockWrapper title="Lessons">
-            <div className="Lessons">
+            <div className={s.root}>
                 {courses.map((c) => {
                     return (
                         <>
@@ -57,7 +57,7 @@ export function Lessons() {
                                     )}
                                 />
                             </div>
-                            <>
+                            <div className={s.lessonsBlock}>
                                 {lessons
                                     .filter((l) => l.course === c._id)
                                     .map((lesson) => {
@@ -115,7 +115,7 @@ export function Lessons() {
                                             </div>
                                         );
                                     })}
-                            </>
+                            </div>
                         </>
                     );
                 })}

@@ -1,4 +1,5 @@
 import { Navigate, useLocation } from 'react-router-dom';
+import { Chat } from '../../components/Chat/Chat';
 import MainBlockWrapper from '../../components/MainBlockWrapper/MainBlockWrapper';
 import { ILesson } from '../../types/api';
 import { PATHS } from '../../utils/paths';
@@ -15,7 +16,7 @@ function Lesson() {
     return (
         <MainBlockWrapper title="Lesson">
             <div className={s.root}>
-                <h1>{lesson.title}</h1>
+                {/* <h1>{lesson.title}</h1>
                 <h3>Description</h3>
                 <code className={s.description}>{lesson.description}</code>
                 <iframe
@@ -25,14 +26,10 @@ function Lesson() {
                     src={`https://www.youtube.com/embed/${lesson.link}?autoplay=1`}
                     frameBorder="0"
                     allowFullScreen
-                />
+                /> */}
                 <div className={s.homework}>
                     <h3>Homework</h3>
-                    <textarea
-                        rows={4}
-                        cols={50}
-                        placeholder="Write here your homework or comments"
-                    ></textarea>
+                    <Chat />
                 </div>
             </div>
         </MainBlockWrapper>
