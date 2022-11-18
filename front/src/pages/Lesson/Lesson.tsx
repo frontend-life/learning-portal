@@ -1,38 +1,40 @@
-import { Typography, Stack, TextField } from '@mui/material';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import MainBlockWrapper from '../../components/MainBlockWrapper/MainBlockWrapper';
+import { ILesson } from '../../types/api';
 import { PATHS } from '../../utils/paths';
+import s from './Lesson.module.css';
 
 function Lesson() {
-    const { id } = useParams();
-    console.log(id);
-    if (!id) {
+    const { state: lesson }: { state: ILesson } = useLocation();
+
+    if (!lesson) {
         alert('No lesson');
-        return <Navigate to={PATHS.profile} replace={true} />;
+        return <Navigate to={PATHS.lessons} replace={true} />;
     }
-    console.log('erwre');
+
     return (
-        <MainBlockWrapper title="Урок">
-            <Stack spacing={2}>
-                <Typography variant="h1">Lesson: 1</Typography>
-                <Typography variant="subtitle1">Description</Typography>
+        <MainBlockWrapper title="Lesson">
+            <div className={s.root}>
+                <h1>{lesson.title}</h1>
+                <h3>Description</h3>
+                <code className={s.description}>{lesson.description}</code>
                 <iframe
                     title="lesson_from_youtube"
-                    width="420"
-                    height="315"
-                    src="https://www.youtube.com/embed//w8QbsPx73nU?autoplay=1"
+                    width="820"
+                    height="515"
+                    src={`https://www.youtube.com/embed/${lesson.link}?autoplay=1`}
                     frameBorder="0"
                     allowFullScreen
                 />
-                <Typography variant="subtitle1">Homework</Typography>
-                <TextField
-                    id="outlined-multiline-static"
-                    label="Write here your homework or comments"
-                    multiline
-                    rows={12}
-                    defaultValue="..."
-                />
-            </Stack>
+                <div className={s.homework}>
+                    <h3>Homework</h3>
+                    <textarea
+                        rows={4}
+                        cols={50}
+                        placeholder="Write here your homework or comments"
+                    ></textarea>
+                </div>
+            </div>
         </MainBlockWrapper>
     );
 }

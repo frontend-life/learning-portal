@@ -25,6 +25,7 @@
 /* Lesson */
 .lessonRoot {
     margin: 20px 20px 20px 0;
+    width: 290px;
 }
 .square {
     width: 290px;

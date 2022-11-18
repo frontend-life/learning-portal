@@ -1,8 +1,11 @@
-import mongoose, { Document } from 'mongoose';
+import mongoose, { Document } from "mongoose";
 
 export default interface IUser extends Document {
-    id: mongoose.Schema.Types.ObjectId,
-    name: string;
-    email: string;
-    password: string;
+  id: mongoose.Schema.Types.ObjectId;
+  name: string;
+  email: string;
+  password: string;
+  salary: number;
+  lessonsDone: string[];
+  lessonsOpen: string[];
 }

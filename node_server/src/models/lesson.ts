@@ -3,12 +3,12 @@ import ILesson from "../interfaces/lesson";
 
 const lessonSchema = new mongoose.Schema(
   {
-    _id: {
-      type: mongoose.Schema.Types.ObjectId,
-      index: true,
-      required: true,
-      auto: true,
-    },
+    // _id: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   index: true,
+    //   required: true,
+    //   auto: true,
+    // },
     title: {
       type: String,
       required: true,
@@ -33,11 +33,6 @@ const lessonSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: "Course",
-    },
-    owner: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-      ref: "User",
     },
   },
   { timestamps: true }

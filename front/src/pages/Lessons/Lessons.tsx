@@ -1,14 +1,19 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MainBlockWrapper from '../../components/MainBlockWrapper/MainBlockWrapper';
+import { useUserContext } from '../../store/UserDetails';
 import { ICourse, ILesson } from '../../types/api';
 import { myRequest } from '../../utils/axios';
 import { cls } from '../../utils/css';
+import { PATHS } from '../../utils/paths';
 import { DoneSvg } from './doneSvg';
 import s from './Lessons.module.css';
 import { LockSvg } from './lockSvg';
 
 export function Lessons() {
+    const {
+        userDetails: { lessonsDone, lessonsOpen }
+    } = useUserContext();
     let navigate = useNavigate();
     const [lessons, setLessons] = useState<ILesson[]>([]);
     const [courses, setCourses] = useState<ICourse[]>([]);
@@ -18,16 +23,17 @@ export function Lessons() {
             myRequest.get<any, ILesson[]>('/lesson/lessons'),
             myRequest.get<any, ICourse[]>('/course/courses')
         ]).then(([lessons, courses]) => {
-            setLessons([...lessons, ...lessons, ...lessons]);
+            setLessons(lessons);
             console.log(lessons);
             setCourses(courses);
             console.log('courses', courses);
         });
     }, []);
 
-    const handleClick = (lessonId: string) => {
-        console.log('/lesson/' + lessonId);
-        navigate('/lesson/' + lessonId);
+    const handleClick = (lesson: ILesson) => {
+        navigate(PATHS.lesson, {
+            state: lesson
+        });
     };
 
     return (
@@ -35,55 +41,82 @@ export function Lessons() {
             <div className="Lessons">
                 {courses.map((c) => {
                     return (
-                        <div key={c._id} className={s.courseTitle}>
-                            <div
-                                className={cls(
-                                    s.courseTitleLine,
-                                    s.courseTitleLeftLine
-                                )}
-                            />
-                            <span className={s.title}>{c.title}</span>
-                            <div
-                                className={cls(
-                                    s.courseTitleLine,
-                                    s.courseTitleRightLine
-                                )}
-                            />
-                        </div>
-                    );
-                })}
-                {lessons.map((lesson) => {
-                    const selectors: string[] = [s.square];
-                    if (lesson.isDone) {
-                        selectors.push(s.done);
-                    } else if (lesson.isClosed) {
-                        selectors.push(s.closed);
-                    } else if (lesson.isOpen) {
-                        selectors.push(s.open);
-                    }
-                    return (
-                        <div className={s.lessonRoot}>
-                            <div
-                                className={cls(...selectors)}
-                                onClick={() => {
-                                    handleClick(lesson._id);
-                                }}
-                            >
-                                {lesson.isDone && (
-                                    <div className={s.doneSvg}>
-                                        <DoneSvg />
-                                    </div>
-                                )}
-                                {lesson.isClosed && (
-                                    <div className={s.lockSvg}>
-                                        <LockSvg />
-                                    </div>
-                                )}
+                        <>
+                            <div key={c._id} className={s.courseTitle}>
+                                <div
+                                    className={cls(
+                                        s.courseTitleLine,
+                                        s.courseTitleLeftLine
+                                    )}
+                                />
+                                <span className={s.title}>{c.title}</span>
+                                <div
+                                    className={cls(
+                                        s.courseTitleLine,
+                                        s.courseTitleRightLine
+                                    )}
+                                />
                             </div>
-                            <p className={s.lessonTitle} key={lesson._id}>
-                                {lesson.title}
-                            </p>
-                        </div>
+                            <>
+                                {lessons
+                                    .filter((l) => l.course === c._id)
+                                    .map((lesson) => {
+                                        const { _id } = lesson;
+                                        const isDone =
+                                            lessonsDone.includes(_id);
+                                        const isOpen =
+                                            lessonsOpen.includes(_id);
+                                        const selectors: string[] = [s.square];
+                                        if (isDone) {
+                                            selectors.push(s.done);
+                                        } else if (isOpen) {
+                                            selectors.push(s.open);
+                                        } else {
+                                            selectors.push(s.closed);
+                                        }
+                                        return (
+                                            <div
+                                                key={lesson._id}
+                                                className={s.lessonRoot}
+                                            >
+                                                <div
+                                                    className={cls(
+                                                        ...selectors
+                                                    )}
+                                                    onClick={() => {
+                                                        handleClick(lesson);
+                                                    }}
+                                                >
+                                                    {isDone && (
+                                                        <div
+                                                            className={
+                                                                s.doneSvg
+                                                            }
+                                                        >
+                                                            <DoneSvg />
+                                                        </div>
+                                                    )}
+                                                    {!isOpen && (
+                                                        <div
+                                                            className={
+                                                                s.lockSvg
+                                                            }
+                                                        >
+                                                            <LockSvg />
+                                                        </div>
+                                                    )}
+                                                </div>
+                                                <p
+                                                    className={s.lessonTitle}
+                                                    key={lesson._id}
+                                                >
+                                                    {lesson.title}
+                                                </p>
+                                            </div>
+                                        );
+                                    })}
+                            </>
+                        </>
                     );
                 })}
             </div>

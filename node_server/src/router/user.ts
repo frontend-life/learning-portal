@@ -63,4 +63,48 @@ router.get("/user/me", auth, (req, res) => {
   return res.status(200).send(req.user);
 });
 
+router.get("/user/users", auth, async (req, res) => {
+  const users = await User.find({});
+  return res.status(200).send(users);
+});
+
+router.post("/user/open", auth, async (req, res) => {
+  const { userId, lessonId } = req.body as { userId: string; lessonId: string };
+  const [user] = await User.find({ _id: userId });
+
+  let newOpenedLessonsList = [...user.lessonsOpen.map((id) => id.toString())];
+  newOpenedLessonsList.push(lessonId);
+  console.log(newOpenedLessonsList);
+  newOpenedLessonsList = Array.from(new Set(newOpenedLessonsList));
+  console.log(newOpenedLessonsList);
+
+  const result = await User.findOneAndUpdate(
+    { _id: userId },
+    { lessonsOpen: newOpenedLessonsList },
+    {
+      new: true,
+    }
+  );
+
+  return res.status(200).send(result);
+});
+router.post("/user/close", auth, async (req, res) => {
+  const { userId, lessonId } = req.body as { userId: string; lessonId: string };
+  const [user] = await User.find({ _id: userId });
+
+  let newOpenedLessonsList = user.lessonsOpen.filter(
+    (id) => id.toString() !== lessonId
+  );
+
+  const result = await User.findOneAndUpdate(
+    { _id: userId },
+    { lessonsOpen: newOpenedLessonsList },
+    {
+      new: true,
+    }
+  );
+
+  return res.status(200).send(result);
+});
+
 export default router;

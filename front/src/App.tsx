@@ -23,6 +23,7 @@ import { LoadingAnimation } from './components/LoadingAnimation/LoadingAnimation
 import { getToken } from './utils/auth';
 import { ProfilePage } from './pages/ProfilePage/ProfilePage';
 import { Lessons } from './pages/Lessons/Lessons';
+import { Students } from './pages/Students/Students';
 
 const urls = [
     {
@@ -54,6 +55,10 @@ const urls = [
     {
         path: PATHS.add_lesson,
         Element: AddLesson
+    },
+    {
+        path: PATHS.students,
+        Element: Students
     }
     // { /* Courses for future*/
     //     path: PATHS.courses,
@@ -62,21 +67,6 @@ const urls = [
 ];
 
 function App() {
-    const user = useUserContext();
-    const [startAnimation, setStartAnimation] = useState(true);
-    if (startAnimation) {
-        if (!user.userDetails.isSignedIn && getToken()) {
-            user.setUserDetails((prev) => ({ ...prev, isSignedIn: true }));
-            return null;
-        }
-        return (
-            <LoadingAnimation
-                onEnd={() => {
-                    setStartAnimation(false);
-                }}
-            />
-        );
-    }
     return (
         <div className="App">
             <BrowserRouter>
@@ -144,7 +134,12 @@ function Landing() {
     return <h1>Landing for everyone</h1>;
 }
 function AboutPage() {
-    return <h1>AboutPage</h1>;
+    return (
+        <h1>
+            Here will be out motivation and speech from Sergey (after that
+            speech people should smile and become brave)
+        </h1>
+    );
 }
 
 function TracksPage() {

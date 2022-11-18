@@ -7,5 +7,6 @@ export const PATHS = {
     lessons: '/lessons',
     add_lesson: '/add_lesson',
     tracks: '/tracks',
-    rating: '/rating'
+    rating: '/rating',
+    students: 'students'
 };

@@ -3,9 +3,7 @@ export interface ILesson {
     homework: string;
     link: string;
     title: string;
-    isDone: boolean;
-    isClosed: boolean;
-    isOpen: boolean;
+    course: string;
     _id: string;
 }
 
@@ -14,4 +12,14 @@ export interface ICourse {
     title: string;
     course: string;
     owner: string;
+}
+
+export interface IUser {
+    _id: string;
+    name: string;
+    email: string;
+    password: string;
+    salary: number;
+    lessonsDone: string[];
+    lessonsOpen: string[];
 }

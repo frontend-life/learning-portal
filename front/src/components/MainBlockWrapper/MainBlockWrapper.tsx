@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { Align } from '../../types/components';
 import { TopRightMenu } from '../TopRightMenu/TopRightMenu';
 import { Logo } from './logo';
@@ -24,5 +24,17 @@ function MainBlockWrapper({ children, title, alignMain = 'center' }: Props) {
         </div>
     );
 }
+
+export const wrap = (Component: React.FC, title?: string) => {
+    return class Wrapper extends React.PureComponent {
+        render() {
+            return (
+                <MainBlockWrapper title={title}>
+                    <Component {...this.props} />
+                </MainBlockWrapper>
+            );
+        }
+    };
+};
 
 export default MainBlockWrapper;
