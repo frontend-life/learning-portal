@@ -25,6 +25,7 @@ export const SignInPage = () => {
         myRequest
             .post('/user/signin', data)
             .then((res: any) => {
+                console.log(res);
                 setUserDetails((prev) => ({ ...prev, isSignedIn: true }));
                 console.log(data);
                 setToken(res.authToken);

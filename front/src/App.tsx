@@ -9,7 +9,7 @@ import {
 } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import './App.css';
-import { ILesson, ICourse } from './types/api';
+import { ICourse } from './types/api';
 import { myRequest } from './utils/axios';
 import { ErrorBoundary } from './utils/ErrorBoundary';
 import { SignUpPage } from './pages/SignUpPage/SignUpPage';
@@ -19,11 +19,10 @@ import { AddLesson } from './pages/AddLesson/AddLesson';
 import { useEffect, useState } from 'react';
 import { useUserContext } from './store/UserDetails';
 import { PATHS } from './utils/paths';
-import { LoadingAnimation } from './components/LoadingAnimation/LoadingAnimation';
-import { getToken } from './utils/auth';
 import { ProfilePage } from './pages/ProfilePage/ProfilePage';
 import { Lessons } from './pages/Lessons/Lessons';
 import { Students } from './pages/Students/Students';
+import { Notification } from './components/Notification/Notification';
 
 const urls = [
     {
@@ -67,6 +66,33 @@ const urls = [
 ];
 
 function App() {
+    const [listening, setListening] = useState(false);
+    const { userDetails, setUserDetails } = useUserContext();
+    useEffect(() => {
+        if (!listening && userDetails.isSignedIn) {
+            console.log('send');
+            const events = new EventSource(
+                'http://localhost:8000/events?user_id=' + userDetails._id
+            );
+
+            events.addEventListener('message', (e) => {
+                const parsedData = JSON.parse(e.data);
+                if (parsedData.lessonsDone) {
+                    setUserDetails((prev) => ({
+                        ...prev,
+                        lessonsDone: parsedData.lessonsDone
+                    }));
+                } else if (parsedData.lessonsOpen) {
+                    setUserDetails((prev) => ({
+                        ...prev,
+                        lessonsOpen: parsedData.lessonsOpen
+                    }));
+                }
+            });
+
+            setListening(true);
+        }
+    }, [listening, userDetails.isSignedIn]);
     return (
         <div className="App">
             <BrowserRouter>
@@ -82,6 +108,7 @@ function App() {
                 <div style={{ height: '100vh', overflow: 'auto', flex: 1 }}>
                     <ErrorBoundary>
                         <AuthenticatedRoutes />
+                        <Notification />
                     </ErrorBoundary>
                 </div>
             </BrowserRouter>

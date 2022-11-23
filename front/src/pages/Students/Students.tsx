@@ -91,8 +91,83 @@ export const Students = wrap(() => {
                 });
             });
     };
-    const handleDone = (lesson: ILesson) => {};
-    const handleNotDone = (lesson: ILesson) => {};
+    const handleDone = (lesson: ILesson) => {
+        if (!chosenUser) {
+            return;
+        }
+        myRequest
+            .post('/user/done', {
+                userId: chosenUser._id,
+                lessonId: lesson._id
+            })
+            .then(() => {
+                setChosenUser((prev) => {
+                    if (!prev) {
+                        return;
+                    }
+                    return {
+                        ...prev,
+                        lessonsDone: [...prev.lessonsDone, lesson._id]
+                    } as IUser;
+                });
+                setData((prev) => {
+                    if (!prev) {
+                        return;
+                    }
+                    return prev.map((u) => {
+                        if (u._id === chosenUser._id) {
+                            return {
+                                ...u,
+                                lessonsDone: [
+                                    ...chosenUser.lessonsDone,
+                                    lesson._id
+                                ]
+                            } as IUser;
+                        } else {
+                            return u;
+                        }
+                    });
+                });
+            });
+    };
+    const handleNotDone = (lesson: ILesson) => {
+        if (!chosenUser) {
+            return;
+        }
+        myRequest
+            .post('/user/notdone', {
+                userId: chosenUser._id,
+                lessonId: lesson._id
+            })
+            .then(() => {
+                setChosenUser(
+                    (prev) =>
+                        ({
+                            ...prev,
+                            lessonsDone: chosenUser.lessonsDone.filter(
+                                (lId) => lId !== lesson._id
+                            )
+                        } as IUser)
+                );
+                setData((prev) => {
+                    if (!prev) {
+                        return;
+                    }
+                    return prev.map((u) => {
+                        if (u._id === chosenUser._id) {
+                            return {
+                                ...u,
+                                lessonsDone: u.lessonsDone.filter(
+                                    (lId) => lId !== lesson._id
+                                )
+                            } as IUser;
+                        } else {
+                            return u;
+                        }
+                    });
+                });
+            });
+    };
 
     if (loading || loadingLessons) {
         return <CircleLoader />;
@@ -143,17 +218,16 @@ export const Students = wrap(() => {
                                             [s.isOpen]: isOpen,
                                             [s.isClosed]: !isOpen
                                         })}
+                                        onClick={() =>
+                                            isOpen
+                                                ? handleClose(l)
+                                                : handleOpen(l)
+                                        }
                                     >
                                         {isOpen ? (
-                                            <span
-                                                onClick={() => handleClose(l)}
-                                            >
-                                                Open
-                                            </span>
+                                            <span>Open</span>
                                         ) : (
-                                            <span onClick={() => handleOpen(l)}>
-                                                Closed
-                                            </span>
+                                            <span>Closed</span>
                                         )}
                                     </div>
 
@@ -162,17 +236,16 @@ export const Students = wrap(() => {
                                             [s.isDone]: isDone,
                                             [s.isNotDone]: !isDone
                                         })}
+                                        onClick={() =>
+                                            isDone
+                                                ? handleNotDone(l)
+                                                : handleDone(l)
+                                        }
                                     >
                                         {isDone ? (
-                                            <span onClick={() => handleDone(l)}>
-                                                Done
-                                            </span>
+                                            <span>Done</span>
                                         ) : (
-                                            <span
-                                                onClick={() => handleNotDone(l)}
-                                            >
-                                                Not done
-                                            </span>
+                                            <span>Not done</span>
                                         )}
                                     </div>
                                 </div>
