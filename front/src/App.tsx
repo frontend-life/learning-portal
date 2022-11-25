@@ -22,7 +22,7 @@ import { PATHS } from './utils/paths';
 import { ProfilePage } from './pages/ProfilePage/ProfilePage';
 import { Lessons } from './pages/Lessons/Lessons';
 import { Students } from './pages/Students/Students';
-import { Notification } from './components/Notification/Notification';
+import { NotificationSystem } from './components/NotificationSystem/NotificationSystem';
 
 const urls = [
     {
@@ -108,7 +108,7 @@ function App() {
                 <div style={{ height: '100vh', overflow: 'auto', flex: 1 }}>
                     <ErrorBoundary>
                         <AuthenticatedRoutes />
-                        <Notification />
+                        <NotificationSystem />
                     </ErrorBoundary>
                 </div>
             </BrowserRouter>

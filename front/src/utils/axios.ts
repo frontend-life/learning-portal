@@ -1,5 +1,6 @@
 import { getToken } from './auth';
 import axios from 'axios';
+import { NotificationSystem } from '../components/NotificationSystem/NotificationSystem';
 
 export const myRequest = axios.create({
     baseURL: 'http://localhost:8000',
@@ -27,6 +28,21 @@ myRequest.interceptors.response.use(
     },
     (error) => {
         console.log('Here will be error caching');
+        NotificationSystem.allInstances.forEach((instance) => {
+            console.log(instance);
+            const id = instance.state.notifications.length
+                ? (instance.state.notifications[
+                      instance.state.notifications.length - 1
+                  ]?.id || 0) + 1
+                : 1;
+            console.log(id);
+
+            instance.addNotification({
+                id,
+                type: 'err',
+                description: 'Auth error'
+            });
+        });
         // Do something with request error
         return Promise.reject(error.response);
     }

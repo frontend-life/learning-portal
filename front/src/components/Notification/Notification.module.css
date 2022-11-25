@@ -1,7 +1,6 @@
 .root {
-    position: absolute;
-    right: 20px;
-    top: 20px;
+    position: relative;
+    margin-bottom: 20px;
 
     width: 594px;
     height: 266px;
@@ -9,12 +8,11 @@
 
     border-radius: 13px;
     border: 11px solid var(--primary-color);
+    color: var(--primary-color);
 }
 
 .text {
-    color: var(--primary-color);
     font-size: 32px;
-
     margin-top: 52px;
     text-align: center;
 }
@@ -32,10 +30,31 @@
     background-color: var(--primary-color);
     position: absolute;
     width: 100%;
-    animation: loading 3s linear forwards;
+    animation: loading var(--animation-duration, '3s') linear forwards;
 
     height: 30px;
     bottom: 9px;
+}
+.rootWarn {
+    border-color: var(--warning-color);
+    color: var(--warning-color);
+}
+.rootWarn .hr {
+    background-color: var(--warning-color);
+}
+.rootWarn .progress {
+    background-color: var(--warning-color);
+}
+
+.rootErr {
+    border-color: var(--error-color);
+    color: var(--error-color);
+}
+.rootErr .hr {
+    background-color: var(--error-color);
+}
+.rootErr .progress {
+    background-color: var(--error-color);
 }
 
 @keyframes loading {
