@@ -21,18 +21,7 @@ export class NotificationSystem extends React.PureComponent<
     constructor(props) {
         super(props);
         this.state = {
-            notifications: [
-                {
-                    id: 1,
-                    text: 'Test1',
-                    type: 's'
-                },
-                {
-                    id: 2,
-                    text: 'Test2',
-                    type: 'warn'
-                }
-            ]
+            notifications: []
         };
         NotificationSystem.allInstances.push(this);
     }

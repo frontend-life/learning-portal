@@ -1,17 +1,20 @@
 .root {
-    padding: 20px;
-    background-color: antiquewhite;
+    background-color: transparent;
     border-radius: 20px;
     color: black;
     font-family: Georgia, 'Times New Roman', Times, serif;
     position: relative;
-    min-height: 100px;
 }
+.textAndButtons {
+    position: relative;
+}
+
 .buttons {
     position: absolute;
     left: 20px;
-    top: -10px;
+    bottom: -25px;
 }
+
 .code {
     display: block;
     min-width: 300px;
@@ -23,8 +26,24 @@
     border-radius: 30px;
 }
 .imgContainer {
-    width: 300px;
-    height: 300px;
+    position: relative;
+    display: inline-block;
+    margin: 20px;
+}
+.deleteImage {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    padding: 10px;
+    border-radius: 50%;
+    background-color: black;
+    color: aliceblue;
+    font-size: 30px;
+    cursor: pointer;
+}
+.image {
+    width: 150px;
+    height: auto;
     object-fit: contain;
 
     /* background-image take like url in code */
@@ -33,23 +52,35 @@
 
     cursor: pointer;
 }
+
 .text {
-    padding: 10px;
-    border-radius: 10px;
+    box-sizing: border-box;
+    border-radius: 6px;
     background-color: aliceblue;
     color: black;
     font-family: 'Times New Roman', Times, serif;
+    outline: none;
+    border: 1px solid grey;
+    width: 400px;
+
+    min-height: 34px;
+    max-height: none;
+    height: auto;
+    padding: 7px 90px 7px 13px;
 }
 
 .sendButton {
-    height: 50px;
-    width: 200px;
-    border-radius: 20px;
-    background-color: black;
-    color: whitesmoke;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background-color: green;
+    color: aliceblue;
     cursor: pointer;
-    float: right;
+}
+
+.addImage {
+    /* position: absolute;
+    bottom: 10px;
+    right: 10px; */
+}
+
+.attachments {
+    margin-top: 30px;
 }

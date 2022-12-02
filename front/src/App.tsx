@@ -70,12 +70,16 @@ function App() {
     const { userDetails, setUserDetails } = useUserContext();
     useEffect(() => {
         if (!listening && userDetails.isSignedIn) {
-            console.log('send');
             const events = new EventSource(
                 'http://localhost:8000/events?user_id=' + userDetails._id
             );
 
             events.addEventListener('message', (e) => {
+                if (e.data === 'events connected') {
+                    console.log(e.data);
+                    return;
+                }
+
                 const parsedData = JSON.parse(e.data);
                 if (parsedData.lessonsDone) {
                     setUserDetails((prev) => ({

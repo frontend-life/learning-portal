@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MainBlockWrapper from '../../components/MainBlockWrapper/MainBlockWrapper';
 import { useUserContext } from '../../store/UserDetails';
@@ -41,8 +41,8 @@ export function Lessons() {
             <div className={s.root}>
                 {courses.map((c) => {
                     return (
-                        <>
-                            <div key={c._id} className={s.courseTitle}>
+                        <React.Fragment key={c._id}>
+                            <div className={s.courseTitle}>
                                 <div
                                     className={cls(
                                         s.courseTitleLine,
@@ -116,7 +116,7 @@ export function Lessons() {
                                         );
                                     })}
                             </div>
-                        </>
+                        </React.Fragment>
                     );
                 })}
             </div>

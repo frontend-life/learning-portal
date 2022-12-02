@@ -4,6 +4,7 @@
     padding-left: 100px;
     display: flex;
     flex-direction: column;
+    padding-bottom: 100px;
 }
 
 .description {
@@ -14,4 +15,22 @@
 }
 .homework textarea {
     padding: 20px;
+}
+
+.homeworks {
+    margin-top: 130px;
+}
+.hw {
+    margin-top: 30px;
+    padding: 20px;
+    border: 2px solid black;
+}
+.hwTime {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid red;
+}
+.hw_img {
+    display: inline-block;
+    width: 150px;
 }

@@ -23,3 +23,13 @@ export interface IUser {
     lessonsDone: string[];
     lessonsOpen: string[];
 }
+
+export interface IHomework {
+    // _id: string;
+    content: {
+        text: string;
+        attachments?: string[];
+    };
+    // studentId: string;
+    lessonId: string;
+}

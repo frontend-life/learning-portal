@@ -1,89 +1,175 @@
-import { useRef, useState } from 'react';
-import s from './Chat.module.css';
+import { useCallback, useRef, useState } from 'react';
+import addNt, { addErrorNt } from '../../utils/notification';
+import { generateUid } from '../../utils/uid';
+import ModalImage from 'react-modal-image';
 
-const Text = () => {
-    return <div className={s.text} contentEditable />;
-};
-const Code = () => {
-    return <code className={s.code} contentEditable />;
-};
-const Image = ({ url }: { url: string }) => {
+import s from './Chat.module.css';
+import { myRequest } from '../../utils/axios';
+import { IHomework } from '../../types/api';
+
+const Image = ({ url, onRemove }: { url: string; onRemove: any }) => {
     // eslint-disable-next-line jsx-a11y/alt-text
     return (
-        <img
-            className={s.imgContainer}
-            style={{ backgroundImage: `url(${url})` }}
-            alt="to help explain homework or question"
-        />
+        <div className={s.imgContainer}>
+            <div className={s.image}>
+                <ModalImage
+                    small={url}
+                    large={url}
+                    alt="Image to show in modal"
+                />
+            </div>
+            <div className={s.deleteImage} onClick={onRemove}>
+                X
+            </div>
+        </div>
     );
 };
 
-export const Chat = () => {
-    const [elements, setElements] = useState<Array<'t' | 'c'>>([]);
-    const [imgs, setImgs] = useState<Array<string>>([]);
-    const ref = useRef<HTMLDivElement>(null);
+type ImgData = {
+    url: string;
+    uid: string;
+    formData: FormData;
+};
+
+export const Chat = ({ lessonId, onReload }) => {
+    const refEditable = useRef<HTMLDivElement>(null);
+    const [text, setText] = useState('');
+    const [imgsToPreview, setImgsToPreview] = useState<Array<ImgData>>([]);
     const imageInputRef = useRef<HTMLInputElement>(null);
 
-    console.log(s.code);
+    const onSend = async () => {
+        const textToSend = text.trim();
 
-    const onSend = () => {
-        console.log({
-            elements: elements,
-            images: imgs
+        if (textToSend === '' && imgsToPreview.length === 0) {
+            return;
+        }
+
+        const saveHwToServer = (data: IHomework) => {
+            return myRequest
+                .post('/homework', data)
+                .then(() => {
+                    setImgsToPreview([]);
+                    setText('');
+                    if (refEditable.current) {
+                        refEditable.current.innerText = '';
+                    }
+                    onReload();
+                })
+                .catch((e) => {
+                    addErrorNt('Failed dave homework');
+                });
+        };
+
+        if (imgsToPreview.length === 0) {
+            let data: IHomework = {
+                content: {
+                    text: textToSend
+                },
+                lessonId
+            };
+            saveHwToServer(data);
+            return;
+        } else {
+            sendImagesToServer().then((responseWithAttaches) => {
+                const attachesIds = responseWithAttaches.map(
+                    ({ attach }) => attach._id
+                );
+                let data: IHomework = {
+                    content: {
+                        text: textToSend,
+                        attachments: attachesIds
+                    },
+                    lessonId
+                };
+                saveHwToServer(data);
+            });
+        }
+    };
+
+    //  Метод посылает аттачи (картинки) на сервер пачкой запросов, собирает все промис ол и возвращает нам это
+    const sendImagesToServer = useCallback<() => any>(() => {
+        const imgsToSend = imgsToPreview.map(({ formData }) => formData);
+        return Promise.all(
+            imgsToSend.map((formData) =>
+                myRequest.post('/attachment', formData)
+            )
+        ).catch((e) => {
+            addErrorNt('Some error with saving attachments');
         });
+    }, [imgsToPreview, myRequest.post, addErrorNt]);
+
+    const handleChangeText = (e) => {
+        setText(e.currentTarget.innerText);
     };
 
-    const addCode = () => {
-        setElements((prev) => [...prev, 'c']);
-    };
     const addImage = () => {
         imageInputRef.current?.click();
     };
-    const addText = () => {
-        setElements((prev) => [...prev, 't']);
-    };
     const catchImage = (e) => {
-        const reader = new FileReader();
-        reader.addEventListener('load', (e) => {
-            const uploaded_image = reader.result;
-            console.log(uploaded_image);
-            setImgs((prev) => [...prev, String(uploaded_image)]);
-        });
-        reader.readAsDataURL(e.target.files[0]);
+        for (let file of e.target.files) {
+            console.log(file);
+            const reader = new FileReader();
+            reader.addEventListener('load', (e) => {
+                const uploaded_image = reader.result;
+                const url = String(uploaded_image);
+                const uid = generateUid();
+                const formData = new FormData();
+                formData.append('file', file);
+
+                setImgsToPreview((prev) => [
+                    ...prev,
+                    {
+                        url,
+                        uid,
+                        formData
+                    }
+                ]);
+            });
+            reader.readAsDataURL(file);
+        }
     };
+    const removeImage = (uid: ImgData['uid']) => {
+        setImgsToPreview((prev) => prev.filter(({ uid: id }) => id !== uid));
+    };
+
     return (
-        <div ref={ref} className={s.root}>
-            <div className={s.buttons}>
-                <button onClick={addText}>Add text</button>
-                <button onClick={addCode}>Add code</button>
-                <button onClick={addImage}>Add image</button>
-                <input
-                    style={{ display: 'none' }}
-                    onChange={catchImage}
-                    ref={imageInputRef}
-                    type="file"
-                    id="image-input"
-                    accept="image/jpeg, image/png, image/jpg"
-                ></input>
+        <div className={s.root}>
+            <div className={s.textAndButtons}>
+                <div className={s.buttons}>
+                    <button className={s.addImage} onClick={addImage}>
+                        Add image
+                    </button>
+                    <input
+                        style={{ display: 'none' }}
+                        onChange={catchImage}
+                        ref={imageInputRef}
+                        type="file"
+                        id="image-input"
+                        multiple
+                        accept="image/jpeg, image/png, image/jpg"
+                    ></input>
+                    <button onClick={onSend} className={s.sendButton}>
+                        Send message
+                    </button>
+                </div>
+                <div
+                    ref={refEditable}
+                    className={s.text}
+                    contentEditable
+                    onInput={handleChangeText}
+                />
             </div>
-            {elements.map((el) => {
-                switch (el) {
-                    case 't':
-                        return <Text />;
-                    case 'c':
-                        return <Code />;
-                    default:
-                        return null;
-                }
-            })}
-            <div>
-                {imgs.map((i) => {
-                    return <Image key={i} url={i} />;
+            <div className={s.attachments}>
+                {imgsToPreview.map(({ url, uid }) => {
+                    return (
+                        <Image
+                            key={uid}
+                            url={url}
+                            onRemove={() => removeImage(uid)}
+                        />
+                    );
                 })}
             </div>
-            <button onClick={onSend} className={s.sendButton}>
-                Send message
-            </button>
         </div>
     );
 };

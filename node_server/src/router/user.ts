@@ -9,6 +9,7 @@ import {
 import { auth } from "../middleware/auth";
 import { signupUserDTO } from "../dto/signupUserDTO";
 import { signinUserDTO } from "../dto/signinUserDTO";
+import { sendLessonsDoneToUser, sendLessonsOpenToUser } from "./events";
 
 const router = express.Router();
 
@@ -53,7 +54,7 @@ router.post("/user/signin", async (req, res) => {
       });
     }
     const authToken = generateAuthToken(user._id.toString());
-    return res.status(200).send({ authToken });
+    return res.status(200).send({ authToken, user });
   } catch (error) {
     return res.status(400).send();
   }
@@ -74,9 +75,7 @@ router.post("/user/open", auth, async (req, res) => {
 
   let newOpenedLessonsList = [...user.lessonsOpen.map((id) => id.toString())];
   newOpenedLessonsList.push(lessonId);
-  console.log(newOpenedLessonsList);
   newOpenedLessonsList = Array.from(new Set(newOpenedLessonsList));
-  console.log(newOpenedLessonsList);
 
   const result = await User.findOneAndUpdate(
     { _id: userId },
@@ -85,6 +84,7 @@ router.post("/user/open", auth, async (req, res) => {
       new: true,
     }
   );
+  sendLessonsOpenToUser(userId, newOpenedLessonsList);
 
   return res.status(200).send(result);
 });
@@ -103,6 +103,46 @@ router.post("/user/close", auth, async (req, res) => {
       new: true,
     }
   );
+  sendLessonsOpenToUser(userId, newOpenedLessonsList);
+
+  return res.status(200).send(result);
+});
+router.post("/user/done", auth, async (req, res) => {
+  const { userId, lessonId } = req.body as { userId: string; lessonId: string };
+  const [user] = await User.find({ _id: userId });
+
+  let newLessonsList = [...user.lessonsDone.map((id) => id.toString())];
+  newLessonsList.push(lessonId);
+  newLessonsList = Array.from(new Set(newLessonsList));
+
+  const result = await User.findOneAndUpdate(
+    { _id: userId },
+    { lessonsDone: newLessonsList },
+    {
+      new: true,
+    }
+  );
+  sendLessonsDoneToUser(userId, newLessonsList);
+
+  return res.status(200).send(result);
+});
+router.post("/user/notdone", auth, async (req, res) => {
+  const { userId, lessonId } = req.body as { userId: string; lessonId: string };
+  const [user] = await User.find({ _id: userId });
+
+  let newLessonsList = user.lessonsDone.filter(
+    (id) => id.toString() !== lessonId
+  );
+
+  const result = await User.findOneAndUpdate(
+    { _id: userId },
+    { lessonsDone: newLessonsList },
+    {
+      new: true,
+    }
+  );
+
+  sendLessonsDoneToUser(userId, newLessonsList);
 
   return res.status(200).send(result);
 });

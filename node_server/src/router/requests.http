@@ -3,9 +3,9 @@ POST http://localhost:8000/user/signup
 content-type: application/json
 
 {
-    "name": "tom",
-    "email": "tom12@tom.com",
-    "password": "secret_code"
+    "name": "test",
+    "email": "test@gmail.com",
+    "password": "test"
 }
 
 ### signin
@@ -13,18 +13,18 @@ POST http://localhost:8000/user/signin
 content-type: application/json
 
 {
-    "email": "tom12@tom.com",
+    "email": "test@gmail.com",
     "password": "secret_code"
 }
 
 ### get me
 GET http://localhost:8000/user/me
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzZkN2ZlMjMxZmNlMjQ5MTA3MDgzODgiLCJpYXQiOjE2NjgzMTg3NjV9.ha84RRMXERSTpNdVO7cujB4DMXLGHX0c1d0zvWW4OqQ
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzgxZGI0NDdmNTg3MTEwODYwYTQzODEiLCJpYXQiOjE2Njk0NTQ2NzZ9.npqt7Ip1uE9QZBjZDYIA8IK6G5VcAImqQi2N0y0nZhg
 
 ### create lesson
 POST http://localhost:8000/lesson/create
 content-type: application/json
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzZkN2ZlMjMxZmNlMjQ5MTA3MDgzODgiLCJpYXQiOjE2NjgzMTg3NjV9.ha84RRMXERSTpNdVO7cujB4DMXLGHX0c1d0zvWW4OqQ
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzgxZGI0NDdmNTg3MTEwODYwYTQzODEiLCJpYXQiOjE2Njk0NTQ2NzZ9.npqt7Ip1uE9QZBjZDYIA8IK6G5VcAImqQi2N0y0nZhg
 
 {
     "title": "tom's title 2",
@@ -37,20 +37,40 @@ authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzZkN2ZlM
 ### fetch lessons
 GET http://localhost:8000/lesson/lessons
 content-type: application/json
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzZkN2ZlMjMxZmNlMjQ5MTA3MDgzODgiLCJpYXQiOjE2NjgzMTg3NjV9.ha84RRMXERSTpNdVO7cujB4DMXLGHX0c1d0zvWW4OqQ
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzgxZGI0NDdmNTg3MTEwODYwYTQzODEiLCJpYXQiOjE2Njk0NTQ2NzZ9.npqt7Ip1uE9QZBjZDYIA8IK6G5VcAImqQi2N0y0nZhg
 
 
 
 ### create course
 POST http://localhost:8000/course/create
 content-type: application/json
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzZkN2ZlMjMxZmNlMjQ5MTA3MDgzODgiLCJpYXQiOjE2NjgzMTg3NjV9.ha84RRMXERSTpNdVO7cujB4DMXLGHX0c1d0zvWW4OqQ
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzgxZGI0NDdmNTg3MTEwODYwYTQzODEiLCJpYXQiOjE2Njk0NTQ2NzZ9.npqt7Ip1uE9QZBjZDYIA8IK6G5VcAImqQi2N0y0nZhg
 
 {
-    "title": "Git",
+    "title": "Test",
+    "creator": "Test"
 }
 
 ### fetch courses
 GET http://localhost:8000/course/courses
 content-type: application/json
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzZkN2ZlMjMxZmNlMjQ5MTA3MDgzODgiLCJpYXQiOjE2NjgzMTg3NjV9.ha84RRMXERSTpNdVO7cujB4DMXLGHX0c1d0zvWW4OqQ
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzgxZGI0NDdmNTg3MTEwODYwYTQzODEiLCJpYXQiOjE2Njk0NTQ2NzZ9.npqt7Ip1uE9QZBjZDYIA8IK6G5VcAImqQi2N0y0nZhg
+
+
+// HOMEWORK
+### create hw
+POST http://localhost:8000/homework
+content-type: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzgxZGI0NDdmNTg3MTEwODYwYTQzODEiLCJpYXQiOjE2Njk0NTQ2NzZ9.npqt7Ip1uE9QZBjZDYIA8IK6G5VcAImqQi2N0y0nZhg
+
+{
+    "text": "Test homework 2",
+    "studentId": "6381db447f587110860a4381",
+    "lessonId": "63756ec4fdba44a4c2de8f37"
+}
+
+### fetch homework
+GET http://localhost:8000/homework?id=6381dd0f0cac94d0329dd2f7
+content-type: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzgxZGI0NDdmNTg3MTEwODYwYTQzODEiLCJpYXQiOjE2Njk0NTQ2NzZ9.npqt7Ip1uE9QZBjZDYIA8IK6G5VcAImqQi2N0y0nZhg
+
