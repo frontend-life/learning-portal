@@ -65,6 +65,8 @@ const urls = [
     // }
 ];
 
+const showNav = process.env.NODE_ENV === 'development' && false;
+
 function App() {
     const [listening, setListening] = useState(false);
     const { userDetails, setUserDetails } = useUserContext();
@@ -100,15 +102,21 @@ function App() {
     return (
         <div className="App">
             <BrowserRouter>
-                <nav className="NavBar">
-                    {urls.map(({ path }) => {
-                        return (
-                            <Link key={path} className="NavBar__li" to={path}>
-                                {path}
-                            </Link>
-                        );
-                    })}
-                </nav>
+                {showNav && (
+                    <nav className="NavBar">
+                        {urls.map(({ path }) => {
+                            return (
+                                <Link
+                                    key={path}
+                                    className="NavBar__li"
+                                    to={path}
+                                >
+                                    {path}
+                                </Link>
+                            );
+                        })}
+                    </nav>
+                )}
                 <div style={{ height: '100vh', overflow: 'auto', flex: 1 }}>
                     <ErrorBoundary>
                         <AuthenticatedRoutes />
