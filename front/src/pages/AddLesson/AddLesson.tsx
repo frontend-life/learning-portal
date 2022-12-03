@@ -67,15 +67,15 @@ export const AddLesson = () => {
                         }}
                         error={errors.description?.message as string}
                     />
-                    <Input
+                    <Editor
                         labelAlign="left"
                         inputProps={{ label: 'Lesson homework' }}
                         rhfProps={{
-                            ...register('homework', {
-                                required: true
-                            })
+                            name: 'homework',
+                            register,
+                            setValue
                         }}
-                        error={errors.homework?.message as string}
+                        error={errors.description?.message as string}
                     />
                     <Input
                         labelAlign="left"
