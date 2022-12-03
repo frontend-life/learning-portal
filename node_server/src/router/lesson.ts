@@ -29,4 +29,14 @@ router.get("/lesson/lessons", auth, async (req, res) => {
   }
 });
 
+router.get("/lesson", auth, async (req, res) => {
+  const { lessonId } = req.query;
+  try {
+    const lesson = await Lesson.findOne({ _id: lessonId });
+    return res.status(200).send(lesson);
+  } catch (error) {
+    return res.status(500).send();
+  }
+});
+
 export default router;

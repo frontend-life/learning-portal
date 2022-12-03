@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import MainBlockWrapper from '../../components/MainBlockWrapper/MainBlockWrapper';
+import { useLessonsContext } from '../../store/LessonsContext';
 import { useUserContext } from '../../store/UserDetails';
-import { ICourse, ILesson } from '../../types/api';
-import { myRequest } from '../../utils/axios';
+import { ILesson } from '../../types/api';
 import { cls } from '../../utils/css';
 import { PATHS } from '../../utils/paths';
 import { DoneSvg } from './doneSvg';
@@ -15,20 +15,7 @@ export function Lessons() {
         userDetails: { lessonsDone, lessonsOpen, _id }
     } = useUserContext();
     let navigate = useNavigate();
-    const [lessons, setLessons] = useState<ILesson[]>([]);
-    const [courses, setCourses] = useState<ICourse[]>([]);
-
-    useEffect(() => {
-        Promise.all([
-            myRequest.get<any, ILesson[]>('/lesson/lessons'),
-            myRequest.get<any, ICourse[]>('/course/courses')
-        ]).then(([lessons, courses]) => {
-            setLessons(lessons);
-            console.log(lessons);
-            setCourses(courses);
-            console.log('courses', courses);
-        });
-    }, []);
+    const { lessons, courses } = useLessonsContext();
 
     const handleClick = (lesson: ILesson) => {
         navigate(`${PATHS.lesson}?lessonId=${lesson._id}&studentId=${_id}`, {

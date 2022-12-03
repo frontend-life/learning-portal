@@ -183,9 +183,10 @@ export const Students = wrap(() => {
                 ></div>
                 {data &&
                     data.map((user) => {
-                        const { name } = user;
+                        const { name, _id } = user;
                         return (
                             <div
+                                key={_id}
                                 className={s.user}
                                 onClick={() => {
                                     setChosenUser(user);
@@ -210,7 +211,7 @@ export const Students = wrap(() => {
                                 chosenUser?.lessonsOpen.includes(l._id) ||
                                 false;
                             return (
-                                <div className={s.row}>
+                                <div className={s.row} key={l._id}>
                                     {l.title}
 
                                     <div

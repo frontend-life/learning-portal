@@ -12,33 +12,72 @@ import { qp } from '../../utils/paths';
 import { useUserContext } from '../../store/UserDetails';
 import { LoadingAnimation } from '../../components/LoadingAnimation/LoadingAnimation';
 import { CircleLoader } from '../../components/CircleLoader/CircleLoader';
+import { useLessonsContext } from '../../store/LessonsContext';
+
+interface Params {
+    lessonId: string;
+    studentId: string;
+}
+const onReloadHomework = (setHws: any, params: Params) => {
+    myRequest
+        .get<any, IHomework[]>(
+            `/homeworksByLessonId?lessonId=${params.lessonId}&studentId=${params?.studentId}`
+        )
+        .then((homeworks) => {
+            setHws(homeworks);
+        })
+        .catch(addErrorNt);
+};
 
 function Lesson() {
+    const [loading, setLoading] = useState(true);
+
     const location = useLocation();
-    const lesson = location.state;
-    const params = qp(location.search);
+    const params = qp(location.search) as Partial<Params>;
+
+    const { lessons } = useLessonsContext();
+    const [lesson, setLesson] = useState<ILesson>();
 
     const [hws, setHws] = useState<IHomework[]>([]);
 
-    const isReady = lesson?._id;
+    const nothingToDoHere = !params || !params?.lessonId || !params?.studentId;
 
     useEffect(() => {
-        if (!isReady) return;
-        onReloadHomework();
-    }, [lesson]);
+        if (!params?.lessonId) {
+            return;
+        }
+        const lesson = lessons.find(({ _id }) => params.lessonId === _id);
+        if (lesson) {
+            setLesson(lesson);
+            setLoading(false);
 
-    const onReloadHomework = () => {
-        myRequest
-            .get<any, IHomework[]>(`/homeworksByLessonId?id=${lesson._id}`)
-            .then((homeworks) => {
-                setHws(homeworks);
-            })
-            .catch(addErrorNt);
-    };
+            return;
+        }
+        if (!lesson) {
+            myRequest
+                .get('/lesson', {
+                    params: {
+                        lessonId: params.lessonId
+                    }
+                })
+                .then((l) => {
+                    setLesson(l as unknown as ILesson);
+                    setLoading(false);
+                });
+        }
+    }, [lessons, params?.lessonId]);
 
-    if (!lesson) {
-        alert('No lesson');
+    useEffect(() => {
+        if (loading || nothingToDoHere) return;
+        onReloadHomework(setHws, params as Params);
+    }, [loading, nothingToDoHere, onReloadHomework]);
+
+    if (nothingToDoHere) {
         return <Navigate to={PATHS.lessons} replace={true} />;
+    }
+
+    if (loading || !lesson) {
+        return <CircleLoader inCenterOfBlock />;
     }
 
     return (
@@ -56,7 +95,7 @@ function Lesson() {
                     title="lesson_from_youtube"
                     width="820"
                     height="515"
-                    src={`https://www.youtube.com/embed/${lesson.link}?autoplay=1`}
+                    src={`https://www.youtube.com/embed/${lesson.link}?autoplay=0`}
                     frameBorder="0"
                     allowFullScreen
                 />

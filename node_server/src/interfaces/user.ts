@@ -1,3 +1,4 @@
+import { Roles } from "./../service/roles";
 import mongoose, { Document } from "mongoose";
 
 export default interface IUser extends Document {
@@ -8,4 +9,5 @@ export default interface IUser extends Document {
   salary: number;
   lessonsDone: string[];
   lessonsOpen: string[];
+  roles: Roles[];
 }

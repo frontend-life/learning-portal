@@ -1,3 +1,4 @@
+import { Roles } from "./../service/roles";
 import express from "express";
 
 import { Homework } from "../models/homework";
@@ -23,15 +24,25 @@ router.post("/homework", auth, async (req, res) => {
 });
 
 router.get("/homeworksByLessonId", auth, async (req, res) => {
-  const { id: lessonId } = req.query;
-  try {
-    const hws = await Homework.find({ lessonId: lessonId }).populate(
-      "content.attachments"
-    );
-    return res.status(200).send(hws);
-  } catch (error) {
-    return res.status(500).send();
+  const { lessonId, studentId } = req.query;
+  const { _id, roles = [] } = req.user;
+  console.log(req.user);
+  console.log(req.query);
+  console.log(studentId, _id.toString());
+  console.log(roles, Roles.TEACHER);
+  if (studentId === _id.toString() || roles.includes(Roles.TEACHER)) {
+    try {
+      const hws = await Homework.find({ lessonId: lessonId }).populate(
+        "content.attachments"
+      );
+      return res.status(200).send(hws);
+    } catch (error) {
+      return res.status(500).send();
+    }
   }
+
+  console.log("This is not allowed request");
+  return res.status(200).send([]);
 });
 
 export default router;
