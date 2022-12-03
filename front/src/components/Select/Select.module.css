@@ -3,7 +3,7 @@
 }
 .root {
     padding: 10px 20px;
-    background: #d9d9d9;
+    background: var(--input-background);
     width: 455px;
     height: 61px;
     margin-bottom: 20px;

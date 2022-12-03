@@ -1,13 +1,17 @@
 .root {
+    display: inline-block;
     padding: 10px 20px;
     background: var(--input-background);
-    width: 455px;
-    height: 61px;
-    margin-bottom: 20px;
-    font-size: 30px;
-    font-family: MrAmazin;
-}
+    color: var(--input-color);
+    min-width: 655px;
 
+    min-height: 161px;
+    height: auto;
+    margin-bottom: 20px;
+    font-size: 25px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    outline: none;
+}
 .label {
     font-style: normal;
     font-weight: 400;

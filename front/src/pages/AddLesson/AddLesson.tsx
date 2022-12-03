@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button } from '../../components/Button/Button';
+import { Editor } from '../../components/Editor/Editor';
 import { Input } from '../../components/Input/Input';
 import MainBlockWrapper from '../../components/MainBlockWrapper/MainBlockWrapper';
 import { Select } from '../../components/Select/Select';
@@ -15,12 +16,14 @@ export const AddLesson = () => {
     const [courses, setCourses] = useState<ICourse[]>([]);
     const {
         register,
+        setValue,
         handleSubmit,
         control,
         formState: { errors }
     } = useForm();
 
     const onSubmit = (data) => {
+        console.log(data);
         myRequest.post('/lesson/create', data).then(turnOn);
     };
 
@@ -54,13 +57,13 @@ export const AddLesson = () => {
                         }}
                         error={errors.title?.message as string}
                     />
-                    <Input
+                    <Editor
                         labelAlign="left"
                         inputProps={{ label: 'Lesson description' }}
                         rhfProps={{
-                            ...register('description', {
-                                required: true
-                            })
+                            name: 'description',
+                            register,
+                            setValue
                         }}
                         error={errors.description?.message as string}
                     />

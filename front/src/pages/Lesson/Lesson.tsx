@@ -37,7 +37,12 @@ function Lesson() {
             <div className={s.root}>
                 <h1>{lesson.title}</h1>
                 <h3>Description</h3>
-                <code className={s.description}>{lesson.description}</code>
+                <div
+                    className={s.description}
+                    dangerouslySetInnerHTML={{
+                        __html: lesson.description
+                    }}
+                ></div>
                 <iframe
                     title="lesson_from_youtube"
                     width="820"
