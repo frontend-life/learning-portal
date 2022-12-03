@@ -8,15 +8,24 @@ import { addErrorNt } from '../../utils/notification';
 import { PATHS } from '../../utils/paths';
 import ModalImage from 'react-modal-image';
 import s from './Lesson.module.css';
+import { qp } from '../../utils/paths';
+import { useUserContext } from '../../store/UserDetails';
+import { LoadingAnimation } from '../../components/LoadingAnimation/LoadingAnimation';
+import { CircleLoader } from '../../components/CircleLoader/CircleLoader';
 
 function Lesson() {
-    const { state: lesson }: { state: ILesson } = useLocation();
+    const location = useLocation();
+    const lesson = location.state;
+    const params = qp(location.search);
+
     const [hws, setHws] = useState<IHomework[]>([]);
 
+    const isReady = lesson?._id;
+
     useEffect(() => {
-        if (!lesson) return;
+        if (!isReady) return;
         onReloadHomework();
-    }, [lesson._id]);
+    }, [lesson]);
 
     const onReloadHomework = () => {
         myRequest

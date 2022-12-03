@@ -12,7 +12,7 @@ import { LockSvg } from './lockSvg';
 
 export function Lessons() {
     const {
-        userDetails: { lessonsDone, lessonsOpen }
+        userDetails: { lessonsDone, lessonsOpen, _id }
     } = useUserContext();
     let navigate = useNavigate();
     const [lessons, setLessons] = useState<ILesson[]>([]);
@@ -31,7 +31,7 @@ export function Lessons() {
     }, []);
 
     const handleClick = (lesson: ILesson) => {
-        navigate(PATHS.lesson, {
+        navigate(`${PATHS.lesson}?lessonId=${lesson._id}&studentId=${_id}`, {
             state: lesson
         });
     };

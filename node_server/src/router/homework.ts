@@ -23,9 +23,9 @@ router.post("/homework", auth, async (req, res) => {
 });
 
 router.get("/homeworksByLessonId", auth, async (req, res) => {
-  const { id: lessonnId } = req.query;
+  const { id: lessonId } = req.query;
   try {
-    const hws = await Homework.find({ lessonnId: lessonnId }).populate(
+    const hws = await Homework.find({ lessonId: lessonId }).populate(
       "content.attachments"
     );
     return res.status(200).send(hws);
