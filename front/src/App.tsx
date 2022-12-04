@@ -65,7 +65,7 @@ const urls = [
     // }
 ];
 
-const showNav = process.env.NODE_ENV === 'development' && false;
+const showNav = process.env.NODE_ENV === 'development' && true;
 
 function App() {
     const [listening, setListening] = useState(false);

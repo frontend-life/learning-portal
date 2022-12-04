@@ -1,7 +1,7 @@
 import { getToken } from './auth';
 import axios from 'axios';
 import { NotificationSystem } from '../components/NotificationSystem/NotificationSystem';
-import addNt from './notification';
+import addNt, { addErrorNt } from './notification';
 
 export const myRequest = axios.create({
     baseURL: 'http://localhost:8000',
@@ -31,6 +31,9 @@ myRequest.interceptors.response.use(
         return response.data;
     },
     (error) => {
+        if (error.response.status === 404) {
+            addErrorNt('404: Not found');
+        }
         console.log('Here will be error system caching');
         // addNt({ type: 'err', description: 'response error' });
         // Do something with request error

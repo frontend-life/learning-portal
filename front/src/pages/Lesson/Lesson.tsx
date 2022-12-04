@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { Chat } from '../../components/Chat/Chat';
 import MainBlockWrapper from '../../components/MainBlockWrapper/MainBlockWrapper';
