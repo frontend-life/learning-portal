@@ -14,6 +14,11 @@ export interface ICourse {
     owner: string;
 }
 
+export enum Roles {
+    TEACHER = 0,
+    STUDENT = 1
+}
+
 export interface IUser {
     _id: string;
     name: string;
@@ -22,6 +27,7 @@ export interface IUser {
     salary: number;
     lessonsDone: string[];
     lessonsOpen: string[];
+    roles: Roles[];
 }
 
 export interface IHomework {

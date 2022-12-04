@@ -39,6 +39,9 @@ const userSchema = new mongoose.Schema(
     },
     lessonsDone: { type: [mongoose.Schema.Types.ObjectId] },
     lessonsOpen: { type: [mongoose.Schema.Types.ObjectId] },
+    roles: {
+      type: [Number],
+    },
   },
   { timestamps: true }
 );

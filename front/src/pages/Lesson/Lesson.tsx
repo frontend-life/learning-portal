@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { Chat } from '../../components/Chat/Chat';
 import MainBlockWrapper from '../../components/MainBlockWrapper/MainBlockWrapper';
-import { IHomework, ILesson } from '../../types/api';
+import { IHomework, ILesson, Roles } from '../../types/api';
 import { myRequest } from '../../utils/axios';
 import { addErrorNt } from '../../utils/notification';
 import { PATHS } from '../../utils/paths';
@@ -13,6 +13,7 @@ import { useUserContext } from '../../store/UserDetails';
 import { LoadingAnimation } from '../../components/LoadingAnimation/LoadingAnimation';
 import { CircleLoader } from '../../components/CircleLoader/CircleLoader';
 import { useLessonsContext } from '../../store/LessonsContext';
+import { HWDoneButton } from '../../components/HWDoneButton/HWDoneButton';
 
 interface Params {
     lessonId: string;
@@ -36,6 +37,10 @@ function Lesson() {
     const params = qp(location.search) as Partial<Params>;
 
     const { lessons } = useLessonsContext();
+    const {
+        userDetails: { roles, lessonsDone }
+    } = useUserContext();
+    console.log('lessonsDone', lessonsDone);
     const [lesson, setLesson] = useState<ILesson>();
 
     const [hws, setHws] = useState<IHomework[]>([]);
@@ -71,6 +76,18 @@ function Lesson() {
         onReloadHomework(setHws, params as Params);
     }, [setHws, params]);
 
+    const handleApproveHomework = () => {
+        if (!params?.studentId) {
+            return;
+        }
+        myRequest
+            .post('/user/done', {
+                lessonId: params.lessonId,
+                userId: params.studentId
+            })
+            .then(reloadHW);
+    };
+
     useEffect(() => {
         if (loading || nothingToDoHere) return;
         reloadHW();
@@ -83,6 +100,8 @@ function Lesson() {
     if (loading || !lesson) {
         return <CircleLoader inCenterOfBlock />;
     }
+
+    const lessonDone = lessonsDone.includes(params?.lessonId as string);
 
     return (
         <MainBlockWrapper title="Lesson" alignSecond="flex-start">
@@ -105,7 +124,14 @@ function Lesson() {
                 />
                 <div className={s.homework}>
                     <h3>Homework</h3>
-                    <Chat lessonId={lesson._id} onReload={reloadHW} />
+                    {roles.includes(Roles.TEACHER) ? (
+                        <HWDoneButton onClick={handleApproveHomework} />
+                    ) : (
+                        lessonDone && <HWDoneButton />
+                    )}
+                    {!lessonDone && (
+                        <Chat lessonId={lesson._id} onReload={reloadHW} />
+                    )}
                     {hws.length !== 0 && (
                         <div className={s.homeworks}>
                             {hws.map((h: any) => {

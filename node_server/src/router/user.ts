@@ -1,3 +1,4 @@
+import { Roles } from "./../../../front/src/types/api";
 import express from "express";
 
 import { User } from "./../models/user";
@@ -25,6 +26,7 @@ router.post("/user/signup", async (req, res) => {
     const password = await generatePassword(dto.password);
     const user = {
       ...dto,
+      roles: [Roles.STUDENT],
       password,
     };
     const createdUser = new User(user);
@@ -109,12 +111,14 @@ router.post("/user/close", auth, async (req, res) => {
 });
 router.post("/user/done", auth, async (req, res) => {
   const { userId, lessonId } = req.body as { userId: string; lessonId: string };
+  console.log({ userId, lessonId });
+
   const [user] = await User.find({ _id: userId });
 
   let newLessonsList = [...user.lessonsDone.map((id) => id.toString())];
   newLessonsList.push(lessonId);
   newLessonsList = Array.from(new Set(newLessonsList));
-
+  console.log({ _id: userId }, { lessonsDone: newLessonsList });
   const result = await User.findOneAndUpdate(
     { _id: userId },
     { lessonsDone: newLessonsList },
