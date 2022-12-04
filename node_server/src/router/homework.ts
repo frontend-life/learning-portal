@@ -32,9 +32,10 @@ router.get("/homeworksByLessonId", auth, async (req, res) => {
   console.log(roles, Roles.TEACHER);
   if (studentId === _id.toString() || roles.includes(Roles.TEACHER)) {
     try {
-      const hws = await Homework.find({ lessonId: lessonId }).populate(
-        "content.attachments"
-      );
+      const hws = await Homework.find({
+        lessonId: lessonId,
+        studentId: studentId,
+      }).populate("content.attachments");
       return res.status(200).send(hws);
     } catch (error) {
       return res.status(500).send();

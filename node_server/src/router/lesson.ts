@@ -3,6 +3,8 @@ import express from "express";
 import { Lesson } from "./../models/lesson";
 import { auth } from "../middleware/auth";
 import { createLessonDTO } from "../dto/createLessonDTO";
+import mongoose from "mongoose";
+import { ObjectId } from "mongodb";
 
 const router = express.Router();
 
@@ -31,10 +33,14 @@ router.get("/lesson/lessons", auth, async (req, res) => {
 
 router.get("/lesson", auth, async (req, res) => {
   const { lessonId } = req.query;
+  if (!ObjectId.isValid(lessonId as string)) {
+    return res.status(404).send();
+  }
   try {
-    const lesson = await Lesson.findOne({ _id: lessonId });
+    const lesson = await Lesson.findById(lessonId).exec();
     return res.status(200).send(lesson);
   } catch (error) {
+    console.log(error);
     return res.status(500).send();
   }
 });
