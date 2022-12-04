@@ -1,3 +1,4 @@
+import { telegram, T_METHODS } from "./../service/axios";
 import { Roles } from "./../service/roles";
 import express from "express";
 
@@ -17,6 +18,23 @@ router.post("/homework", auth, async (req, res) => {
   });
   try {
     const sentHw = await hw.save();
+    try {
+      const messageToMe = `
+      _New homework from ${req.user.name}_ 
+      
+      http://localhost:3000/lesson?lessonId\\=${dto.lessonId}&studentId\\=${req.user._id}
+      [inline URL which will bi clickable](http://here-should-be-host.something/lesson?lessonId=${dto.lessonId}&studentId=${req.user._id})
+      `;
+      telegram
+        .post(T_METHODS.SEND_MESSAGE, {
+          chat_id: 794272343,
+          parse_mode: "MarkdownV2",
+          text: messageToMe,
+        })
+        .catch(console.log);
+    } catch {
+      console.log("Telegram send to me hw is lost");
+    }
     return res.status(201).send({ homework: sentHw });
   } catch (error) {
     return res.status(400).send();

@@ -53,10 +53,12 @@ export const Chat = ({ lessonId, onReload }) => {
                     if (refEditable.current) {
                         refEditable.current.innerText = '';
                     }
-                    onReload();
                 })
                 .catch((e) => {
-                    addErrorNt('Failed dave homework');
+                    addErrorNt('Failed update homeworks list');
+                })
+                .finally(() => {
+                    onReload();
                 });
         };
 

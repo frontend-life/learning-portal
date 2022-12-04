@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { Chat } from '../../components/Chat/Chat';
 import MainBlockWrapper from '../../components/MainBlockWrapper/MainBlockWrapper';
@@ -67,10 +67,14 @@ function Lesson() {
         }
     }, [lessons, params?.lessonId]);
 
+    const reloadHW = useCallback(() => {
+        onReloadHomework(setHws, params as Params);
+    }, [setHws, params]);
+
     useEffect(() => {
         if (loading || nothingToDoHere) return;
-        onReloadHomework(setHws, params as Params);
-    }, [loading, nothingToDoHere, onReloadHomework]);
+        reloadHW();
+    }, [loading, nothingToDoHere]);
 
     if (nothingToDoHere) {
         return <Navigate to={PATHS.lessons} replace={true} />;
@@ -101,7 +105,7 @@ function Lesson() {
                 />
                 <div className={s.homework}>
                     <h3>Homework</h3>
-                    <Chat lessonId={lesson._id} onReload={onReloadHomework} />
+                    <Chat lessonId={lesson._id} onReload={reloadHW} />
                     {hws.length !== 0 && (
                         <div className={s.homeworks}>
                             {hws.map((h: any) => {

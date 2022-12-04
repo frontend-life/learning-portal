@@ -74,3 +74,31 @@ GET http://localhost:8000/homework?id=6381dd0f0cac94d0329dd2f7
 content-type: application/json
 authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzgxZGI0NDdmNTg3MTEwODYwYTQzODEiLCJpYXQiOjE2Njk0NTQ2NzZ9.npqt7Ip1uE9QZBjZDYIA8IK6G5VcAImqQi2N0y0nZhg
 
+
+
+
+
+
+
+# Telegram Bots
+# My chat ID - 794272343
+
+### getme
+GET https://api.telegram.org/bot5965431146:AAGXWWL1YH48beGVX28fcL-OXEUFLv_qgfQ/getMe
+
+### getUpdates
+GET https://api.telegram.org/bot5965431146:AAGXWWL1YH48beGVX28fcL-OXEUFLv_qgfQ/getUpdates?offset=46272076
+
+
+### sendMessageToSerg
+POST https://api.telegram.org/bot5965431146:AAGXWWL1YH48beGVX28fcL-OXEUFLv_qgfQ/sendMessage
+content-type: application/json
+
+{
+    "chat_id": "794272343",
+    "parse_mode": "MarkdownV2",
+    "text": "
+        _New homework from NAME_
+        [inline URL](http://some.net/lesson?lessonId=638afd80d34ab8e761e2febf&studentId=6381db447f587110860a4381)
+        ",
+}
