@@ -78,7 +78,7 @@ export const AddLesson = () => {
                 <h1 className={s.headerText}>{action + ' урок'}</h1>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Select
-                        defaultId={lessonToEdit.course}
+                        defaultId={lessonToEdit?.course}
                         labelAlign="left"
                         htmlProps={{ label: 'Track' }}
                         control={control}
@@ -98,7 +98,7 @@ export const AddLesson = () => {
                         error={errors.title?.message as string}
                     />
                     <Editor
-                        defaultValue={lessonToEdit.description}
+                        defaultValue={lessonToEdit?.description}
                         labelAlign="left"
                         inputProps={{ label: 'Lesson description' }}
                         rhfProps={{
@@ -109,7 +109,7 @@ export const AddLesson = () => {
                         error={errors.description?.message as string}
                     />
                     <Editor
-                        defaultValue={lessonToEdit.homework}
+                        defaultValue={lessonToEdit?.homework}
                         labelAlign="left"
                         inputProps={{ label: 'Lesson homework' }}
                         rhfProps={{

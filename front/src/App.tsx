@@ -23,6 +23,7 @@ import { ProfilePage } from './pages/ProfilePage/ProfilePage';
 import { Lessons } from './pages/Lessons/Lessons';
 import { Students } from './pages/Students/Students';
 import { NotificationSystem } from './components/NotificationSystem/NotificationSystem';
+import { useServerEvents } from './utils/hooks';
 
 const urls = [
     {
@@ -68,37 +69,7 @@ const urls = [
 const showNav = process.env.NODE_ENV === 'development' && true;
 
 function App() {
-    const [listening, setListening] = useState(false);
-    const { userDetails, setUserDetails } = useUserContext();
-    useEffect(() => {
-        if (!listening && userDetails.isSignedIn) {
-            const events = new EventSource(
-                'http://localhost:8000/events?user_id=' + userDetails._id
-            );
-
-            events.addEventListener('message', (e) => {
-                if (e.data === 'events connected') {
-                    console.log(e.data);
-                    return;
-                }
-
-                const parsedData = JSON.parse(e.data);
-                if (parsedData.lessonsDone) {
-                    setUserDetails((prev) => ({
-                        ...prev,
-                        lessonsDone: parsedData.lessonsDone
-                    }));
-                } else if (parsedData.lessonsOpen) {
-                    setUserDetails((prev) => ({
-                        ...prev,
-                        lessonsOpen: parsedData.lessonsOpen
-                    }));
-                }
-            });
-
-            setListening(true);
-        }
-    }, [listening, userDetails.isSignedIn]);
+    useServerEvents();
     return (
         <div className="App">
             <BrowserRouter>

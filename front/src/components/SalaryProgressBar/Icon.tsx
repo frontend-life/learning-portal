@@ -10,10 +10,6 @@ export const Icon = ({
     percent: typeof stamps[number];
     money: number;
 }) => {
-    console.log({
-        left: `${percent}%`,
-        transform: 'translate: (-50%, -15%)'
-    });
     return (
         <div
             className={s.iconRoot}
