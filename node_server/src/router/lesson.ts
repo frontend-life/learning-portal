@@ -22,6 +22,23 @@ router.post("/lesson/create", auth, async (req, res) => {
   }
 });
 
+router.put("/lesson", auth, async (req, res) => {
+  const { lessonId } = req.query;
+  const dto = req.body as createLessonDTO;
+
+  const doc = await Lesson.findById(lessonId);
+  if (!doc) {
+    return res.status(404).send();
+  }
+  Object.assign(doc, dto);
+  try {
+    await doc.save();
+    return res.status(201).send({ updatedLesson: doc });
+  } catch (error) {
+    return res.status(400).send();
+  }
+});
+
 router.get("/lesson/lessons", auth, async (req, res) => {
   try {
     const lessons = await Lesson.find({ owner: req.user._id });

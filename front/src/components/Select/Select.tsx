@@ -9,14 +9,21 @@ type Option = {
 };
 
 type Props = {
+    defaultId?: string;
     options: Option[];
     htmlProps?: React.HTMLProps<HTMLSelectElement>;
     labelAlign?: Align;
-    control: Control;
+    control: Control<any>;
 };
 
 export const Select = (props: Props) => {
-    const { options, htmlProps, control, labelAlign = 'center' } = props;
+    const {
+        defaultId,
+        options,
+        htmlProps,
+        control,
+        labelAlign = 'center'
+    } = props;
     const getLabel = () => {
         if (htmlProps?.label) {
             return (
@@ -35,6 +42,7 @@ export const Select = (props: Props) => {
                 return (
                     <div className={s.wrapper}>
                         <SelectInside
+                            defaultId={defaultId}
                             getLabel={getLabel}
                             onChange={onChange}
                             options={options}
@@ -47,12 +55,16 @@ export const Select = (props: Props) => {
     );
 };
 
-function SelectInside({ getLabel, onChange, options, value }) {
+function SelectInside({ defaultId, getLabel, onChange, options, value }) {
     const noOptions = options.length === 0;
 
     useEffect(() => {
-        onChange(noOptions ? 'No options' : options[0!].id);
-    }, [options, noOptions]);
+        if (defaultId) {
+            onChange(defaultId);
+        } else {
+            onChange(noOptions ? 'No options' : options[0!].id);
+        }
+    }, [defaultId, noOptions, onChange, options]);
 
     return (
         <>

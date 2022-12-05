@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Align } from '../../types/components';
 import s from './Editor.module.css';
 import { tab } from './utils';
 
 export const Editor = (props: {
+    defaultValue?: string;
     inputProps: React.HTMLProps<HTMLInputElement>;
     rhfProps?: {
         name: string;
@@ -13,14 +14,28 @@ export const Editor = (props: {
     labelAlign?: Align;
     error?: string;
 }) => {
+    const editorRef = useRef<HTMLDivElement>(null);
+    // for preview
     const [html, setHtml] = useState('');
-    const { inputProps, rhfProps, error, labelAlign = 'center' } = props;
+    const {
+        defaultValue,
+        inputProps,
+        rhfProps,
+        error,
+        labelAlign = 'center'
+    } = props;
 
     useEffect(() => {
         if (rhfProps) {
             rhfProps.register(rhfProps.name);
         }
     }, [rhfProps]);
+
+    useEffect(() => {
+        if (defaultValue && editorRef.current) {
+            editorRef.current.innerHTML = defaultValue;
+        }
+    }, [defaultValue]);
 
     const getLabel = () => {
         if (inputProps.label) {
@@ -37,6 +52,7 @@ export const Editor = (props: {
         <div className={s.wrapper}>
             {getLabel()}
             <div
+                ref={editorRef}
                 contentEditable
                 className={s.root}
                 onInput={(e) => {

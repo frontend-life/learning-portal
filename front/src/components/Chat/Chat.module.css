@@ -61,7 +61,7 @@
     font-family: 'Times New Roman', Times, serif;
     outline: none;
     border: 1px solid grey;
-    width: 400px;
+    min-width: 400px;
 
     min-height: 34px;
     max-height: none;

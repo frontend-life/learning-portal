@@ -14,7 +14,7 @@ export function Lessons() {
     const {
         userDetails: { lessonsDone, lessonsOpen, _id }
     } = useUserContext();
-    let navigate = useNavigate();
+    const navigate = useNavigate();
     const { lessons, courses } = useLessonsContext();
 
     const handleClick = (lesson: ILesson) => {

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { Chat } from '../../components/Chat/Chat';
 import MainBlockWrapper from '../../components/MainBlockWrapper/MainBlockWrapper';
 import { IHomework, ILesson, Roles } from '../../types/api';
@@ -44,6 +44,7 @@ function Lesson() {
     const [lesson, setLesson] = useState<ILesson>();
 
     const [hws, setHws] = useState<IHomework[]>([]);
+    const navigate = useNavigate();
 
     const nothingToDoHere = !params || !params?.lessonId || !params?.studentId;
 
@@ -102,11 +103,23 @@ function Lesson() {
     }
 
     const lessonDone = lessonsDone.includes(params?.lessonId as string);
+    const isTeacher = roles.includes(Roles.TEACHER);
+
+    const headerProps = isTeacher
+        ? {
+              style: { cursor: 'pointer' },
+              onClick: () => {
+                  navigate(PATHS.add_lesson, {
+                      state: lesson
+                  });
+              }
+          }
+        : {};
 
     return (
         <MainBlockWrapper title="Lesson" alignSecond="flex-start">
             <div className={s.root}>
-                <h1>{lesson.title}</h1>
+                <h1 {...headerProps}>{lesson.title}</h1>
                 <h3>Description</h3>
                 <div
                     className={s.description}
@@ -124,7 +137,12 @@ function Lesson() {
                 />
                 <div className={s.homework}>
                     <h3>Homework</h3>
-                    {roles.includes(Roles.TEACHER) ? (
+                    <div
+                        dangerouslySetInnerHTML={{
+                            __html: lesson.homework
+                        }}
+                    ></div>
+                    {isTeacher ? (
                         <HWDoneButton onClick={handleApproveHomework} />
                     ) : (
                         lessonDone && <HWDoneButton />
@@ -137,7 +155,9 @@ function Lesson() {
                             {hws.map((h: any) => {
                                 return (
                                     <div key={h?._id} className={s.hw}>
-                                        <p>{h?.content?.text}</p>
+                                        <pre>
+                                            <code>{h?.content?.text}</code>
+                                        </pre>
                                         {h?.content?.attachments.map((att) => {
                                             const url = `http://localhost:8000/${
                                                 att.path.split('public')[1]

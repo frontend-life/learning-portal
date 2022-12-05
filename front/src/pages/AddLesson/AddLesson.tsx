@@ -1,17 +1,24 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '../../components/Button/Button';
 import { Editor } from '../../components/Editor/Editor';
 import { Input } from '../../components/Input/Input';
 import MainBlockWrapper from '../../components/MainBlockWrapper/MainBlockWrapper';
 import { Select } from '../../components/Select/Select';
 import { useSuccessAdd } from '../../components/SuccessAdd/SuccessAdd';
-import { ICourse } from '../../types/api';
+import { useLessonsContext } from '../../store/LessonsContext';
+import { ICourse, ILesson } from '../../types/api';
 import { myRequest } from '../../utils/axios';
+import { PATHS } from '../../utils/paths';
 
 import s from './AddLesson.module.css';
 
 export const AddLesson = () => {
+    const { state: lessonToEdit }: { state: ILesson } = useLocation();
+    const { setLessons } = useLessonsContext();
+    const navigate = useNavigate();
+
     const { isSuccess, turnOn, SuccessAdd } = useSuccessAdd();
     const [courses, setCourses] = useState<ICourse[]>([]);
     const {
@@ -20,10 +27,40 @@ export const AddLesson = () => {
         handleSubmit,
         control,
         formState: { errors }
-    } = useForm();
+    } = useForm({
+        defaultValues: lessonToEdit || {}
+    });
 
-    const onSubmit = (data) => {
-        console.log(data);
+    const onSubmit = (data: ILesson) => {
+        if (lessonToEdit) {
+            const editData = {
+                title: data.title,
+                course: data.course,
+                description: data.description,
+                homework: data.homework,
+                link: data.link
+            };
+            myRequest
+                .put(`/lesson?lessonId=${lessonToEdit._id}`, editData)
+                .then(turnOn)
+                .then(() => {
+                    setLessons((prev) => {
+                        return prev.map((l) => {
+                            if (l._id === lessonToEdit._id) {
+                                return {
+                                    ...l,
+                                    ...editData
+                                };
+                            }
+                            return l;
+                        });
+                    });
+                })
+                .then(() => {
+                    navigate(PATHS.lessons);
+                });
+            return;
+        }
         myRequest.post('/lesson/create', data).then(turnOn);
     };
 
@@ -33,12 +70,15 @@ export const AddLesson = () => {
         });
     }, []);
 
+    const action = lessonToEdit ? 'Изменить' : 'Добавить';
+
     return (
         <MainBlockWrapper alignMain="left">
             <div className={s.root}>
-                <h1 className={s.headerText}>Добавить урок</h1>
+                <h1 className={s.headerText}>{action + ' урок'}</h1>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Select
+                        defaultId={lessonToEdit.course}
                         labelAlign="left"
                         htmlProps={{ label: 'Track' }}
                         control={control}
@@ -58,6 +98,7 @@ export const AddLesson = () => {
                         error={errors.title?.message as string}
                     />
                     <Editor
+                        defaultValue={lessonToEdit.description}
                         labelAlign="left"
                         inputProps={{ label: 'Lesson description' }}
                         rhfProps={{
@@ -68,6 +109,7 @@ export const AddLesson = () => {
                         error={errors.description?.message as string}
                     />
                     <Editor
+                        defaultValue={lessonToEdit.homework}
                         labelAlign="left"
                         inputProps={{ label: 'Lesson homework' }}
                         rhfProps={{
@@ -79,7 +121,7 @@ export const AddLesson = () => {
                     />
                     <Input
                         labelAlign="left"
-                        inputProps={{ label: 'Lesson youtube link' }}
+                        inputProps={{ label: 'Lesson youtube ID' }}
                         rhfProps={{
                             ...register('link', {
                                 required: true
@@ -96,7 +138,7 @@ export const AddLesson = () => {
                         allowFullScreen
                     /> */}
                     <div style={{ marginTop: '40px' }}>
-                        <Button type="submit">Добавить урок</Button>
+                        <Button type="submit">{action} урок</Button>
                     </div>
                 </form>
                 {isSuccess && <SuccessAdd />}
