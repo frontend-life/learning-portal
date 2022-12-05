@@ -5,7 +5,7 @@ import { tab } from './utils';
 
 export const Editor = (props: {
     defaultValue?: string;
-    inputProps: React.HTMLProps<HTMLInputElement>;
+    inputProps?: React.HTMLProps<HTMLInputElement>;
     rhfProps?: {
         name: string;
         register: any;
@@ -13,11 +13,13 @@ export const Editor = (props: {
     };
     labelAlign?: Align;
     error?: string;
+    showHowItLooks?: boolean;
 }) => {
     const editorRef = useRef<HTMLDivElement>(null);
     // for preview
     const [html, setHtml] = useState('');
     const {
+        showHowItLooks = true,
         defaultValue,
         inputProps,
         rhfProps,
@@ -32,13 +34,13 @@ export const Editor = (props: {
     }, [rhfProps]);
 
     useEffect(() => {
-        if (defaultValue && editorRef.current) {
+        if (defaultValue !== undefined && editorRef.current) {
             editorRef.current.innerHTML = defaultValue;
         }
     }, [defaultValue]);
 
     const getLabel = () => {
-        if (inputProps.label) {
+        if (inputProps?.label) {
             return (
                 <p style={{ textAlign: labelAlign }} className={s.label}>
                     {inputProps.label}
@@ -70,14 +72,16 @@ export const Editor = (props: {
                     }
                 }}
             />
-            <div
-                style={{
-                    display: 'inline-block',
-                    verticalAlign: 'top',
-                    marginLeft: '20px'
-                }}
-                dangerouslySetInnerHTML={{ __html: html }}
-            ></div>
+            {showHowItLooks && (
+                <div
+                    style={{
+                        display: 'inline-block',
+                        verticalAlign: 'top',
+                        marginLeft: '20px'
+                    }}
+                    dangerouslySetInnerHTML={{ __html: html }}
+                ></div>
+            )}
             {error && <p className={s.error}>{error}</p>}
         </div>
     );

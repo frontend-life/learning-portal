@@ -6,7 +6,6 @@ import { IHomework, ILesson, Roles } from '../../types/api';
 import { myRequest } from '../../utils/axios';
 import { addErrorNt } from '../../utils/notification';
 import { PATHS } from '../../utils/paths';
-import ModalImage from 'react-modal-image';
 import s from './Lesson.module.css';
 import { qp } from '../../utils/paths';
 import { useUserContext } from '../../store/UserDetails';
@@ -14,6 +13,7 @@ import { LoadingAnimation } from '../../components/LoadingAnimation/LoadingAnima
 import { CircleLoader } from '../../components/CircleLoader/CircleLoader';
 import { useLessonsContext } from '../../store/LessonsContext';
 import { HWDoneButton } from '../../components/HWDoneButton/HWDoneButton';
+import { Homework } from './Homework';
 
 interface Params {
     lessonId: string;
@@ -152,36 +152,14 @@ function Lesson() {
                     )}
                     {hws.length !== 0 && (
                         <div className={s.homeworks}>
-                            {hws.map((h: any) => {
+                            {hws.reverse().map((h: any) => {
                                 return (
-                                    <div key={h?._id} className={s.hw}>
-                                        <pre>
-                                            <code>{h?.content?.text}</code>
-                                        </pre>
-                                        {h?.content?.attachments.map((att) => {
-                                            const url = `http://localhost:8000/${
-                                                att.path.split('public')[1]
-                                            }`;
-                                            return (
-                                                <div
-                                                    key={att._id}
-                                                    className={s.hw_img}
-                                                >
-                                                    <ModalImage
-                                                        small={url}
-                                                        large={url}
-                                                        alt="Here should be a homework image, but it is gone:)"
-                                                    />
-                                                </div>
-                                            );
-                                        })}
-                                        <div className={s.hwTime}>
-                                            Created at (greenwich time):{' '}
-                                            {new Date(
-                                                h?.createdAt
-                                            ).toISOString()}
-                                        </div>
-                                    </div>
+                                    <Homework
+                                        key={h._id}
+                                        h={h}
+                                        withAnswer={isTeacher}
+                                        onReload={reloadHW}
+                                    />
                                 );
                             })}
                         </div>

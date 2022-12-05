@@ -1,29 +1,13 @@
 import { useCallback, useRef, useState } from 'react';
-import addNt, { addErrorNt } from '../../utils/notification';
+import { addErrorNt, addWNt } from '../../utils/notification';
 import { generateUid } from '../../utils/uid';
-import ModalImage from 'react-modal-image';
+import { Image } from './Image';
 
 import s from './Chat.module.css';
 import { myRequest } from '../../utils/axios';
 import { IHomework } from '../../types/api';
-
-const Image = ({ url, onRemove }: { url: string; onRemove: any }) => {
-    // eslint-disable-next-line jsx-a11y/alt-text
-    return (
-        <div className={s.imgContainer}>
-            <div className={s.image}>
-                <ModalImage
-                    small={url}
-                    large={url}
-                    alt="Image to show in modal"
-                />
-            </div>
-            <div className={s.deleteImage} onClick={onRemove}>
-                X
-            </div>
-        </div>
-    );
-};
+import { Editor } from '../Editor/Editor';
+import { useForm } from 'react-hook-form';
 
 type ImgData = {
     url: string;
@@ -31,25 +15,41 @@ type ImgData = {
     formData: FormData;
 };
 
-export const Chat = ({ lessonId, onReload }) => {
+type ChatProps = {
+    lessonId: string;
+    hwId?: string;
+    onReload?: () => void;
+};
+
+export const Chat = ({ lessonId, onReload, hwId }: ChatProps) => {
     const refEditable = useRef<HTMLDivElement>(null);
-    const [text, setText] = useState('');
     const [imgsToPreview, setImgsToPreview] = useState<Array<ImgData>>([]);
     const imageInputRef = useRef<HTMLInputElement>(null);
+    const { register, setValue, getValues } = useForm();
+    const [editorDefaultValue, setEditorDefaultValue] = useState<string>();
 
     const onSend = async () => {
-        const textToSend = text.trim();
+        if (getValues().homework === undefined) {
+            addWNt('No text, no message');
+            return;
+        }
+        const textToSend = getValues().homework.trim();
 
         if (textToSend === '' && imgsToPreview.length === 0) {
             return;
         }
 
         const saveHwToServer = (data: IHomework) => {
+            const url = hwId ? `/homework?hwId=${hwId}` : '/homework';
             return myRequest
-                .post('/homework', data)
+                .post(url, data)
                 .then(() => {
                     setImgsToPreview([]);
-                    setText('');
+                    setValue('homework', '');
+                    setEditorDefaultValue('');
+                    setTimeout(() => {
+                        setEditorDefaultValue(undefined);
+                    }, 500);
                     if (refEditable.current) {
                         refEditable.current.innerText = '';
                     }
@@ -58,17 +58,18 @@ export const Chat = ({ lessonId, onReload }) => {
                     addErrorNt('Failed update homeworks list');
                 })
                 .finally(() => {
-                    onReload();
+                    onReload && onReload();
                 });
         };
 
+        let data: IHomework = {
+            content: {
+                text: textToSend
+            },
+            lessonId
+        };
+
         if (imgsToPreview.length === 0) {
-            let data: IHomework = {
-                content: {
-                    text: textToSend
-                },
-                lessonId
-            };
             saveHwToServer(data);
             return;
         } else {
@@ -76,13 +77,7 @@ export const Chat = ({ lessonId, onReload }) => {
                 const attachesIds = responseWithAttaches.map(
                     ({ attach }) => attach._id
                 );
-                let data: IHomework = {
-                    content: {
-                        text: textToSend,
-                        attachments: attachesIds
-                    },
-                    lessonId
-                };
+                data.content.attachments = attachesIds;
                 saveHwToServer(data);
             });
         }
@@ -100,16 +95,11 @@ export const Chat = ({ lessonId, onReload }) => {
         });
     }, [imgsToPreview, myRequest.post, addErrorNt]);
 
-    const handleChangeText = (e) => {
-        setText(e.currentTarget.innerText);
-    };
-
     const addImage = () => {
         imageInputRef.current?.click();
     };
     const catchImage = (e) => {
         for (let file of e.target.files) {
-            console.log(file);
             const reader = new FileReader();
             reader.addEventListener('load', (e) => {
                 const uploaded_image = reader.result;
@@ -154,11 +144,14 @@ export const Chat = ({ lessonId, onReload }) => {
                         Send message
                     </button>
                 </div>
-                <div
-                    ref={refEditable}
-                    className={s.text}
-                    contentEditable
-                    onInput={handleChangeText}
+                <Editor
+                    defaultValue={editorDefaultValue}
+                    showHowItLooks={false}
+                    rhfProps={{
+                        register,
+                        setValue,
+                        name: 'homework'
+                    }}
                 />
             </div>
             <div className={s.attachments}>

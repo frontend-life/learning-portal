@@ -10,9 +10,15 @@ import {
 import { auth } from "../middleware/auth";
 import { signupUserDTO } from "../dto/signupUserDTO";
 import { signinUserDTO } from "../dto/signinUserDTO";
-import { sendLessonsDoneToUser, sendLessonsOpenToUser } from "./events";
+import {
+  sendLessonsDoneToUser,
+  sendLessonsOpenToUser,
+  sendNewUserDataToUser,
+} from "./events";
 
 const router = express.Router();
+
+const EACH_LESSON_PAY_UP_MONTHLY = 5000;
 
 router.post("/user/signup", async (req, res) => {
   const dto = req.body as signupUserDTO;
@@ -111,22 +117,24 @@ router.post("/user/close", auth, async (req, res) => {
 });
 router.post("/user/done", auth, async (req, res) => {
   const { userId, lessonId } = req.body as { userId: string; lessonId: string };
-  console.log({ userId, lessonId });
 
   const [user] = await User.find({ _id: userId });
 
   let newLessonsList = [...user.lessonsDone.map((id) => id.toString())];
   newLessonsList.push(lessonId);
   newLessonsList = Array.from(new Set(newLessonsList));
-  console.log({ _id: userId }, { lessonsDone: newLessonsList });
+
+  const newSalary = user.salary + EACH_LESSON_PAY_UP_MONTHLY;
+
   const result = await User.findOneAndUpdate(
     { _id: userId },
-    { lessonsDone: newLessonsList },
+    { lessonsDone: newLessonsList, salary: newSalary },
     {
       new: true,
     }
   );
   sendLessonsDoneToUser(userId, newLessonsList);
+  sendNewUserDataToUser(userId, result);
 
   return res.status(200).send(result);
 });
@@ -138,15 +146,19 @@ router.post("/user/notdone", auth, async (req, res) => {
     (id) => id.toString() !== lessonId
   );
 
+  let newSalary = user.salary - EACH_LESSON_PAY_UP_MONTHLY;
+  newSalary = newSalary < 0 ? 0 : newSalary;
+
   const result = await User.findOneAndUpdate(
     { _id: userId },
-    { lessonsDone: newLessonsList },
+    { lessonsDone: newLessonsList, salary: newSalary },
     {
       new: true,
     }
   );
 
   sendLessonsDoneToUser(userId, newLessonsList);
+  sendNewUserDataToUser(userId, result);
 
   return res.status(200).send(result);
 });

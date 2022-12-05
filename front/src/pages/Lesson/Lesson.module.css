@@ -21,6 +21,7 @@
     margin-top: 130px;
 }
 .hw {
+    position: relative;
     margin-top: 30px;
     padding: 20px;
     border: 2px solid black;
@@ -33,4 +34,32 @@
 .hw_img {
     display: inline-block;
     width: 150px;
+}
+
+.hw_answer h1 {
+    padding-top: 30px;
+}
+.hw_answer_cross {
+    padding-left: 50px;
+    cursor: pointer;
+}
+.hw_answer_button {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    padding: 20px;
+    background-color: blueviolet;
+    color: white;
+    font-size: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.answer_content {
+    padding-left: 30%;
+}
+.answer_content h2 {
+    padding-top: 30px;
 }
