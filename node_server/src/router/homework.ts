@@ -12,11 +12,30 @@ interface createHomeworkDTO extends Omit<IHomework, "_id" | "studentId"> {}
 
 router.post("/homework", auth, async (req, res) => {
   const dto = req.body as createHomeworkDTO;
-  const hw = new Homework({
-    ...dto,
-    studentId: req.user._id,
-  });
+
+  const { hwId } = req.query;
+  const saveHomeworkToHomework = hwId;
+
+  if (saveHomeworkToHomework) {
+    try {
+      const hwToUpdate = await Homework.findOneAndUpdate(
+        { _id: hwId },
+        {
+          answer: { ...dto, teacherId: req.user._id },
+        },
+        { new: true }
+      );
+      return res.status(201).send();
+    } catch {
+      return res.status(400).send();
+    }
+  }
+
   try {
+    const hw = new Homework({
+      ...dto,
+      studentId: req.user._id,
+    });
     const sentHw = await hw.save();
     try {
       const messageToMe = `
@@ -44,16 +63,15 @@ router.post("/homework", auth, async (req, res) => {
 router.get("/homeworksByLessonId", auth, async (req, res) => {
   const { lessonId, studentId } = req.query;
   const { _id, roles = [] } = req.user;
-  console.log(req.user);
-  console.log(req.query);
-  console.log(studentId, _id.toString());
-  console.log(roles, Roles.TEACHER);
+
   if (studentId === _id.toString() || roles.includes(Roles.TEACHER)) {
     try {
       const hws = await Homework.find({
         lessonId: lessonId,
         studentId: studentId,
-      }).populate("content.attachments");
+      })
+        .populate("content.attachments")
+        .populate("answer.content.attachments");
       return res.status(200).send(hws);
     } catch (error) {
       return res.status(500).send();

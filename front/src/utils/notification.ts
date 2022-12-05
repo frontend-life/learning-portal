@@ -21,3 +21,9 @@ export default function addNt(
 export const addErrorNt = (description: string) => {
     addNt({ type: 'err', description });
 };
+export const addSNt = (description: string) => {
+    addNt({ type: 's', description });
+};
+export const addWNt = (description: string) => {
+    addNt({ type: 'warn', description });
+};

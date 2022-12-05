@@ -36,3 +36,7 @@ export function sendLessonsOpenToUser(user_id, newLessonsDone) {
   const client = clients.find((client) => client.id === user_id);
   client?.response?.write(createEventMessage({ lessonsOpen: newLessonsDone }));
 }
+export function sendNewUserDataToUser(user_id, userData) {
+  const client = clients.find((client) => client.id === user_id);
+  client?.response?.write(createEventMessage({ userData }));
+}
