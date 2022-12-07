@@ -59,9 +59,6 @@ export const Students = wrap(() => {
                     } as IUser;
                 });
                 setData((prev) => {
-                    if (!prev) {
-                        return;
-                    }
                     return prev.map((u) => {
                         if (u._id === chosenUser._id) {
                             return {
@@ -98,9 +95,6 @@ export const Students = wrap(() => {
                         } as IUser)
                 );
                 setData((prev) => {
-                    if (!prev) {
-                        return;
-                    }
                     return prev.map((u) => {
                         if (u._id === chosenUser._id) {
                             return {
@@ -136,9 +130,6 @@ export const Students = wrap(() => {
                     } as IUser;
                 });
                 setData((prev) => {
-                    if (!prev) {
-                        return;
-                    }
                     return prev.map((u) => {
                         if (u._id === chosenUser._id) {
                             return {
@@ -175,9 +166,6 @@ export const Students = wrap(() => {
                         } as IUser)
                 );
                 setData((prev) => {
-                    if (!prev) {
-                        return;
-                    }
                     return prev.map((u) => {
                         if (u._id === chosenUser._id) {
                             return {

@@ -3,7 +3,7 @@ import { useUserContext } from '../store/UserDetails';
 import { myRequest } from './axios';
 
 export function useGetArrayData<DataType>(url: string) {
-    const [d, setD] = useState<DataType>();
+    const [d, setD] = useState<DataType>([] as any);
     const [ls, setLs] = useState(true);
 
     const reload = useCallback((url) => {

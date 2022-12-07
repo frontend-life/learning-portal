@@ -9,7 +9,7 @@ import {
 } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import './App.css';
-import { ICourse } from './types/api';
+import { ICourse, Roles } from './types/api';
 import { myRequest } from './utils/axios';
 import { ErrorBoundary } from './utils/ErrorBoundary';
 import { SignUpPage } from './pages/SignUpPage/SignUpPage';
@@ -24,6 +24,7 @@ import { Lessons } from './pages/Lessons/Lessons';
 import { Students } from './pages/Students/Students';
 import { NotificationSystem } from './components/NotificationSystem/NotificationSystem';
 import { useServerEvents } from './utils/hooks';
+import { Rating } from './pages/Rating/Rating';
 
 const urls = [
     {
@@ -59,11 +60,11 @@ const urls = [
     {
         path: PATHS.students,
         Element: Students
+    },
+    {
+        path: PATHS.rating,
+        Element: Rating
     }
-    // { /* Courses for future*/
-    //     path: PATHS.courses,
-    //     Element: TracksPage
-    // }
 ];
 
 const showNav = process.env.NODE_ENV === 'development' && true;
@@ -101,6 +102,7 @@ function App() {
 
 function AuthenticatedRoutes() {
     const user = useUserContext();
+    // const isTeacher = user.userDetails.roles.includes(Roles.TEACHER);
 
     return (
         <Routes>
