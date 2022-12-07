@@ -12,12 +12,22 @@
     flex-shrink: 0;
     background-color: black;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
 }
 .search {
     padding: 20px;
     background-color: aliceblue;
     border-radius: 10px;
     color: black;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    outline: none;
+    font-size: 20px;
+}
+.searchContent {
+    flex: 1;
 }
 
 .user {

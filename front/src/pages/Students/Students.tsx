@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { CircleLoader } from '../../components/CircleLoader/CircleLoader';
 import { wrap } from '../../components/MainBlockWrapper/MainBlockWrapper';
 import { ILesson, IUser } from '../../types/api';
@@ -7,12 +7,37 @@ import { cls } from '../../utils/css';
 import { useGetArrayData } from '../../utils/hooks';
 import s from './Students.module.css';
 
+function debounce(func: (agrs: any) => Promise<any>, time: number) {
+    let timer;
+    return (...args: any) => {
+        if (timer) {
+            clearTimeout(timer);
+        }
+        return new Promise((res, rej) => {
+            timer = setTimeout(() => {
+                func.apply({}, args).then((result) => {
+                    res(result);
+                });
+            }, time);
+        });
+    };
+}
+
 export const Students = wrap(() => {
     const [chosenUser, setChosenUser] = useState<IUser>();
     const [search, setSearch] = useState<string>('');
-    const { data, loading, setData } = useGetArrayData<IUser[]>('/user/users');
+    const [loadginBySearch, setLoadingBySearch] = useState(false);
+    const { data, loading, setData, reload } =
+        useGetArrayData<IUser[]>('/user/users');
     const { data: lessons, loading: loadingLessons } =
         useGetArrayData<ILesson[]>('/lesson/lessons');
+
+    const debouncedReloadUsers = useCallback(
+        debounce((url: string) => {
+            return reload(url);
+        }, 1000),
+        []
+    );
 
     const handleOpen = (lesson: ILesson) => {
         if (!chosenUser) {
@@ -169,6 +194,13 @@ export const Students = wrap(() => {
             });
     };
 
+    useEffect(() => {
+        setLoadingBySearch(true);
+        debouncedReloadUsers(`/user/users?search=${search}`).finally(() => {
+            setLoadingBySearch(false);
+        });
+    }, [debouncedReloadUsers, search]);
+
     if (loading || loadingLessons) {
         return <CircleLoader />;
     }
@@ -176,26 +208,33 @@ export const Students = wrap(() => {
     return (
         <div className={s.root}>
             <div className={s.sidebar}>
-                <div
-                    contentEditable
+                <input
+                    value={search}
+                    onChange={(e) => {
+                        setSearch(e.currentTarget.value);
+                    }}
                     className={s.search}
                     placeholder="In dev"
-                ></div>
-                {data &&
-                    data.map((user) => {
-                        const { name, _id } = user;
-                        return (
-                            <div
-                                key={_id}
-                                className={s.user}
-                                onClick={() => {
-                                    setChosenUser(user);
-                                }}
-                            >
-                                {name}
-                            </div>
-                        );
-                    })}
+                />
+                <div className={s.searchContent}>
+                    {loadginBySearch && <CircleLoader inCenterOfBlock />}
+                    {!loadginBySearch &&
+                        data &&
+                        data?.map((user) => {
+                            const { name, _id } = user;
+                            return (
+                                <div
+                                    key={_id}
+                                    className={s.user}
+                                    onClick={() => {
+                                        setChosenUser(user);
+                                    }}
+                                >
+                                    {name}
+                                </div>
+                            );
+                        })}
+                </div>
             </div>
             <div className={s.lessons}>
                 <h1 className={s.userName}>

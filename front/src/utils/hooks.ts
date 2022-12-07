@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useUserContext } from '../store/UserDetails';
 import { myRequest } from './axios';
 
@@ -6,8 +6,8 @@ export function useGetArrayData<DataType>(url: string) {
     const [d, setD] = useState<DataType>();
     const [ls, setLs] = useState(true);
 
-    useEffect(() => {
-        myRequest
+    const reload = useCallback((url) => {
+        return myRequest
             .get(url)
             .then((data) => {
                 setD(data as unknown as DataType);
@@ -17,7 +17,11 @@ export function useGetArrayData<DataType>(url: string) {
             });
     }, []);
 
-    return { loading: ls, data: d, setData: setD };
+    useEffect(() => {
+        reload(url);
+    }, [url]);
+
+    return { loading: ls, data: d, setData: setD, reload };
 }
 
 export const useServerEvents = () => {
