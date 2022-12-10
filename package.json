@@ -1,0 +1,13 @@
+{
+  "name": "learning-portal",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:frontend-life/learning-portal.git",
+  "author": "Sergey Prilepko <sergey.prilepcko@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "yarn buildFront && yarn buildBack",
+    "buildFront": "cd ./front && yarn build && cd ../",
+    "buildBack": "cd ./node_server && yarn build && cd ../"
+  }
+}

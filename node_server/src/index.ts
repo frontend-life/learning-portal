@@ -8,6 +8,7 @@ import courseRouter from "./router/course";
 import homeworkRouter from "./router/homework";
 import attachRouter from "./router/attachments";
 import { eventsHandler } from "./router/events";
+import path from "path";
 
 import("./db/mongoose");
 
@@ -32,6 +33,16 @@ app.use(courseRouter);
 app.use(homeworkRouter);
 app.use(attachRouter);
 app.get("/events", eventsHandler);
+
+app.get("*", (res, req) => {
+  const url =
+    process.env.NODE_ENV === "production"
+      ? "../dist/node_modules/public/index.html"
+      : "../public/index.html";
+  req.sendFile(path.join(__dirname, url));
+});
+
+console.log(process.env.NODE_ENV);
 
 const port = process.env.PORT || 3000;
 

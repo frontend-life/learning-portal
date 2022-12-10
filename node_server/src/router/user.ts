@@ -1,4 +1,4 @@
-import { Roles } from "./../../../front/src/types/api";
+import { IUser, Roles } from "./../../../front/src/types/api";
 import express from "express";
 
 import { User } from "./../models/user";
@@ -73,7 +73,22 @@ router.get("/user/me", auth, (req, res) => {
 });
 
 router.get("/user/users", auth, async (req, res) => {
-  const users = await User.find({});
+  const { search } = req.query;
+  let users: IUser[] = [];
+  if (search) {
+    users = await User.find({});
+    users = users?.filter((u) =>
+      u.name.toLowerCase().includes((search as string).toLowerCase())
+    );
+  } else {
+    users = await User.find({});
+  }
+
+  // const secureUsers: Omit<IUser, "password">[] = users.map((u) => {
+  //   const { password, ...newU } = u;
+  //   console.log(newU);
+  //   return newU;
+  // });
   return res.status(200).send(users);
 });
 
