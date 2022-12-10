@@ -23,7 +23,7 @@ declare global {
 const app = express();
 
 app.use(express.json({ limit: "50mb" }));
-app.use(express.urlencoded({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(cors());
 app.use(express.static("public"));
 
@@ -35,10 +35,7 @@ app.use(attachRouter);
 app.get("/events", eventsHandler);
 
 app.get("*", (res, req) => {
-  const url =
-    process.env.NODE_ENV === "production"
-      ? "../dist/node_modules/public/index.html"
-      : "../public/index.html";
+  const url = "../public/index.html";
   req.sendFile(path.join(__dirname, url));
 });
 

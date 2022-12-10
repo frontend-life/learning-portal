@@ -1,4 +1,3 @@
-import { IUser, Roles } from "./../../../front/src/types/api";
 import express from "express";
 
 import { User } from "./../models/user";
@@ -15,6 +14,8 @@ import {
   sendLessonsOpenToUser,
   sendNewUserDataToUser,
 } from "./events";
+import IUser from "../interfaces/user";
+import { Roles } from "../service/roles";
 
 const router = express.Router();
 
