@@ -50,7 +50,7 @@
     cursor: pointer;
 }
 .closed {
-    background-color: #0b0c10;
+    background-color: var(--fourth-color);
     cursor: none;
     pointer-events: none;
 }

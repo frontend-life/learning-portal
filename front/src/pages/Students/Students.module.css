@@ -10,7 +10,7 @@
     width: 300px;
     max-width: 300px;
     flex-shrink: 0;
-    background-color: #0b0c10;
+    background-color: var(--fourth-color);
     padding: 20px;
     display: flex;
     flex-direction: column;

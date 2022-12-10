@@ -1,6 +1,8 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useUserContext } from '../store/UserDetails';
+import { IUser } from '../types/api';
 import { myRequest } from './axios';
+import { debounce } from './debounce';
 
 export function useGetArrayData<DataType>(url: string) {
     const [d, setD] = useState<DataType>([] as any);
@@ -65,4 +67,31 @@ export const useServerEvents = () => {
             setListening(true);
         }
     }, [listening, userDetails.isSignedIn]);
+};
+
+export const useDebounceUsersSearch = (search: string) => {
+    const mountRef = useRef<boolean>(true);
+
+    const [loadingBySearch, setLoadingBySearch] = useState(false);
+
+    const getUsersUtils = useGetArrayData<IUser[]>('/user/users');
+    const debouncedReloadUsers = useCallback(
+        debounce((url: string) => {
+            return getUsersUtils.reload(url);
+        }, 1000),
+        []
+    );
+
+    useEffect(() => {
+        setLoadingBySearch(true);
+        debouncedReloadUsers(
+            mountRef.current,
+            `/user/users?search=${search}`
+        ).finally(() => {
+            setLoadingBySearch(false);
+        });
+        mountRef.current = false;
+    }, [debouncedReloadUsers, search]);
+
+    return { loadingBySearch, ...getUsersUtils };
 };

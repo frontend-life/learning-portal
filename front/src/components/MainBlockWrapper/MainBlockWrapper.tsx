@@ -5,7 +5,7 @@ import { Logo } from './logo';
 import s from './MainBlockWrapper.module.css';
 
 type Props = {
-    title?: string;
+    title?: string | ReactNode;
     children: ReactNode;
     alignMain?: Align;
     alignSecond?: AlignItems;

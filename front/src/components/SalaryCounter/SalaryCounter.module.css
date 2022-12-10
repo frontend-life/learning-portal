@@ -2,7 +2,7 @@
     font-size: 48px;
     letter-spacing: 20px;
     padding: 16px 20px 8px 40px;
-    background: #0b0c10;
+    background: var(--fourth-color);
     border: 6px solid #66fcf1;
     border-radius: 13px;
     display: inline-flex;

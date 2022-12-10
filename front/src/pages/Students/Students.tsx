@@ -1,11 +1,11 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { CircleLoader } from '../../components/CircleLoader/CircleLoader';
 import { wrap } from '../../components/MainBlockWrapper/MainBlockWrapper';
 import { Switch } from '../../components/Switch/Switch';
 import { ILesson, IUser } from '../../types/api';
 import { myRequest } from '../../utils/axios';
 import { cls } from '../../utils/css';
-import { useGetArrayData } from '../../utils/hooks';
+import { useDebounceUsersSearch, useGetArrayData } from '../../utils/hooks';
 
 import { lockSvg as LockSVG } from './lock';
 import { unlockSvg as UnlockSVG } from './unlock';
@@ -14,56 +14,13 @@ import { uncheckSvg as UncheckSVG } from './uncheck';
 
 import s from './Students.module.css';
 
-function debounce(
-    func: (agrs: any) => Promise<any>,
-    time: number,
-    withoutDebounce?: boolean
-) {
-    let timer;
-    return (...args: any) => {
-        // no debouncing
-        if (withoutDebounce) {
-            return new Promise((res, rej) => {
-                func.apply({}, args).then((result) => {
-                    res(result);
-                });
-            });
-        }
-
-        // debouncing
-        if (timer) {
-            clearTimeout(timer);
-        }
-        return new Promise((res, rej) => {
-            timer = setTimeout(() => {
-                func.apply({}, args).then((result) => {
-                    res(result);
-                });
-            }, time);
-        });
-    };
-}
 export const Students = wrap(() => {
-    const mountRef = useRef<boolean>(true);
     const [chosenUser, setChosenUser] = useState<IUser>();
     const [search, setSearch] = useState<string>('');
-    const [loadginBySearch, setLoadingBySearch] = useState(false);
-    const { data, loading, setData, reload } =
-        useGetArrayData<IUser[]>('/user/users');
+    const { data, setData, loading, loadingBySearch } =
+        useDebounceUsersSearch(search);
     const { data: lessons, loading: loadingLessons } =
         useGetArrayData<ILesson[]>('/lesson/lessons');
-
-    const debouncedReloadUsers = useCallback(
-        (withoutDebounce?: boolean) =>
-            debounce(
-                (url: string) => {
-                    return reload(url);
-                },
-                1000,
-                withoutDebounce
-            ),
-        []
-    );
 
     const handleOpen = (lesson: ILesson) => {
         if (!chosenUser) {
@@ -208,16 +165,6 @@ export const Students = wrap(() => {
             });
     };
 
-    useEffect(() => {
-        setLoadingBySearch(true);
-        debouncedReloadUsers(mountRef.current)(
-            `/user/users?search=${search}`
-        ).finally(() => {
-            setLoadingBySearch(false);
-        });
-        mountRef.current = false;
-    }, [debouncedReloadUsers, search]);
-
     if (loading || loadingLessons) {
         return <CircleLoader />;
     }
@@ -250,9 +197,9 @@ export const Students = wrap(() => {
                             <hr />
                         </div>
                     )}
-                    {loadginBySearch && <CircleLoader inCenterOfBlock />}
-                    {!loadginBySearch && data.length === 0 && <p>No users</p>}
-                    {!loadginBySearch &&
+                    {loadingBySearch && <CircleLoader inCenterOfBlock />}
+                    {!loadingBySearch && data.length === 0 && <p>No users</p>}
+                    {!loadingBySearch &&
                         data &&
                         data?.map((user) => {
                             const { name, _id } = user;
