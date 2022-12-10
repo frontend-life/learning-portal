@@ -56,7 +56,8 @@ export function Lessons() {
                                         const selectors: string[] = [s.square];
                                         if (isDone) {
                                             selectors.push(s.done);
-                                        } else if (isOpen) {
+                                        }
+                                        if (isOpen) {
                                             selectors.push(s.open);
                                         } else {
                                             selectors.push(s.closed);

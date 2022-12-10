@@ -10,10 +10,11 @@
     width: 300px;
     max-width: 300px;
     flex-shrink: 0;
-    background-color: black;
+    background-color: #0b0c10;
     padding: 20px;
     display: flex;
     flex-direction: column;
+    border-radius: 13px;
 }
 .search {
     padding: 20px;
@@ -28,23 +29,43 @@
 }
 .searchContent {
     flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .user {
     padding: 20px;
     cursor: pointer;
+    background-color: #1f2833;
+    border-radius: 13px;
+    margin-bottom: 11px;
 }
-.userActive {
-    background-color: brown;
+.user:first-child {
+    margin-top: 11px;
 }
 .user:hover {
     background-color: grey;
 }
+.userActive {
+    background-color: #2a5c00;
+    cursor: default;
+    color: aliceblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 20px;
+    padding-bottom: 10px;
+    border: 1px solid;
+}
+.userActive:hover {
+    background-color: #2a5c00;
+}
 .lessons {
     flex: 1;
+    margin-left: 10px;
     padding: 20px;
     border-radius: 10px;
-    background-color: antiquewhite;
+    background-color: var(--third-color);
 }
 .userName {
     color: rgb(31, 31, 31);
@@ -54,36 +75,39 @@
 }
 .row {
     position: relative;
-    padding: 10px;
-    border-radius: 10px;
-    background-color: blueviolet;
+    padding: 20px;
+    border-radius: 13px;
+    background-color: #1f2833;
     margin-bottom: 60px;
     box-shadow: 2px 2px 2px black;
+    display: flex;
+    justify-content: space-between;
+}
+.statuses {
+    display: flex;
+    flex-direction: column;
 }
 .status {
-    position: absolute;
-    right: 0;
-    bottom: -30px;
-    padding: 10px;
-    background-color: black;
+    /* background-color: var(--secondary-color); */
     color: white;
     border-radius: 10px;
     box-shadow: 2px 2px 2px black;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 10px;
+    width: 250px;
 }
-.isOpen {
-    background-color: white;
-    color: rgb(31, 31, 31);
+
+.isOpen .switchText:first-of-type,
+.isDone .switchText:first-of-type {
+    visibility: hidden;
 }
-.isClosed {
-    background-color: grey;
-    color: rgb(31, 31, 31);
+.isClosed .switchText:last-of-type,
+.isNotDone .switchText:last-of-type {
+    visibility: hidden;
 }
-.isDone {
-    right: 80px;
-    background-color: green;
-}
-.isNotDone {
-    right: 80px;
-    background-color: red;
+.switch {
+    margin: 0 20px;
 }

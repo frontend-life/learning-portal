@@ -1,6 +1,6 @@
 .root {
     padding: 10px 20px;
-    background: var(--input-background);
+    background: var(--secondary-color);
     width: 455px;
     height: 61px;
     margin-bottom: 20px;

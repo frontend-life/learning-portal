@@ -1,15 +1,36 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { CircleLoader } from '../../components/CircleLoader/CircleLoader';
 import { wrap } from '../../components/MainBlockWrapper/MainBlockWrapper';
+import { Switch } from '../../components/Switch/Switch';
 import { ILesson, IUser } from '../../types/api';
 import { myRequest } from '../../utils/axios';
 import { cls } from '../../utils/css';
 import { useGetArrayData } from '../../utils/hooks';
+
+import { lockSvg as LockSVG } from './lock';
+import { unlockSvg as UnlockSVG } from './unlock';
+import { checkSvg as CheckSVG } from './check';
+import { uncheckSvg as UncheckSVG } from './uncheck';
+
 import s from './Students.module.css';
 
-function debounce(func: (agrs: any) => Promise<any>, time: number) {
+function debounce(
+    func: (agrs: any) => Promise<any>,
+    time: number,
+    withoutDebounce?: boolean
+) {
     let timer;
     return (...args: any) => {
+        // no debouncing
+        if (withoutDebounce) {
+            return new Promise((res, rej) => {
+                func.apply({}, args).then((result) => {
+                    res(result);
+                });
+            });
+        }
+
+        // debouncing
         if (timer) {
             clearTimeout(timer);
         }
@@ -22,8 +43,8 @@ function debounce(func: (agrs: any) => Promise<any>, time: number) {
         });
     };
 }
-
 export const Students = wrap(() => {
+    const mountRef = useRef<boolean>(true);
     const [chosenUser, setChosenUser] = useState<IUser>();
     const [search, setSearch] = useState<string>('');
     const [loadginBySearch, setLoadingBySearch] = useState(false);
@@ -33,9 +54,14 @@ export const Students = wrap(() => {
         useGetArrayData<ILesson[]>('/lesson/lessons');
 
     const debouncedReloadUsers = useCallback(
-        debounce((url: string) => {
-            return reload(url);
-        }, 1000),
+        (withoutDebounce?: boolean) =>
+            debounce(
+                (url: string) => {
+                    return reload(url);
+                },
+                1000,
+                withoutDebounce
+            ),
         []
     );
 
@@ -184,9 +210,12 @@ export const Students = wrap(() => {
 
     useEffect(() => {
         setLoadingBySearch(true);
-        debouncedReloadUsers(`/user/users?search=${search}`).finally(() => {
+        debouncedReloadUsers(mountRef.current)(
+            `/user/users?search=${search}`
+        ).finally(() => {
             setLoadingBySearch(false);
         });
+        mountRef.current = false;
     }, [debouncedReloadUsers, search]);
 
     if (loading || loadingLessons) {
@@ -202,10 +231,27 @@ export const Students = wrap(() => {
                         setSearch(e.currentTarget.value);
                     }}
                     className={s.search}
-                    placeholder="In dev"
+                    placeholder="Type to search users"
                 />
                 <div className={s.searchContent}>
+                    {chosenUser?.name && (
+                        <div>
+                            <p>Chosen user</p>
+                            <h1 className={s.userName}>
+                                {
+                                    <div
+                                        key={chosenUser?._id + chosenUser?.name}
+                                        className={`${s.user} ${s.userActive}`}
+                                    >
+                                        {chosenUser?.name}
+                                    </div>
+                                }
+                            </h1>
+                            <hr />
+                        </div>
+                    )}
                     {loadginBySearch && <CircleLoader inCenterOfBlock />}
+                    {!loadginBySearch && data.length === 0 && <p>No users</p>}
                     {!loadginBySearch &&
                         data &&
                         data?.map((user) => {
@@ -225,9 +271,6 @@ export const Students = wrap(() => {
                 </div>
             </div>
             <div className={s.lessons}>
-                <h1 className={s.userName}>
-                    {chosenUser?.name || 'Chose user'}
-                </h1>
                 <div className={s.rows}>
                     {chosenUser &&
                         lessons?.map((l) => {
@@ -239,42 +282,56 @@ export const Students = wrap(() => {
                                 false;
                             return (
                                 <div className={s.row} key={l._id}>
-                                    {l.title}
+                                    <h1>{l.title}</h1>
 
-                                    <div
-                                        className={cls(s.status, {
-                                            [s.isOpen]: isOpen,
-                                            [s.isClosed]: !isOpen
-                                        })}
-                                        onClick={() =>
-                                            isOpen
-                                                ? handleClose(l)
-                                                : handleOpen(l)
-                                        }
-                                    >
-                                        {isOpen ? (
-                                            <span>Open</span>
-                                        ) : (
-                                            <span>Closed</span>
-                                        )}
-                                    </div>
+                                    <div className={s.statuses}>
+                                        <div
+                                            className={cls(s.status, {
+                                                [s.isOpen]: isOpen,
+                                                [s.isClosed]: !isOpen
+                                            })}
+                                            onClick={() =>
+                                                isOpen
+                                                    ? handleClose(l)
+                                                    : handleOpen(l)
+                                            }
+                                        >
+                                            <span className={s.switchText}>
+                                                Closed
+                                                <LockSVG />
+                                            </span>
+                                            <div className={s.switch}>
+                                                <Switch defaultCheck={isOpen} />
+                                            </div>
+                                            <span className={s.switchText}>
+                                                Open
+                                                <UnlockSVG />
+                                            </span>
+                                        </div>
 
-                                    <div
-                                        className={cls(s.status, {
-                                            [s.isDone]: isDone,
-                                            [s.isNotDone]: !isDone
-                                        })}
-                                        onClick={() =>
-                                            isDone
-                                                ? handleNotDone(l)
-                                                : handleDone(l)
-                                        }
-                                    >
-                                        {isDone ? (
-                                            <span>Done</span>
-                                        ) : (
-                                            <span>Not done</span>
-                                        )}
+                                        <div
+                                            className={cls(s.status, {
+                                                [s.isDone]: isDone,
+                                                [s.isNotDone]: !isDone
+                                            })}
+                                            onClick={() => {
+                                                isDone
+                                                    ? handleNotDone(l)
+                                                    : handleDone(l);
+                                            }}
+                                        >
+                                            <span className={s.switchText}>
+                                                Not done
+                                                <UncheckSVG />
+                                            </span>
+                                            <div className={s.switch}>
+                                                <Switch defaultCheck={isDone} />
+                                            </div>
+                                            <span className={s.switchText}>
+                                                Done
+                                                <CheckSVG />
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             );

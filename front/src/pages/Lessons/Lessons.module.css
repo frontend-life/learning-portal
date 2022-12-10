@@ -42,7 +42,7 @@
     align-items: center;
 }
 .done {
-    background-color: #3f4a58;
+    background-color: var(--third-color);
     cursor: pointer;
 }
 .open {
