@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import ModalImage from 'react-modal-image';
+import { format } from 'date-fns';
 import { Chat } from '../../components/Chat/Chat';
 import s from './Lesson.module.css';
 
@@ -28,24 +29,25 @@ export const Homework = ({
             <pre>
                 <code>{h?.content?.text}</code>
             </pre>
-            {attachments.map((att) => {
-                const url = `http://localhost:8000/${
-                    att.path.split('public')[1]
-                }`;
-                return (
-                    <div key={att._id} className={s.hw_img}>
-                        <ModalImage
-                            small={url}
-                            large={url}
-                            alt="Here should be a homework image, but it is gone:)"
-                        />
-                    </div>
-                );
-            })}
+            <div className={s.attachments}>
+                {attachments.map((att) => {
+                    const url = `http://localhost:8000/${
+                        att.path.split('public')[1]
+                    }`;
+                    return (
+                        <div key={att._id} className={s.hw_img}>
+                            <ModalImage
+                                small={url}
+                                large={url}
+                                alt="Here should be a homework image, but it is gone:)"
+                            />
+                        </div>
+                    );
+                })}
+            </div>
             {createdAt && (
                 <div className={s.hwTime}>
-                    Created at (greenwich time):{' '}
-                    {new Date(createdAt).toISOString()}
+                    {format(new Date(createdAt), 'dd/MM/yyyy H:mm')}
                 </div>
             )}
             {h.answer && (

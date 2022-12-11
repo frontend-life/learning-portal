@@ -135,6 +135,12 @@ function Lesson() {
                     )}
                     {hws.length !== 0 && (
                         <div className={s.homeworks}>
+                            {lessonDone && (
+                                <div key="DONE" className={s.lessonDoneFlag}>
+                                    DONE
+                                </div>
+                            )}
+
                             {hws.reverse().map((h: any) => {
                                 return (
                                     <Homework

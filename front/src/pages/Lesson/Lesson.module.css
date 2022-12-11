@@ -22,26 +22,30 @@
 
 .homeworks {
     margin-top: 130px;
+    max-width: 900px;
 }
 
 .hw {
     position: relative;
     margin-top: 30px;
     padding: 20px;
-    border: 2px solid black;
+    border: 2px solid #5e5e5e;
+    background: black;
 }
 
-.hwTime {
-    margin-top: 10px;
-    padding-top: 10px;
-    border-top: 1px solid red;
+.attachments {
+    margin: 20px 0;
 }
-
 .hw_img {
     display: inline-block;
     width: 150px;
 }
-
+.hwTime {
+    padding-top: 10px;
+    border-top: 1px solid var(--secondary-color);
+    font-family: Arial;
+    display: inline-block;
+}
 .hw_answer h1 {
     padding-top: 30px;
 }
@@ -52,17 +56,15 @@
 }
 
 .hw_answer_button {
-    position: absolute;
-    bottom: 0px;
-    right: 0px;
     padding: 20px;
-    background-color: blueviolet;
+    background-color: var(--error-color);
     color: white;
-    font-size: 40px;
-    display: flex;
+    display: inline-flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    margin-left: 30px;
+    vertical-align: top;
 }
 
 .answer_content {
