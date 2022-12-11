@@ -6,24 +6,6 @@ import { useDebounceUsersSearch } from '../../utils/hooks';
 import s from './Rating.module.css';
 import { RateSvg } from './svg';
 
-const testDAta = () => {
-    const arr: {
-        _id: number;
-        salary: number;
-        name: string;
-    }[] = [];
-    for (let index = 0; index < 50; index++) {
-        const element = {
-            _id: index,
-            salary: index * 1000,
-            name: 'Random name' + Math.random().toFixed(2)
-        };
-        // @ts-ignore
-        arr.push(element);
-    }
-    return arr;
-};
-
 export const Rating = () => {
     const [search, setSearch] = useState('');
     const { data, loadingBySearch } = useDebounceUsersSearch(search);
@@ -66,6 +48,9 @@ export const Rating = () => {
                     {/* <button onClick={findMe}>Find me</button> */}
                 </div>
                 {loadingBySearch && <CircleLoader inCenterOfBlock />}
+                {!loadingBySearch && sortedUsers.length === 0 && (
+                    <h1>No users</h1>
+                )}
                 {!loadingBySearch &&
                     sortedUsers.map((u, index) => {
                         return (

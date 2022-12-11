@@ -1,10 +1,10 @@
 import { getToken } from './auth';
 import axios from 'axios';
-import { NotificationSystem } from '../components/NotificationSystem/NotificationSystem';
-import addNt, { addErrorNt } from './notification';
+import { addErrorNt } from './notification';
 
 export const myRequest = axios.create({
-    baseURL: 'http://localhost:8000',
+    baseURL:
+        process.env.NODE_ENV === 'production' ? '' : 'http://localhost:8000',
     timeout: 1000
 });
 

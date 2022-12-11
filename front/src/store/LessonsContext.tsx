@@ -31,9 +31,7 @@ const LessonsProvider = (props) => {
             myRequest.get<any, ICourse[]>('/course/courses')
         ]).then(([lessons, courses]) => {
             setLessons(lessons);
-            console.log('lessons', lessons);
             setCourses(courses);
-            console.log('courses', courses);
         });
     }, []);
 

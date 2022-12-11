@@ -5,14 +5,17 @@
     display: flex;
     flex-direction: column;
     padding-bottom: 100px;
+    position: relative;
 }
 
 .description {
     margin: 20px 0;
 }
+
 .homework {
     margin: 20px 0;
 }
+
 .homework textarea {
     padding: 20px;
 }
@@ -20,17 +23,20 @@
 .homeworks {
     margin-top: 130px;
 }
+
 .hw {
     position: relative;
     margin-top: 30px;
     padding: 20px;
     border: 2px solid black;
 }
+
 .hwTime {
     margin-top: 10px;
     padding-top: 10px;
     border-top: 1px solid red;
 }
+
 .hw_img {
     display: inline-block;
     width: 150px;
@@ -39,10 +45,12 @@
 .hw_answer h1 {
     padding-top: 30px;
 }
+
 .hw_answer_cross {
     padding-left: 50px;
     cursor: pointer;
 }
+
 .hw_answer_button {
     position: absolute;
     bottom: 0px;
@@ -60,6 +68,16 @@
 .answer_content {
     padding-left: 30%;
 }
+
 .answer_content h2 {
     padding-top: 30px;
+}
+
+.lessonDoneFlag {
+    width: 50px;
+    background-color: var(--warning-color);
+    border-radius: 20px;
+    border: 5px solid var(--fourth-color);
+    color: var(--fourth-color);
+    padding: 20px 40px;
 }

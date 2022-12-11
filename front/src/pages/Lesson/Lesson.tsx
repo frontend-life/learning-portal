@@ -9,7 +9,6 @@ import { PATHS } from '../../utils/paths';
 import s from './Lesson.module.css';
 import { qp } from '../../utils/paths';
 import { useUserContext } from '../../store/UserDetails';
-import { LoadingAnimation } from '../../components/LoadingAnimation/LoadingAnimation';
 import { CircleLoader } from '../../components/CircleLoader/CircleLoader';
 import { useLessonsContext } from '../../store/LessonsContext';
 import { HWDoneButton } from '../../components/HWDoneButton/HWDoneButton';
@@ -40,7 +39,7 @@ function Lesson() {
     const {
         userDetails: { roles, lessonsDone }
     } = useUserContext();
-    console.log('lessonsDone', lessonsDone);
+
     const [lesson, setLesson] = useState<ILesson>();
 
     const [hws, setHws] = useState<IHomework[]>([]);
@@ -77,18 +76,6 @@ function Lesson() {
         onReloadHomework(setHws, params as Params);
     }, [setHws, params]);
 
-    const handleApproveHomework = () => {
-        if (!params?.studentId) {
-            return;
-        }
-        myRequest
-            .post('/user/done', {
-                lessonId: params.lessonId,
-                userId: params.studentId
-            })
-            .then(reloadHW);
-    };
-
     useEffect(() => {
         if (loading || nothingToDoHere) return;
         reloadHW();
@@ -119,6 +106,7 @@ function Lesson() {
     return (
         <MainBlockWrapper title="Lesson" alignSecond="flex-start">
             <div className={s.root}>
+                {lessonDone && <div className={s.lessonDoneFlag}>DONE</div>}
                 <h1 {...headerProps}>{lesson.title}</h1>
                 <h3>Description</h3>
                 <div
@@ -142,11 +130,6 @@ function Lesson() {
                             __html: lesson.homework
                         }}
                     ></div>
-                    {isTeacher ? (
-                        <HWDoneButton onClick={handleApproveHomework} />
-                    ) : (
-                        lessonDone && <HWDoneButton />
-                    )}
                     {!lessonDone && (
                         <Chat lessonId={lesson._id} onReload={reloadHW} />
                     )}
@@ -165,6 +148,13 @@ function Lesson() {
                         </div>
                     )}
                 </div>
+                {!lessonDone && (
+                    <HWDoneButton
+                        lessonId={params.lessonId}
+                        studentId={params.studentId}
+                        onAfterAprove={reloadHW}
+                    />
+                )}
             </div>
         </MainBlockWrapper>
     );
