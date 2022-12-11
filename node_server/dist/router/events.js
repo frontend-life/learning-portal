@@ -4,7 +4,7 @@ exports.sendNewUserDataToUser = exports.sendLessonsOpenToUser = exports.sendLess
 let clients = [];
 function eventsHandler(request, response) {
     const user_id = request.originalUrl.split("=")[1];
-    console.log(user_id);
+    console.log("Events connected for user_id: " + user_id);
     const headers = {
         "Content-Type": "text/event-stream",
         Connection: "keep-alive",
