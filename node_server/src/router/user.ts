@@ -13,7 +13,7 @@ import { signinUserDTO } from "../dto/signinUserDTO";
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-  res.send("Hello");
+  res.send("Hello its workng");
 });
 
 router.post("/user/signup", async (req, res) => {
