@@ -12,6 +12,10 @@ import { signinUserDTO } from "../dto/signinUserDTO";
 
 const router = express.Router();
 
+router.get("/", async (req, res) => {
+  res.send("Hello");
+});
+
 router.post("/user/signup", async (req, res) => {
   const dto = req.body as signupUserDTO;
   const userExists = await User.findOne({ email: dto.email });

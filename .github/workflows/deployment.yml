@@ -40,4 +40,5 @@ jobs:
           cd /var/www/html/learning-portal/node_server
           git pull origin main
           npm install --production
-          pm2 start /var/www/html/learning-portal/node_server/dist/index.js
+          npm run build
+          pm2 restart /var/www/html/learning-portal/node_server/dist/index.js
