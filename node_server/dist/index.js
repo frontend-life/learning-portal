@@ -31,6 +31,7 @@ const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const user_1 = __importDefault(require("./router/user"));
 const lesson_1 = __importDefault(require("./router/lesson"));
+<<<<<<< HEAD
 const course_1 = __importDefault(require("./router/course"));
 const homework_1 = __importDefault(require("./router/homework"));
 const attachments_1 = __importDefault(require("./router/attachments"));
@@ -53,6 +54,14 @@ app.get("*", (res, req) => {
     req.sendFile(path_1.default.join(__dirname, url));
 });
 console.log(process.env.NODE_ENV);
+=======
+Promise.resolve().then(() => __importStar(require("./db/mongoose")));
+const app = (0, express_1.default)();
+app.use(express_1.default.json());
+app.use((0, cors_1.default)());
+app.use(user_1.default);
+app.use(lesson_1.default);
+>>>>>>> edd0548... change
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`Server is up on ${port}`);
