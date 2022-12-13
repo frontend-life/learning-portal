@@ -40,6 +40,7 @@ app.get("/checkTelegramConnection", auth, (req, res) => {
   res.status(200).send(req.user);
 });
 
+
 setInterval(() => {
   telegram
     .post(T_METHODS.GET_UPDATES, {

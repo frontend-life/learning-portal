@@ -5,6 +5,7 @@ import s from './Input.module.css';
 export const Input = (props: {
     inputProps: React.HTMLProps<HTMLInputElement>;
     rhfProps: any;
+
     labelAlign?: Align;
     error?: string;
 }) => {

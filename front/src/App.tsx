@@ -1,5 +1,7 @@
+
 import { BrowserRouter, Routes, Route, Link, Navigate } from 'react-router-dom';
 import './App.css';
+
 import { ErrorBoundary } from './utils/ErrorBoundary';
 import { SignUpPage } from './pages/SignUpPage/SignUpPage';
 import { SignInPage } from './pages/SignInPage/SignInPage';
