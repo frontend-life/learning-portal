@@ -9,6 +9,13 @@ export const telegram = axios.create({
   },
 });
 
+let lastUpdateOffset: number;
+export const getOffset = () => lastUpdateOffset || 0;
+export const setOffset = (offset: number) => {
+  lastUpdateOffset = offset;
+};
+
 export const T_METHODS = {
   SEND_MESSAGE: "sendMessage",
+  GET_UPDATES: "getUpdates",
 };
