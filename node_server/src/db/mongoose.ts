@@ -1,6 +1,11 @@
-import mongoose, { ConnectOptions } from 'mongoose';
+import mongoose, { ConnectOptions } from "mongoose";
 
-mongoose.connect('mongodb://localhost:27017/frontend-portal', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
+const url =
+  process.env.NODE_ENV === "production"
+    ? `mongodb+srv://${process.env.mongodb_cluster_user}:${process.env.mongodb_cluster_password}@cluster0.c5musei.mongodb.net/?retryWrites=true&w=majority`
+    : "mongodb://localhost:27017/frontend-portal";
+
+mongoose.connect(url, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 } as ConnectOptions);

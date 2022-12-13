@@ -1,59 +1,65 @@
-import mongoose from 'mongoose';
-import validator from 'validator';
-import bcrypt from 'bcryptjs';
-import IUser from '../interfaces/user';
+import mongoose from "mongoose";
+import validator from "validator";
+import bcrypt from "bcryptjs";
+import IUser from "../interfaces/user";
 
-const userSchema = new mongoose.Schema({
-    _id: {
-        type: mongoose.Schema.Types.ObjectId,
-        index: true,
-        required: true,
-        auto: true,
-    },
-    name: {
-        type: String,
-        required: true,
-        trim: true
-    },
+const userSchema = new mongoose.Schema(
+  {
     email: {
-        type: String,
-        required: true,
-        unique: true,
-        trim: true,
-        lowercase: true,
-        validate(value: string){
-            if(!validator.isEmail(value)){
-                throw new Error('Email is invalid');
-            }
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+      lowercase: true,
+      validate(value: string) {
+        if (!validator.isEmail(value)) {
+          throw new Error("Email is invalid");
         }
+      },
     },
     password: {
-        type: String,
-        required: true,
-        trim: true,
-        minlength: 6,
-        validate(value: string){
-            if(value.toLowerCase().includes('password')){
-                throw new Error('Password should not be password');
-            }
+      type: String,
+      required: true,
+      trim: true,
+      minlength: 6,
+      validate(value: string) {
+        if (value.toLowerCase().includes("password")) {
+          throw new Error("Password should not be password");
         }
-    }
-}, {timestamps: true});
+      },
+    },
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    salary: {
+      type: Number,
+      default: 0,
+    },
+    lessonsDone: { type: [mongoose.Schema.Types.ObjectId] },
+    lessonsOpen: { type: [mongoose.Schema.Types.ObjectId] },
+    roles: {
+      type: [Number],
+    },
+  },
+  { timestamps: true }
+);
 
-userSchema.virtual('lessons', {
-    ref: 'Lesson',
-    localField: '_id',
-    foreignField: 'owner'
-});
+// userSchema.virtual("lessons", {
+//   ref: "Lesson",
+//   localField: "_id",
+//   foreignField: "owner",
+// });
 
 // It will run even we don't call this
-userSchema.methods.toJSON = function() {
-    const user = this;
-    const userObject = user.toObject();
-    delete userObject.password;
-    delete userObject.tokens;
-    delete userObject.avatar;
-    return userObject;
-}
+userSchema.methods.toJSON = function () {
+  const user = this;
+  const userObject = user.toObject();
+  delete userObject.password;
+  delete userObject.tokens;
+  delete userObject.avatar;
+  return userObject;
+};
 
-export const User = mongoose.model<IUser>('User', userSchema);
+export const User = mongoose.model<IUser>("User", userSchema);

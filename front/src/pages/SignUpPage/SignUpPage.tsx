@@ -9,6 +9,7 @@ import { isEmail } from 'validator';
 import s from './SignUpPage.module.css';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../utils/paths';
+import addNt from '../../utils/notification';
 
 export function SignUpPage() {
     const nav = useNavigate();
@@ -19,7 +20,6 @@ export function SignUpPage() {
         formState: { errors }
     } = useForm();
     const onSubmit = (data) => {
-        console.log(data);
         myRequest
             .post('/user/signup', data)
             .then((res /* user */) => {
@@ -27,7 +27,7 @@ export function SignUpPage() {
                 nav(PATHS.signin);
             })
             .catch((e) => {
-                alert(e.data.message);
+                addNt({ type: 'err', description: e.data.message });
             });
     };
     return (

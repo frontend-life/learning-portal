@@ -1,0 +1,86 @@
+.root {
+    background-color: transparent;
+    border-radius: 20px;
+    color: black;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    position: relative;
+}
+.textAndButtons {
+    position: relative;
+}
+
+.buttons {
+    position: absolute;
+    left: 20px;
+    bottom: -25px;
+}
+
+.code {
+    display: block;
+    min-width: 300px;
+    min-height: 120px;
+    background-color: black;
+    color: white;
+    font-family: 'Courier New', Courier, monospace;
+    padding: 30px 10px;
+    border-radius: 30px;
+}
+.imgContainer {
+    position: relative;
+    display: inline-block;
+    margin: 20px;
+}
+.deleteImage {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    padding: 10px;
+    border-radius: 50%;
+    background-color: black;
+    color: aliceblue;
+    font-size: 30px;
+    cursor: pointer;
+}
+.image {
+    width: 150px;
+    height: auto;
+    object-fit: contain;
+
+    /* background-image take like url in code */
+    background-size: contain;
+    background-repeat: no-repeat;
+
+    cursor: pointer;
+}
+
+.text {
+    box-sizing: border-box;
+    border-radius: 6px;
+    background-color: aliceblue;
+    color: black;
+    font-family: 'Times New Roman', Times, serif;
+    outline: none;
+    border: 1px solid grey;
+    min-width: 400px;
+
+    min-height: 34px;
+    max-height: none;
+    height: auto;
+    padding: 7px 90px 7px 13px;
+}
+
+.sendButton {
+    background-color: green;
+    color: aliceblue;
+    cursor: pointer;
+}
+
+.addImage {
+    /* position: absolute;
+    bottom: 10px;
+    right: 10px; */
+}
+
+.attachments {
+    margin-top: 30px;
+}

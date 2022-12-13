@@ -21,13 +21,16 @@ export const SignInPage = () => {
         formState: { errors }
     } = useForm();
     const onSubmit = (data) => {
-        console.log(data);
         myRequest
             .post('/user/signin', data)
             .then((res: any) => {
-                setUserDetails((prev) => ({ ...prev, isSignedIn: true }));
-                setToken(res.authtoken);
-                nav(PATHS.dashboard);
+                setUserDetails((prev) => ({
+                    ...prev,
+                    ...res.user,
+                    isSignedIn: true
+                }));
+                setToken(res.authToken);
+                nav(PATHS.profile);
             })
             .catch((e) => {
                 alert(e.data.message);

@@ -1,5 +1,5 @@
 .root {
-    background-color: #0B0C10;
+    background-color: var(--fourth-color);
     border-radius: 13px;
     padding: 28px 56px;
     display: flex;

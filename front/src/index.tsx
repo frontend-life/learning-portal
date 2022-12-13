@@ -1,10 +1,16 @@
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
+import UserDetailsProvider from './store/UserDetails';
+import LessonsProvider from './store/LessonsContext';
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+    document.getElementById('root') as HTMLElement
 );
 root.render(
-    <App />
+    <UserDetailsProvider>
+        <LessonsProvider>
+            <App />
+        </LessonsProvider>
+    </UserDetailsProvider>
 );

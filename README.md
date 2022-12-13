@@ -1,14 +1,13 @@
 # learning-portal
+
 Learning portal for people who want to became front-end developer
 
-GitFlow 
+GitFlow:
 
-1. Pull dev branch
-2. Create branch in pattern -> PE-1/new-feature (PE-1 - id of task from Jira, new-feature - is short description)
-3. Do what you need as you can as you want where you want :)
-3.1 Commit (long detailed msg better short unclear msg)
-4. Task done? Push your branch
-5. Create MR
-6. Point me in reviewers 
+1. Pull dev
+2. Create new branch, calling it PE-1/new-feature (where PE-1 - is id of task from Jira, new-feature - short description of task)
+3. Do some great coding, commit in pattern "TASK_ID: some message"
+4. Push your new branch to remote repo
+5. On github make PR from your branch to dev, assign me as reviewer -
 
-ASk for help if yu need ;) and have fun
+Feel free to ask me anything)

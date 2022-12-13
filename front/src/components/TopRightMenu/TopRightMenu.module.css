@@ -1,0 +1,42 @@
+.root {
+    position: relative;
+    visibility: hidden;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 1000;
+}
+.rootVisible {
+    visibility: visible;
+    pointer-events: all;
+    opacity: 1;
+}
+
+.menu {
+    border-radius: 13px;
+    background-color: var(--primary-color);
+    padding: 13px;
+
+    position: absolute;
+    top: 0px;
+    right: 0px;
+
+    flex-direction: column;
+
+    display: none;
+}
+.root:hover .menu {
+    display: flex;
+}
+
+.item {
+    padding: 20px;
+    text-align: center;
+    font-size: 24px;
+    text-decoration: none;
+    color: var(--fourth-color);
+    cursor: pointer;
+}
+
+.item:not(:last-child) {
+    border-bottom: black solid 4px;
+}

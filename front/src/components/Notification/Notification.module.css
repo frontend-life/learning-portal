@@ -1,0 +1,67 @@
+.root {
+    position: relative;
+    margin-bottom: 20px;
+
+    width: 594px;
+    height: 266px;
+    background-color: var(--third-color);
+
+    border-radius: 13px;
+    border: 11px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+.text {
+    font-size: 32px;
+    margin-top: 52px;
+    text-align: center;
+}
+
+.hr {
+    height: 11px;
+    background-color: var(--primary-color);
+    position: absolute;
+    width: 100%;
+    border: 0;
+    bottom: 40px;
+}
+
+.progress {
+    background-color: var(--primary-color);
+    position: absolute;
+    width: 100%;
+    animation: loading var(--animation-duration, '3s') linear forwards;
+
+    height: 30px;
+    bottom: 9px;
+}
+.rootWarn {
+    border-color: var(--warning-color);
+    color: var(--warning-color);
+}
+.rootWarn .hr {
+    background-color: var(--warning-color);
+}
+.rootWarn .progress {
+    background-color: var(--warning-color);
+}
+
+.rootErr {
+    border-color: var(--error-color);
+    color: var(--error-color);
+}
+.rootErr .hr {
+    background-color: var(--error-color);
+}
+.rootErr .progress {
+    background-color: var(--error-color);
+}
+
+@keyframes loading {
+    from {
+        width: 100%;
+    }
+    to {
+        width: 0%;
+    }
+}

@@ -1,0 +1,67 @@
+.root {
+    width: 100%;
+    height: 100%;
+}
+
+.courseTitle {
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+.courseTitleLine {
+    background-color: var(--primary-color);
+    height: 5px;
+}
+.courseTitleLeftLine {
+    width: 57px;
+}
+.courseTitleRightLine {
+    background-color: var(--primary-color);
+    flex: 1;
+}
+.title {
+    font-size: 48px;
+    margin: 0 20px;
+}
+
+.lessonsBlock {
+    display: flex;
+}
+
+/* Lesson */
+.lessonRoot {
+    margin: 20px 20px 20px 0;
+    width: 290px;
+}
+.square {
+    width: 290px;
+    height: 209px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.done {
+    background-color: var(--third-color);
+    cursor: pointer;
+}
+.open {
+    background-color: #d9d9d9;
+    cursor: pointer;
+}
+.closed {
+    background-color: var(--fourth-color);
+    cursor: none;
+    pointer-events: none;
+}
+.doneSvg {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+}
+.lockSvg {
+}
+.lessonTitle {
+    font-size: 24px;
+    text-align: center;
+}

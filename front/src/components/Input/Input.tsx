@@ -1,16 +1,23 @@
 import React from 'react';
+import { Align } from '../../types/components';
 import s from './Input.module.css';
 
 export const Input = (props: {
     inputProps: React.HTMLProps<HTMLInputElement>;
     rhfProps: any;
+
+    labelAlign?: Align;
     error?: string;
 }) => {
-    const { inputProps, rhfProps, error } = props;
+    const { inputProps, rhfProps, error, labelAlign = 'center' } = props;
 
     const getLabel = () => {
         if (inputProps.label) {
-            return <p className={s.label}>{inputProps.label}</p>;
+            return (
+                <p style={{ textAlign: labelAlign }} className={s.label}>
+                    {inputProps.label}
+                </p>
+            );
         }
         return null;
     };

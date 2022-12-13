@@ -9,12 +9,17 @@ import {
 import { auth } from "../middleware/auth";
 import { signupUserDTO } from "../dto/signupUserDTO";
 import { signinUserDTO } from "../dto/signinUserDTO";
+import {
+  sendLessonsDoneToUser,
+  sendLessonsOpenToUser,
+  sendNewUserDataToUser,
+} from "./events";
+import IUser from "../interfaces/user";
+import { Roles } from "../service/roles";
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
-  res.send("Hello its workng & I am testing again");
-});
+const EACH_LESSON_PAY_UP_MONTHLY = 5000;
 
 router.post("/user/signup", async (req, res) => {
   const dto = req.body as signupUserDTO;
@@ -28,6 +33,7 @@ router.post("/user/signup", async (req, res) => {
     const password = await generatePassword(dto.password);
     const user = {
       ...dto,
+      roles: [Roles.STUDENT],
       password,
     };
     const createdUser = new User(user);
@@ -57,7 +63,7 @@ router.post("/user/signin", async (req, res) => {
       });
     }
     const authToken = generateAuthToken(user._id.toString());
-    return res.status(200).send({ authToken });
+    return res.status(200).send({ authToken, user });
   } catch (error) {
     return res.status(400).send();
   }
@@ -65,6 +71,112 @@ router.post("/user/signin", async (req, res) => {
 
 router.get("/user/me", auth, (req, res) => {
   return res.status(200).send(req.user);
+});
+
+router.get("/user/users", auth, async (req, res) => {
+  const { search } = req.query;
+  let users: IUser[] = [];
+  if (search) {
+    users = await User.find({});
+    users = users?.filter((u) =>
+      u.name.toLowerCase().includes((search as string).toLowerCase())
+    );
+  } else {
+    users = await User.find({});
+  }
+
+  // const secureUsers: Omit<IUser, "password">[] = users.map((u) => {
+  //   const { password, ...newU } = u;
+  //   console.log(newU);
+  //   return newU;
+  // });
+  return res.status(200).send(users);
+});
+
+router.post("/user/open", auth, async (req, res) => {
+  const { userId, lessonId } = req.body as { userId: string; lessonId: string };
+  const [user] = await User.find({ _id: userId });
+
+  let newOpenedLessonsList = [...user.lessonsOpen.map((id) => id.toString())];
+  newOpenedLessonsList.push(lessonId);
+  newOpenedLessonsList = Array.from(new Set(newOpenedLessonsList));
+
+  const result = await User.findOneAndUpdate(
+    { _id: userId },
+    { lessonsOpen: newOpenedLessonsList },
+    {
+      new: true,
+    }
+  );
+  sendLessonsOpenToUser(userId, newOpenedLessonsList);
+
+  return res.status(200).send(result);
+});
+router.post("/user/close", auth, async (req, res) => {
+  const { userId, lessonId } = req.body as { userId: string; lessonId: string };
+  const [user] = await User.find({ _id: userId });
+
+  let newOpenedLessonsList = user.lessonsOpen.filter(
+    (id) => id.toString() !== lessonId
+  );
+
+  const result = await User.findOneAndUpdate(
+    { _id: userId },
+    { lessonsOpen: newOpenedLessonsList },
+    {
+      new: true,
+    }
+  );
+  sendLessonsOpenToUser(userId, newOpenedLessonsList);
+
+  return res.status(200).send(result);
+});
+router.post("/user/done", auth, async (req, res) => {
+  const { userId, lessonId } = req.body as { userId: string; lessonId: string };
+
+  const [user] = await User.find({ _id: userId });
+
+  let newLessonsList = [...user.lessonsDone.map((id) => id.toString())];
+  newLessonsList.push(lessonId);
+  newLessonsList = Array.from(new Set(newLessonsList));
+
+  const newSalary = user.salary + EACH_LESSON_PAY_UP_MONTHLY;
+
+  const result = await User.findOneAndUpdate(
+    { _id: userId },
+    { lessonsDone: newLessonsList, salary: newSalary },
+    {
+      new: true,
+    }
+  );
+  sendLessonsDoneToUser(userId, newLessonsList);
+  sendNewUserDataToUser(userId, result);
+
+  return res.status(200).send(result);
+});
+router.post("/user/notdone", auth, async (req, res) => {
+  const { userId, lessonId } = req.body as { userId: string; lessonId: string };
+  const [user] = await User.find({ _id: userId });
+
+  let newLessonsList = user.lessonsDone.filter(
+    (id) => id.toString() !== lessonId
+  );
+
+  let newSalary = user.salary - EACH_LESSON_PAY_UP_MONTHLY;
+  newSalary = newSalary < 0 ? 0 : newSalary;
+
+  const result = await User.findOneAndUpdate(
+    { _id: userId },
+    { lessonsDone: newLessonsList, salary: newSalary },
+    {
+      new: true,
+    }
+  );
+
+  sendLessonsDoneToUser(userId, newLessonsList);
+  sendNewUserDataToUser(userId, result);
+
+  return res.status(200).send(result);
 });
 
 export default router;
