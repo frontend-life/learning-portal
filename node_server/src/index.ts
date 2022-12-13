@@ -41,7 +41,7 @@ app.get("*", (res, req) => {
 
 console.log(process.env.NODE_ENV);
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8000;
 
 app.listen(port, () => {
   console.log(`Server is up on ${port}`);
