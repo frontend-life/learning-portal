@@ -19,13 +19,7 @@ import { Roles } from "../service/roles";
 
 const router = express.Router();
 
-<<<<<<< HEAD
 const EACH_LESSON_PAY_UP_MONTHLY = 5000;
-=======
-router.get("/", async (req, res) => {
-  res.send("Hello");
-});
->>>>>>> edd0548... change
 
 router.post("/user/signup", async (req, res) => {
   const dto = req.body as signupUserDTO;
