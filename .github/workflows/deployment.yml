@@ -1,4 +1,4 @@
-name: Node Github CI
+name: Deploy main branch to Digitl Ocean droplet
 
 on:
   push:
