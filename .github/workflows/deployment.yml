@@ -19,5 +19,4 @@ jobs:
           script: |
             cd /var/www/html/learning-portal/node_server
             git pull origin main
-            yarn build
-            yarn start
+            pm2 start yarn --name "Start App" -- run "start"
