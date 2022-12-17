@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useUserContext } from '../store/UserDetails';
 import { IUser } from '../types/api';
-import { myRequest } from './axios';
+import { getBaseUrl, myRequest } from './axios';
 import { debounce } from './debounce';
 
 export function useGetArrayData<DataType>(url: string) {
@@ -32,7 +32,7 @@ export const useServerEvents = () => {
     useEffect(() => {
         if (!listening && userDetails.isSignedIn) {
             const events = new EventSource(
-                'http://localhost:8000/events?user_id=' + userDetails._id
+                `${getBaseUrl()}/events?user_id=${userDetails._id}`
             );
 
             events.addEventListener('message', (e) => {
