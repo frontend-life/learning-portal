@@ -20,4 +20,5 @@ jobs:
             cd /var/www/html/learning-portal/node_server
             git pull origin main
             yarn build
-            pm2 start yarn --name "Start App" -- run "start"
+            pm2 stop all
+            pm2 start "yarn start"
