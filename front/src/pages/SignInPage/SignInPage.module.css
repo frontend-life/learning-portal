@@ -9,3 +9,9 @@
 .footer {
     margin-top: 54px;
 }
+
+.toRegLink {
+    color: aliceblue;
+    text-decoration: none;
+    padding: 30px;
+}

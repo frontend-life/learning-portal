@@ -7,7 +7,7 @@ import { isEmail } from 'validator';
 import { Button } from '../../components/Button/Button';
 
 import s from './SignInPage.module.css';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useUserContext } from '../../store/UserDetails';
 import { PATHS } from '../../utils/paths';
 import { setToken } from '../../utils/auth';
@@ -62,6 +62,9 @@ export const SignInPage = () => {
                 <div className={s.footer}>
                     <Button onClick={handleSubmit(onSubmit)}>Auth</Button>
                 </div>
+                <Link to="/signup" className={s.toRegLink}>
+                    to registration
+                </Link>
             </BlackBox>
         </MainBlockWrapper>
     );
