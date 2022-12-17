@@ -11,8 +11,8 @@ node_modules
 
 # production
 /build
-#node_server/dist
-#node_server/public
+node_server/dist
+node_server/public
 node_server/.env
 
 # misc
