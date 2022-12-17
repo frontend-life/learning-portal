@@ -36,8 +36,8 @@
     "dev": "yarn mongo_start && ts-node-dev src/index.ts",
     "run:prod": "NODE_ENV=production node ./dist/index.js",
     "build:all": "yarn build:front && yarn build:back",
-    "build:front": "cd ../front && yarn build && cd ../",
-    "build:back": "npx tsc",
+    "build:front": "cd ../front && yarn && yarn build && cd ../",
+    "build:back": "yarn && npx tsc",
     "build": "yarn build:front && yarn build:back",
     "start": "NODE_ENV=production node ./dist/index.js"
   }

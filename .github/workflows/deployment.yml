@@ -6,20 +6,18 @@ on:
       - main
 
 jobs:
-
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: SSH and deploy node app
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USERNAME }}
-        password: ${{ secrets.SSH_PASS }}
-        script: |
-          cd /var/www/html/learning-portal/node_server
-          git pull origin main
-          npm install --production
-          npm run build
-          pm2 restart /var/www/html/learning-portal/node_server/dist/index.js
+      - name: SSH and deploy node app
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASS }}
+          script: |
+            cd /var/www/html/learning-portal/node_server
+            git pull origin main
+            yarn build
+            yarn start
