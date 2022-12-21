@@ -8,7 +8,7 @@ export const PATHS = {
     add_lesson: '/add_lesson',
     tracks: '/tracks',
     rating: '/rating',
-    students: 'students'
+    students: '/students'
 };
 
 // url

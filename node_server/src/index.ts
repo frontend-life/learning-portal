@@ -1,4 +1,4 @@
-import { telegram, T_METHODS, setOffset, getOffset } from "./service/axios";
+// import { telegram, T_METHODS, setOffset, getOffset } from "./service/axios";
 import { auth } from "./middleware/auth";
 require("dotenv").config();
 import express from "express";
@@ -40,23 +40,22 @@ app.get("/checkTelegramConnection", auth, (req, res) => {
   res.status(200).send(req.user);
 });
 
-
-setInterval(() => {
-  telegram
-    .post(T_METHODS.GET_UPDATES, {
-      offset: getOffset(),
-    })
-    .then((res) => {
-      const updates = res?.data?.result || [];
-      if (updates.length === 0) {
-        console.log(updates);
-        return;
-      }
-      const offset = updates[updates.length - 1].update_id + 1;
-      setOffset(offset);
-      console.log(updates);
-    });
-}, 5000);
+// setInterval(() => {
+//   telegram
+//     .post(T_METHODS.GET_UPDATES, {
+//       offset: getOffset(),
+//     })
+//     .then((res) => {
+//       const updates = res?.data?.result || [];
+//       if (updates.length === 0) {
+//         console.log(updates);
+//         return;
+//       }
+//       const offset = updates[updates.length - 1].update_id + 1;
+//       setOffset(offset);
+//       console.log(updates);
+//     });
+// }, 5000);
 
 app.get("*", (res, req) => {
   const url = "../public/index.html";
@@ -65,7 +64,8 @@ app.get("*", (res, req) => {
 
 console.log(process.env.NODE_ENV);
 
-const port = process.env.PORT || 8000;
+const port =
+  process.env.PORT || (process.env.NODE_ENV === "production" ? 3000 : 3001);
 
 app.listen(port, () => {
   console.log(`Server is up on ${port}`);

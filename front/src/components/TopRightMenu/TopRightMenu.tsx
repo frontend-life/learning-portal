@@ -28,6 +28,14 @@ const items = [
         link: PATHS.add_lesson
     },
     {
+        text: 'students',
+        link: PATHS.students
+    },
+    {
+        text: 'ratings',
+        link: PATHS.rating
+    },
+    {
         text: 'Log Out'
     }
 ];

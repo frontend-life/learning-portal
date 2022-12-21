@@ -102,3 +102,12 @@ content-type: application/json
         [inline URL](http://some.net/lesson?lessonId=638afd80d34ab8e761e2febf&studentId=6381db447f587110860a4381)
         ",
 }
+
+
+### setWebhook
+POST https://api.telegram.org/bot5965431146:AAGXWWL1YH48beGVX28fcL-OXEUFLv_qgfQ/setWebhook
+content-type: application/json
+
+{
+    "url": "https://",
+}

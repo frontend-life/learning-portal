@@ -3,6 +3,7 @@ import ModalImage from 'react-modal-image';
 import { format } from 'date-fns';
 import { Chat } from '../../components/Chat/Chat';
 import s from './Lesson.module.css';
+import { getBaseUrl } from '../../utils/axios';
 
 export const Homework = ({
     h,
@@ -31,7 +32,7 @@ export const Homework = ({
             </pre>
             <div className={s.attachments}>
                 {attachments.map((att) => {
-                    const url = `http://localhost:8000/${
+                    const url = `${getBaseUrl()}/${
                         att.path.split('public')[1]
                     }`;
                     return (
