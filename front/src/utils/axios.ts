@@ -2,8 +2,12 @@ import { getToken } from './auth';
 import axios from 'axios';
 import { addErrorNt } from './notification';
 
+export const getPort = () => 3001;
+
 export const getBaseUrl = () =>
-    process.env.NODE_ENV === 'production' ? '' : 'http://localhost:8000';
+    process.env.NODE_ENV === 'production'
+        ? ''
+        : `http://localhost:${getPort()}`;
 
 export const myRequest = axios.create({
     baseURL: getBaseUrl(),
