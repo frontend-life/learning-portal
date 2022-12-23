@@ -7,17 +7,20 @@ export function eventsHandler(request, response) {
     Connection: "keep-alive",
     "Cache-Control": "no-cache",
   };
+  console.log("headers", headers);
+
   response.writeHead(200, headers);
 
   // const data = ` data: ${JSON.stringify(facts)}\n\n`;
 
   response.write("data: events connected\n\n");
+  console.log("response.write(data: events connected\n\n);");
 
   const newClient = {
     id: user_id,
     response,
   };
-
+  response.write("clients push", newClient);
   clients.push(newClient);
 
   request.on("close", () => {
