@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { LoadingAnimation } from '../components/LoadingAnimation/LoadingAnimation';
 import { IUser } from '../types/api';
 import { getToken } from '../utils/auth';
-import { myRequest } from '../utils/axios';
+import { API_URLS, myRequest } from '../utils/axios';
 import { useServerEvents } from '../utils/hooks';
 
 type UserData = {
@@ -30,7 +30,7 @@ const UserDetailsProvider = (props) => {
 
     useEffect(() => {
         myRequest
-            .get('/user/me')
+            .get(API_URLS.ME)
             .then((data) => {
                 if (!userDetails.isSignedIn && getToken()) {
                     setUserDetails((prev) => ({
