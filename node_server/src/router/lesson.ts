@@ -3,7 +3,6 @@ import express from "express";
 import { Lesson } from "./../models/lesson";
 import { auth } from "../middleware/auth";
 import { createLessonDTO } from "../dto/createLessonDTO";
-import mongoose from "mongoose";
 import { ObjectId } from "mongodb";
 
 const router = express.Router();
@@ -12,7 +11,6 @@ router.post("/lesson/create", auth, async (req, res) => {
   const dto = req.body as createLessonDTO;
   const lesson = new Lesson({
     ...dto,
-    owner: req.user._id,
   });
   try {
     lesson.save();
@@ -41,7 +39,7 @@ router.put("/lesson", auth, async (req, res) => {
 
 router.get("/lesson/lessons", auth, async (req, res) => {
   try {
-    const lessons = await Lesson.find({ owner: req.user._id });
+    const lessons = await Lesson.find();
     return res.status(200).send(lessons);
   } catch (error) {
     return res.status(500).send();
