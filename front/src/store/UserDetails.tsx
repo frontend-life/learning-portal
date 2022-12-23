@@ -3,6 +3,7 @@ import { LoadingAnimation } from '../components/LoadingAnimation/LoadingAnimatio
 import { IUser } from '../types/api';
 import { getToken } from '../utils/auth';
 import { myRequest } from '../utils/axios';
+import { useServerEvents } from '../utils/hooks';
 
 type UserData = {
     isSignedIn: boolean;

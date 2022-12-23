@@ -2,6 +2,8 @@ import { getToken } from './auth';
 import axios from 'axios';
 import { addErrorNt } from './notification';
 
+const NO_TOKEN_ERROR = 'No token';
+
 export const getPort = () => 3001;
 
 export const getBaseUrl = () =>
@@ -17,6 +19,12 @@ export const myRequest = axios.create({
 myRequest.interceptors.request.use(
     function (config) {
         const token = getToken();
+        if (
+            !token &&
+            ![API_URLS.SIGN_IN, API_URLS.SIGN_UP].includes(config.url as string)
+        ) {
+            throw new Error(NO_TOKEN_ERROR);
+        }
         config.headers = {
             ...config.headers,
             Authorization: `Bearer ${token}`
@@ -37,6 +45,10 @@ myRequest.interceptors.response.use(
         return response.data;
     },
     (error) => {
+        console.log(error);
+        if (error.message === NO_TOKEN_ERROR) {
+            return Promise.reject(error.message);
+        }
         if (error.response.status === 404) {
             addErrorNt('404: Not found');
         }
@@ -46,3 +58,8 @@ myRequest.interceptors.response.use(
         return Promise.reject(error.response);
     }
 );
+
+export const API_URLS = {
+    SIGN_IN: '/user/signin',
+    SIGN_UP: '/user/signup'
+};

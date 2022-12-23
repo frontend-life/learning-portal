@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { BlackBox } from '../../components/BlackBox/BlackBox';
 import { Input } from '../../components/Input/Input';
 import MainBlockWrapper from '../../components/MainBlockWrapper/MainBlockWrapper';
-import { myRequest } from '../../utils/axios';
+import { API_URLS, myRequest } from '../../utils/axios';
 import { isEmail } from 'validator';
 import { Button } from '../../components/Button/Button';
 
@@ -15,14 +15,16 @@ import { setToken } from '../../utils/auth';
 export const SignInPage = () => {
     const nav = useNavigate();
     const { setUserDetails } = useUserContext();
+
     const {
         register,
         handleSubmit,
         formState: { errors }
     } = useForm();
+
     const onSubmit = (data) => {
         myRequest
-            .post('/user/signin', data)
+            .post(API_URLS.SIGN_IN, data)
             .then((res: any) => {
                 setUserDetails((prev) => ({
                     ...prev,
