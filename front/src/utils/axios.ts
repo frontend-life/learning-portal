@@ -63,9 +63,10 @@ myRequest.interceptors.response.use(
     }
 );
 
+// Prefix /api added in interceptor
 export const API_URLS = {
-    SIGN_IN: `/${API_PREFIX}/user/signin`,
-    SIGN_UP: `/${API_PREFIX}/user/signup`,
-    LESSONS: `/${API_PREFIX}/lesson/lessons`,
-    COURSES: `/${API_PREFIX}/course/courses`
+    SIGN_IN: `/user/signin`,
+    SIGN_UP: `/user/signup`,
+    LESSONS: `/lesson/lessons`,
+    COURSES: `/course/courses`
 };
