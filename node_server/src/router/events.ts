@@ -17,7 +17,7 @@ export function eventsHandler(request, response) {
     id: user_id,
     response,
   };
-  response.write(createEventMessage({ newClient }));
+
   clients.push(newClient);
 
   request.on("close", () => {
