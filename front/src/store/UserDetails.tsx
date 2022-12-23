@@ -29,26 +29,25 @@ const UserDetailsProvider = (props) => {
     const [startAnimation, setStartAnimation] = useState(true);
 
     useEffect(() => {
-        myRequest.get('/user/me').then((data) => {
-            if (!userDetails.isSignedIn && getToken()) {
-                setUserDetails((prev) => ({
-                    ...prev,
-                    ...data,
-                    isSignedIn: true
-                }));
-                return null;
-            }
-        });
+        myRequest
+            .get('/user/me')
+            .then((data) => {
+                if (!userDetails.isSignedIn && getToken()) {
+                    setUserDetails((prev) => ({
+                        ...prev,
+                        ...data,
+                        isSignedIn: true
+                    }));
+                    return null;
+                }
+            })
+            .finally(() => {
+                setStartAnimation(false);
+            });
     }, []);
 
     if (startAnimation) {
-        return (
-            <LoadingAnimation
-                onEnd={() => {
-                    setStartAnimation(false);
-                }}
-            />
-        );
+        return <LoadingAnimation />;
     }
 
     return (
