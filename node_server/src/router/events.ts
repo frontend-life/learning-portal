@@ -1,6 +1,7 @@
-let clients: Array<{ id: number; response: any }> = [];
+const clients: { id: any } | {} = {};
 export function eventsHandler(request, response) {
   const user_id = request.originalUrl.split("=")[1];
+  console.log("Events connection started");
   const headers = {
     "Content-Type": "text/event-stream",
     Connection: "keep-alive",
@@ -8,34 +9,29 @@ export function eventsHandler(request, response) {
   };
 
   response.writeHead(200, headers);
-
+  console.log("Events connection writeHead", headers);
   // const data = ` data: ${JSON.stringify(facts)}\n\n`;
 
   response.write("data: events connected\n\n");
+  console.log("Events connection response.write");
 
-  const newClient = {
-    id: user_id,
-    response,
-  };
-
-  clients.push(newClient);
+  clients[user_id] = response;
+  console.log("Events connection clients.push(newClient);");
 
   request.on("close", () => {
-    clients = clients.filter((client) => client.id !== user_id);
+    console.log("Events connection closed");
+    delete clients[user_id];
   });
 }
 function createEventMessage(data: any) {
   return `data: ${typeof data === "string" ? data : JSON.stringify(data)} \n\n`;
 }
 export function sendLessonsDoneToUser(user_id, newLessonsDone) {
-  const client = clients.find((client) => client.id === user_id);
-  client?.response?.write(createEventMessage({ lessonsDone: newLessonsDone }));
+  clients[user_id]?.write(createEventMessage({ lessonsDone: newLessonsDone }));
 }
 export function sendLessonsOpenToUser(user_id, newLessonsDone) {
-  const client = clients.find((client) => client.id === user_id);
-  client?.response?.write(createEventMessage({ lessonsOpen: newLessonsDone }));
+  clients[user_id]?.write(createEventMessage({ lessonsOpen: newLessonsDone }));
 }
 export function sendNewUserDataToUser(user_id, userData) {
-  const client = clients.find((client) => client.id === user_id);
-  client?.response?.write(createEventMessage({ userData }));
+  clients[user_id]?.write(createEventMessage({ userData }));
 }
