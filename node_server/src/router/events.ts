@@ -1,30 +1,26 @@
 let clients: Array<{ id: number; response: any }> = [];
 export function eventsHandler(request, response) {
   const user_id = request.originalUrl.split("=")[1];
-  console.log("Events connected for user_id: " + user_id);
   const headers = {
     "Content-Type": "text/event-stream",
     Connection: "keep-alive",
     "Cache-Control": "no-cache",
   };
-  console.log("headers", headers);
 
   response.writeHead(200, headers);
 
   // const data = ` data: ${JSON.stringify(facts)}\n\n`;
 
   response.write("data: events connected\n\n");
-  console.log("response.write(data: events connected\n\n);");
 
   const newClient = {
     id: user_id,
     response,
   };
-  response.write("clients push", newClient);
+  response.write(createEventMessage({ newClient }));
   clients.push(newClient);
 
   request.on("close", () => {
-    console.log(`${user_id} Connection closed`);
     clients = clients.filter((client) => client.id !== user_id);
   });
 }
