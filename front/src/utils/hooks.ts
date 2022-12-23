@@ -83,14 +83,16 @@ export const useDebounceUsersSearch = (search: string) => {
     );
 
     useEffect(() => {
-        setLoadingBySearch(true);
-        debouncedReloadUsers(
-            mountRef.current,
-            `/user/users?search=${search}`
-        ).finally(() => {
-            setLoadingBySearch(false);
-        });
-        mountRef.current = false;
+        if (search) {
+            setLoadingBySearch(true);
+            debouncedReloadUsers(
+                mountRef.current,
+                `/user/users?search=${search}`
+            ).finally(() => {
+                setLoadingBySearch(false);
+            });
+            mountRef.current = false;
+        }
     }, [debouncedReloadUsers, search]);
 
     return { loadingBySearch, ...getUsersUtils };
