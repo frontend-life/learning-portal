@@ -3,17 +3,21 @@ import axios from 'axios';
 import { addErrorNt } from './notification';
 
 const NO_TOKEN_ERROR = 'No token';
+const API_PREFIX = 'api';
 
 export const getPort = () => 3001;
 
-export const getBaseUrl = () =>
-    process.env.NODE_ENV === 'production'
+export const getBaseApiUrl = () => `${getBaseUrl()}/${API_PREFIX}`;
+
+export const getBaseUrl = () => {
+    return process.env.NODE_ENV === 'production'
         ? ''
         : `http://localhost:${getPort()}`;
+};
 
 export const myRequest = axios.create({
-    baseURL: getBaseUrl(),
-    timeout: 1000
+    baseURL: getBaseApiUrl(),
+    timeout: 10000
 });
 
 myRequest.interceptors.request.use(
@@ -60,6 +64,8 @@ myRequest.interceptors.response.use(
 );
 
 export const API_URLS = {
-    SIGN_IN: '/user/signin',
-    SIGN_UP: '/user/signup'
+    SIGN_IN: `/${API_PREFIX}/user/signin`,
+    SIGN_UP: `/${API_PREFIX}/user/signup`,
+    LESSONS: `/${API_PREFIX}/lesson/lessons`,
+    COURSES: `/${API_PREFIX}/course/courses`
 };

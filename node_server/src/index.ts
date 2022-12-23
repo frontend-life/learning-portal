@@ -1,16 +1,10 @@
 // import { telegram, T_METHODS, setOffset, getOffset } from "./service/axios";
-import { auth } from "./middleware/auth";
 require("dotenv").config();
 import express from "express";
 import cors from "cors";
 
-import userRouter from "./router/user";
-import lessonRouter from "./router/lesson";
-import courseRouter from "./router/course";
-import homeworkRouter from "./router/homework";
-import attachRouter from "./router/attachments";
-import { eventsHandler } from "./router/events";
 import path from "path";
+import apiRouter from "./router";
 
 import("./db/mongoose");
 
@@ -29,16 +23,7 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(cors());
 app.use(express.static("public"));
 
-app.use(userRouter);
-app.use(lessonRouter);
-app.use(courseRouter);
-app.use(homeworkRouter);
-app.use(attachRouter);
-app.get("/events", eventsHandler);
-app.get("/checkTelegramConnection", auth, (req, res) => {
-  const { _id } = req.user;
-  res.status(200).send(req.user);
-});
+app.use("/api", apiRouter);
 
 // setInterval(() => {
 //   telegram
