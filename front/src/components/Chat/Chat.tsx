@@ -73,13 +73,15 @@ export const Chat = ({ lessonId, onReload, hwId }: ChatProps) => {
             saveHwToServer(data);
             return;
         } else {
-            sendImagesToServer().then((responseWithAttaches) => {
-                const attachesIds = responseWithAttaches.map(
-                    ({ attach }) => attach._id
-                );
-                data.content.attachments = attachesIds;
-                saveHwToServer(data);
-            });
+            sendImagesToServer()
+                .then((responseWithAttaches) => {
+                    const attachesIds = responseWithAttaches.map(
+                        ({ attach }) => attach._id
+                    );
+                    data.content.attachments = attachesIds;
+                    saveHwToServer(data);
+                })
+                .catch((e) => console.log(e));
         }
     };
 
@@ -92,6 +94,7 @@ export const Chat = ({ lessonId, onReload, hwId }: ChatProps) => {
             )
         ).catch((e) => {
             addErrorNt('Some error with saving attachments');
+            throw e;
         });
     }, [imgsToPreview, myRequest.post, addErrorNt]);
 
