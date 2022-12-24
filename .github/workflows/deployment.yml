@@ -20,5 +20,6 @@ jobs:
             cd /var/www/html/learning-portal/node_server
             git pull origin main
             yarn build
+            mv ./buildFrontStatic/* ./public/
             pm2 stop all
             pm2 start "yarn start"
