@@ -32,9 +32,7 @@ export const Homework = ({
             </pre>
             <div className={s.attachments}>
                 {attachments.map((att) => {
-                    const url = `${getBaseUrl()}/${
-                        att.path.split('public')[1]
-                    }`;
+                    const url = `${getBaseUrl()}${att.path.split('public')[1]}`;
                     return (
                         <div key={att._id} className={s.hw_img}>
                             <ModalImage
