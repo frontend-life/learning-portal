@@ -34,8 +34,6 @@
     "mongo_stop": "sudo systemctl stop mongod",
     "dev:old": "concurrently \"npx tsc --watch\" \"MODE=dev nodemon -q dist/index.js\"",
     "dev": "yarn mongo_start && ts-node-dev src/index.ts",
-    "run:prod": "NODE_ENV=production node ./dist/index.js",
-    "build:all": "yarn build:front && yarn build:back",
     "build:front": "cd ../front && yarn && yarn build && cd ../",
     "build:back": "yarn && npx tsc",
     "build": "yarn build:front && yarn build:back",
