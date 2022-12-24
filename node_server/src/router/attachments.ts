@@ -25,7 +25,7 @@ router.post("/attachment", auth, upload.single("file"), async (req, res) => {
     const attach = await attachDB.save();
     return res.status(200).json({ attach });
   } catch (error) {
-    return res.status(400).send();
+    return res.status(500).send();
   }
 });
 

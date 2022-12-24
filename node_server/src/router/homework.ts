@@ -5,6 +5,7 @@ import express from "express";
 import { Homework } from "../models/homework";
 import { auth } from "../middleware/auth";
 import IHomework from "../interfaces/homework";
+import { baseUrl } from "../utils";
 
 const router = express.Router();
 
@@ -41,8 +42,7 @@ router.post("/homework", auth, async (req, res) => {
       const messageToMe = `
       _New homework from ${req.user.name}_ 
       
-      http://localhost:3000/lesson?lessonId\\=${dto.lessonId}&studentId\\=${req.user._id}
-      [inline URL which will bi clickable](http://here-should-be-host.something/lesson?lessonId=${dto.lessonId}&studentId=${req.user._id})
+      [Click to see it](${baseUrl}lesson?lessonId=${dto.lessonId}&studentId=${req.user._id})
       `;
       telegram
         .post(T_METHODS.SEND_MESSAGE, {

@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { LoadingAnimation } from '../components/LoadingAnimation/LoadingAnimation';
 import { IUser } from '../types/api';
 import { getToken } from '../utils/auth';
-import { myRequest } from '../utils/axios';
+import { API_URLS, myRequest } from '../utils/axios';
 import { useServerEvents } from '../utils/hooks';
 
 type UserData = {
@@ -29,26 +29,25 @@ const UserDetailsProvider = (props) => {
     const [startAnimation, setStartAnimation] = useState(true);
 
     useEffect(() => {
-        myRequest.get('/user/me').then((data) => {
-            if (!userDetails.isSignedIn && getToken()) {
-                setUserDetails((prev) => ({
-                    ...prev,
-                    ...data,
-                    isSignedIn: true
-                }));
-                return null;
-            }
-        });
+        myRequest
+            .get(API_URLS.ME)
+            .then((data) => {
+                if (!userDetails.isSignedIn && getToken()) {
+                    setUserDetails((prev) => ({
+                        ...prev,
+                        ...data,
+                        isSignedIn: true
+                    }));
+                    return null;
+                }
+            })
+            .finally(() => {
+                setStartAnimation(false);
+            });
     }, []);
 
     if (startAnimation) {
-        return (
-            <LoadingAnimation
-                onEnd={() => {
-                    setStartAnimation(false);
-                }}
-            />
-        );
+        return <LoadingAnimation />;
     }
 
     return (
