@@ -11,7 +11,7 @@ export const getBaseApiUrl = () => `${getBaseUrl()}/${API_PREFIX}`;
 
 export const getBaseUrl = () => {
     return process.env.NODE_ENV === 'production'
-        ? ''
+        ? 'https://thelabl.academy'
         : `http://localhost:${getPort()}`;
 };
 

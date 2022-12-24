@@ -33,6 +33,7 @@ export const Homework = ({
             <div className={s.attachments}>
                 {attachments.map((att) => {
                     const url = `${getBaseUrl()}${att.path.split('public')[1]}`;
+                    console.log('attachment url', url);
                     return (
                         <div key={att._id} className={s.hw_img}>
                             <ModalImage
