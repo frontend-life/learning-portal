@@ -5,16 +5,9 @@ import { useUserContext } from '../../store/UserDetails';
 import { MenuSvg } from './menuSvg';
 import s from './TopRightMenu.module.css';
 import { useLogout } from '../../utils/auth';
+import { Roles } from '../../types/api';
 
 const items = [
-    {
-        text: 'Sign In',
-        link: PATHS.signin
-    },
-    {
-        text: 'Sign Up',
-        link: PATHS.signup
-    },
     {
         text: 'Lessons',
         link: PATHS.lessons
@@ -25,11 +18,13 @@ const items = [
     },
     {
         text: 'add lesson',
-        link: PATHS.add_lesson
+        link: PATHS.add_lesson,
+        forTeacher: true
     },
     {
         text: 'students',
-        link: PATHS.students
+        link: PATHS.students,
+        forTeacher: true
     },
     {
         text: 'ratings',
@@ -52,21 +47,27 @@ export const TopRightMenu = () => {
         >
             <MenuSvg />
             <div className={s.menu}>
-                {items.map((i) => {
-                    if (!i.link) {
+                {items.map(({ link, forTeacher, text }) => {
+                    if (
+                        forTeacher &&
+                        !user.userDetails.roles.includes(Roles.TEACHER)
+                    ) {
+                        return null;
+                    }
+                    if (!link) {
                         return (
                             <span
                                 onClick={logOut}
-                                key={i.text}
+                                key={text}
                                 className={s.item}
                             >
-                                {i.text}
+                                {text}
                             </span>
                         );
                     }
                     return (
-                        <Link key={i.link} className={s.item} to={i.link}>
-                            {i.text}
+                        <Link key={link} className={s.item} to={link}>
+                            {text}
                         </Link>
                     );
                 })}
