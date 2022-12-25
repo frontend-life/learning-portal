@@ -43,11 +43,14 @@ app.use("/api", apiRouter);
 // }, 5000);
 
 app.get("*", (res, req) => {
+  if (process.env.NODE_ENV === "development") {
+    return req.status(404).send();
+  }
   const url = "../public/index.html";
   req.sendFile(path.join(__dirname, url));
 });
 
-console.log(process.env.NODE_ENV);
+console.log();
 
 const port =
   process.env.PORT || (process.env.NODE_ENV === "production" ? 3000 : 3001);
