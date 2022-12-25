@@ -31,6 +31,11 @@ const items = [
         link: PATHS.rating
     },
     {
+        text: 'homeworks',
+        link: PATHS.homeworks,
+        forTeacher: true
+    },
+    {
         text: 'Log Out'
     }
 ];
