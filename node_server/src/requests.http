@@ -109,5 +109,9 @@ POST https://api.telegram.org/bot5965431146:AAGXWWL1YH48beGVX28fcL-OXEUFLv_qgfQ/
 content-type: application/json
 
 {
-    "url": "https://",
+    "url": "https://thelabl.academy/api/telegramUpdates",
 }
+
+### getWebhookInfo
+POST https://api.telegram.org/bot5965431146:AAGXWWL1YH48beGVX28fcL-OXEUFLv_qgfQ/getWebhookInfo
+content-type: application/json

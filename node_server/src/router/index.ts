@@ -22,5 +22,10 @@ router.get("/checkTelegramConnection", auth, (req, res) => {
   const { _id } = req.user;
   res.status(200).send(req.user);
 });
+router.post("/telegramUpdates", (req, res) => {
+  console.log(req?.body);
+  console.log(req?.url);
+  res.status(200).send();
+});
 
 export default router;

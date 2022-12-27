@@ -51,8 +51,6 @@ app.get("*", (res, req) => {
   req.sendFile(path.join(__dirname, url));
 });
 
-console.log();
-
 const port = process.env.PORT || (isProd() ? 3000 : 3001);
 
 app.listen(port, () => {
