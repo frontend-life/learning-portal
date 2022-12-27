@@ -154,13 +154,6 @@ function Lesson() {
                         </div>
                     )}
                 </div>
-                {!lessonDone && (
-                    <HWDoneButton
-                        lessonId={params.lessonId}
-                        studentId={params.studentId}
-                        onAfterAprove={reloadHW}
-                    />
-                )}
             </div>
         </MainBlockWrapper>
     );

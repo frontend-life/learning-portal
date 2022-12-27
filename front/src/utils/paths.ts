@@ -14,6 +14,9 @@ export const PATHS = {
 
 // url
 export const qp = (queryString: string) => {
+    if (!queryString) {
+        return {};
+    }
     return queryString
         ?.split('?')[1]
         ?.split('&')

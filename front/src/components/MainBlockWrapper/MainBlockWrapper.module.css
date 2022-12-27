@@ -26,4 +26,5 @@
     justify-content: center;
     align-items: center;
     padding: 20px;
+    min-height: 0; /* to fix overflow stretch problems for children */
 }

@@ -69,5 +69,6 @@ export const API_URLS = {
     SIGN_UP: `/user/signup`,
     LESSONS: `/lesson/lessons`,
     COURSES: `/course/courses`,
-    ME: '/user/me'
+    ME: '/user/me',
+    HOMEWORKS: '/homework'
 };
