@@ -5,6 +5,7 @@ import cors from "cors";
 
 import path from "path";
 import apiRouter from "./router";
+import { isProd } from "./utils";
 
 import("./db/mongoose");
 
@@ -43,14 +44,14 @@ app.use("/api", apiRouter);
 // }, 5000);
 
 app.get("*", (res, req) => {
+  if (!isProd()) {
+    return req.status(404).send();
+  }
   const url = "../public/index.html";
   req.sendFile(path.join(__dirname, url));
 });
 
-console.log(process.env.NODE_ENV);
-
-const port =
-  process.env.PORT || (process.env.NODE_ENV === "production" ? 3000 : 3001);
+const port = process.env.PORT || (isProd() ? 3000 : 3001);
 
 app.listen(port, () => {
   console.log(`Server is up on ${port}`);

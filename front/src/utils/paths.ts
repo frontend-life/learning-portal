@@ -8,11 +8,15 @@ export const PATHS = {
     add_lesson: '/add_lesson',
     tracks: '/tracks',
     rating: '/rating',
-    students: '/students'
+    students: '/students',
+    homeworks: '/homeworks'
 };
 
 // url
 export const qp = (queryString: string) => {
+    if (!queryString) {
+        return {};
+    }
     return queryString
         ?.split('?')[1]
         ?.split('&')

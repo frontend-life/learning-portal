@@ -7,7 +7,7 @@ import { API_URLS, myRequest } from '../../utils/axios';
 import { isEmail } from 'validator';
 
 import s from './SignUpPage.module.css';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { PATHS } from '../../utils/paths';
 import addNt from '../../utils/notification';
 
@@ -78,6 +78,9 @@ export function SignUpPage() {
                         Registration
                     </Button>
                 </div>
+                <Link to="/signin" className={s.toRegLink}>
+                    to authorization
+                </Link>
             </BlackBox>
         </MainBlockWrapper>
     );

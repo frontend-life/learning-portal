@@ -14,6 +14,7 @@ import { NotificationSystem } from './components/NotificationSystem/Notification
 import { useServerEvents } from './utils/hooks';
 import { Rating } from './pages/Rating/Rating';
 import { AddLesson } from './pages/AddLesson/AddLesson';
+import { Homeworks } from './pages/Homeworks/Homeworks';
 
 const urls = [
     {
@@ -49,6 +50,10 @@ const urls = [
     {
         path: PATHS.rating,
         Element: Rating
+    },
+    {
+        path: PATHS.homeworks,
+        Element: Homeworks
     }
 ];
 

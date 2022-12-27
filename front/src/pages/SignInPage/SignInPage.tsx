@@ -35,7 +35,7 @@ export const SignInPage = () => {
                 nav(PATHS.profile);
             })
             .catch((e) => {
-                alert(e.data.message);
+                console.log(e.data.message);
             });
     };
     return (

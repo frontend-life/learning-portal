@@ -5,7 +5,7 @@ import express from "express";
 import { Homework } from "../models/homework";
 import { auth } from "../middleware/auth";
 import IHomework from "../interfaces/homework";
-import { baseUrl } from "../utils";
+import { baseUrl, isProd } from "../utils";
 
 const router = express.Router();
 
@@ -38,25 +38,40 @@ router.post("/homework", auth, async (req, res) => {
       studentId: req.user._id,
     });
     const sentHw = await hw.save();
-    try {
-      const messageToMe = `
+    if (isProd()) {
+      try {
+        const messageToMe = `
       _New homework from ${req.user.name}_ 
       
       [Click to see it](${baseUrl}lesson?lessonId=${dto.lessonId}&studentId=${req.user._id})
       `;
-      telegram
-        .post(T_METHODS.SEND_MESSAGE, {
-          chat_id: 794272343,
-          parse_mode: "MarkdownV2",
-          text: messageToMe,
-        })
-        .catch(console.log);
-    } catch {
-      console.log("Telegram send to me hw is lost");
+        telegram
+          .post(T_METHODS.SEND_MESSAGE, {
+            chat_id: 794272343,
+            parse_mode: "MarkdownV2",
+            text: messageToMe,
+          })
+          .catch(console.log);
+      } catch {
+        console.log("Telegram send to me hw is lost");
+      }
     }
     return res.status(201).send({ homework: sentHw });
   } catch (error) {
     return res.status(400).send();
+  }
+});
+
+router.get("/homework", async (req, res) => {
+  try {
+    const hws = await Homework.find()
+      .populate("lessonId")
+      .populate("studentId")
+      .populate("content.attachments")
+      .populate("answer.content.attachments");
+    return res.status(200).send(hws);
+  } catch (error) {
+    return res.status(500).send();
   }
 });
 
