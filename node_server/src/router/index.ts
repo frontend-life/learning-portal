@@ -5,6 +5,7 @@ import lessonRouter from "./lesson";
 import courseRouter from "./course";
 import homeworkRouter from "./homework";
 import attachRouter from "./attachments";
+import telegramRouter from "./telegram";
 
 import { eventsHandler } from "./events";
 
@@ -15,6 +16,7 @@ router.use(lessonRouter);
 router.use(courseRouter);
 router.use(homeworkRouter);
 router.use(attachRouter);
+router.use(telegramRouter);
 
 router.get("/events", eventsHandler);
 
