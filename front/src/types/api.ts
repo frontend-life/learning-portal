@@ -28,6 +28,7 @@ export interface IUser {
     lessonsDone: string[];
     lessonsOpen: string[];
     roles: Roles[];
+    telegramChatId: number;
 }
 
 export interface IHomework {

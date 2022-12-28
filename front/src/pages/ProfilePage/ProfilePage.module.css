@@ -60,4 +60,12 @@
     color: white;
     text-align: center;
     cursor: pointer;
+    display: block;
+    text-decoration-line: none;
+    white-space: nowrap;
+}
+.telegramConnectionId {
+    white-space: nowrap;
+    margin-top: 20px;
+    display: inline-block;
 }
