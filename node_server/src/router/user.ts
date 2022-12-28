@@ -17,6 +17,7 @@ import {
 import IUser from "../interfaces/user";
 import { Roles } from "../service/roles";
 import { telegram, T_METHODS } from "../service/axios";
+import { isValidObjectId } from "mongoose";
 
 const router = express.Router();
 
@@ -211,9 +212,8 @@ router.post("/telegramUpdates", async (req, res) => {
   const chatId = req?.body?.message?.chat?.id;
   const text = req?.body?.message?.text;
   const [phrase, id] = text.split(" ");
-  const idIsNumber = !Number.isNaN(Number(id));
 
-  if (phrase === "ICan" && idIsNumber) {
+  if (phrase === "ICan" && isValidObjectId(id)) {
     try {
       const userExists = await User.findOneAndUpdate(
         { _id: id },
@@ -233,6 +233,13 @@ router.post("/telegramUpdates", async (req, res) => {
         })
         .catch(console.log);
     } catch {
+      telegram
+        .post(T_METHODS.SEND_MESSAGE, {
+          chat_id: chatId,
+          parse_mode: "MarkdownV2",
+          text: "Sorry, incorrect",
+        })
+        .catch(console.log);
       console.log("User telegram saving was failed");
     }
   } else {
@@ -240,7 +247,7 @@ router.post("/telegramUpdates", async (req, res) => {
       .post(T_METHODS.SEND_MESSAGE, {
         chat_id: chatId,
         parse_mode: "MarkdownV2",
-        text: "Sorry, incorrect command",
+        text: "Sorry, incorrect",
       })
       .catch(console.log);
   }
