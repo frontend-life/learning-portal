@@ -229,7 +229,7 @@ router.post("/telegramUpdates", async (req, res) => {
         .post(T_METHODS.SEND_MESSAGE, {
           chat_id: chatId,
           parse_mode: "MarkdownV2",
-          text: "Success! Now, you will got notifications about homeworks here (if server is alive)",
+          text: "Success\\! Now, you will got notifications about homeworks here (if server is alive)",
         })
         .catch(console.log);
     } catch {
