@@ -58,7 +58,7 @@ ${createMarkdown.lessonLink(hwToUpdate.lessonId.toString(), user._id)}
         const messageToMe = `
       _New homework from ${req.user.name}_ 
       
-      ${createMarkdown.lessonLink(dto.lessonId.toString(), req.user._id)}
+      ${createMarkdown.homeworkLink(hw._id.toString(), req.user.name)}
       `;
         tlgSendMessage({
           chat_id: 794272343,
