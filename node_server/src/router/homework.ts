@@ -7,6 +7,7 @@ import { Homework } from "../models/homework";
 import { auth } from "../middleware/auth";
 import IHomework from "../interfaces/homework";
 import { isProd } from "../utils";
+import { User } from "../models/user";
 
 const router = express.Router();
 
@@ -27,6 +28,19 @@ router.post("/homework", auth, async (req, res) => {
         },
         { new: true }
       );
+      if (hwToUpdate) {
+        const user = await User.findById(hwToUpdate.studentId);
+        if (!user) return;
+        tlgSendMessage({
+          chat_id: user.telegramChatId,
+          text: `
+There is answer to your homework
+
+${createMarkdown.lessonLink(hwToUpdate.lessonId.toString(), user._id)}
+`,
+        });
+      }
+
       return res.status(201).send();
     } catch {
       return res.status(400).send();
