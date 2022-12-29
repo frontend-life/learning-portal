@@ -1,3 +1,6 @@
+import { ICourse } from "./../../../front/src/types/api";
+import { Lesson } from "./../models/lesson";
+import { tlgSendMessage } from "./../service/axios";
 import express from "express";
 
 import { User } from "./../models/user";
@@ -16,6 +19,7 @@ import {
 } from "./events";
 import IUser from "../interfaces/user";
 import { Roles } from "../service/roles";
+import { createMarkdown } from "../service/telegram";
 
 const router = express.Router();
 
@@ -135,6 +139,9 @@ router.post("/user/done", auth, async (req, res) => {
   const { userId, lessonId } = req.body as { userId: string; lessonId: string };
 
   const [user] = await User.find({ _id: userId });
+  if (!user) {
+    res.send(404).send();
+  }
 
   let newLessonsList = [...user.lessonsDone.map((id) => id.toString())];
   newLessonsList.push(lessonId);
@@ -151,12 +158,16 @@ router.post("/user/done", auth, async (req, res) => {
   );
   sendLessonsDoneToUser(userId, newLessonsList);
   sendNewUserDataToUser(userId, result);
+  notificateThroughTlg(result as IUser, lessonId, "DONE");
 
   return res.status(200).send(result);
 });
 router.post("/user/notdone", auth, async (req, res) => {
   const { userId, lessonId } = req.body as { userId: string; lessonId: string };
   const [user] = await User.find({ _id: userId });
+  if (!user) {
+    res.send(404).send();
+  }
 
   let newLessonsList = user.lessonsDone.filter(
     (id) => id.toString() !== lessonId
@@ -175,8 +186,36 @@ router.post("/user/notdone", auth, async (req, res) => {
 
   sendLessonsDoneToUser(userId, newLessonsList);
   sendNewUserDataToUser(userId, result);
-
+  notificateThroughTlg(result as IUser, lessonId, "NOT DONE");
   return res.status(200).send(result);
 });
+
+type Notification = "DONE" | "NOT DONE";
+async function notificateThroughTlg(
+  user: IUser,
+  lessonId: string,
+  type: Notification
+) {
+  if (user.telegramChatId) {
+    const lesson = await Lesson.findById(lessonId).populate("course");
+    if (!lesson) return;
+
+    const { title, course } = lesson;
+    const text = `
+_Your homework was mark ${type}_ 
+
+Lesson\\: ${title}
+Course\\: ${(course as ICourse).title}
+
+Your salary now: ${user.salary}
+
+${createMarkdown.lessonLink(lessonId, user._id)}
+`;
+    tlgSendMessage({
+      chat_id: user?.telegramChatId,
+      text,
+    });
+  }
+}
 
 export default router;

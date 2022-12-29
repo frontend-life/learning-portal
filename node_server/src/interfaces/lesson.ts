@@ -1,3 +1,4 @@
+import { ICourse } from "./../../../front/src/types/api";
 import mongoose, { Document } from "mongoose";
 
 export default interface ILesson extends Document {
@@ -6,4 +7,5 @@ export default interface ILesson extends Document {
   description: string;
   homework: string;
   link: string;
+  course: string | ICourse;
 }

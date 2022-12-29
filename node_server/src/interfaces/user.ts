@@ -10,4 +10,5 @@ export default interface IUser extends Document {
   lessonsDone: string[];
   lessonsOpen: string[];
   roles: Roles[];
+  telegramChatId: number;
 }

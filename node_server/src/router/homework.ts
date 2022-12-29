@@ -1,11 +1,12 @@
-import { telegram, T_METHODS } from "./../service/axios";
+import { createMarkdown } from "./../service/telegram";
+import { telegram, tlgSendMessage, T_METHODS } from "./../service/axios";
 import { Roles } from "./../service/roles";
 import express from "express";
 
 import { Homework } from "../models/homework";
 import { auth } from "../middleware/auth";
 import IHomework from "../interfaces/homework";
-import { baseUrl, isProd } from "../utils";
+import { isProd } from "../utils";
 
 const router = express.Router();
 
@@ -43,15 +44,12 @@ router.post("/homework", auth, async (req, res) => {
         const messageToMe = `
       _New homework from ${req.user.name}_ 
       
-      [Click to see it](${baseUrl}lesson?lessonId=${dto.lessonId}&studentId=${req.user._id})
+      ${createMarkdown.lessonLink(dto.lessonId.toString(), req.user._id)}
       `;
-        telegram
-          .post(T_METHODS.SEND_MESSAGE, {
-            chat_id: 794272343,
-            parse_mode: "MarkdownV2",
-            text: messageToMe,
-          })
-          .catch(console.log);
+        tlgSendMessage({
+          chat_id: 794272343,
+          text: messageToMe,
+        });
       } catch {
         console.log("Telegram send to me hw is lost");
       }
