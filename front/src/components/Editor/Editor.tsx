@@ -18,6 +18,7 @@ export const Editor = (props: {
     editorClassName?: string;
     labelClassName?: string;
     errorClassName?: string;
+    placeholder?: string;
 }) => {
     const editorRef = useRef<HTMLDivElement>(null);
     // for preview
@@ -31,7 +32,8 @@ export const Editor = (props: {
         labelAlign = 'center',
         editorClassName = '',
         labelClassName = '',
-        errorClassName = ''
+        errorClassName = '',
+        placeholder = 'Type here'
     } = props;
 
     useEffect(() => {
@@ -64,15 +66,18 @@ export const Editor = (props: {
         <div className={s.wrapper}>
             {getLabel()}
             <div
+                data-ph={placeholder}
                 ref={editorRef}
                 contentEditable
-                className={cls(s.root, editorClassName)}
+                className={cls(editorClassName, s.root)}
                 onInput={(e) => {
-                    setHtml(e.currentTarget.innerHTML);
-                    rhfProps?.setValue(
-                        rhfProps.name,
-                        e.currentTarget.innerHTML
-                    );
+                    let { innerHTML } = e.currentTarget;
+                    if (innerHTML === '<br>') {
+                        innerHTML = '';
+                        e.currentTarget.innerHTML = '';
+                    }
+                    setHtml(innerHTML);
+                    rhfProps?.setValue(rhfProps.name, innerHTML);
                 }}
                 onKeyDown={(e) => {
                     if (e.key === 'Tab') {

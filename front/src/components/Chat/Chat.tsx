@@ -138,10 +138,12 @@ export const Chat = ({ lessonId, onReload, hwId }: ChatProps) => {
                         setValue,
                         name: 'homework'
                     }}
+                    editorClassName={s.newMessageEditor}
+                    placeholder="New message"
                 />
                 <div className={s.buttons}>
                     <button className={s.addImage} onClick={addImage}>
-                        Add image
+                        <i className="fa-solid fa-paperclip"></i>
                     </button>
                     <input
                         style={{ display: 'none' }}
@@ -153,7 +155,7 @@ export const Chat = ({ lessonId, onReload, hwId }: ChatProps) => {
                         accept="image/jpeg, image/png, image/jpg"
                     ></input>
                     <button onClick={onSend} className={s.sendButton}>
-                        Send message
+                        <i className="fa-regular fa-paper-plane"></i>
                     </button>
                 </div>
             </div>

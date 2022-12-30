@@ -81,3 +81,12 @@
 .attachments {
     margin-top: 30px;
 }
+
+.newMessageEditor {
+    padding: 20px;
+    background-color: white;
+    border-radius: 20px;
+    color: black;
+
+    min-width: 300px;
+}

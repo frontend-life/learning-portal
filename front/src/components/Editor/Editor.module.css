@@ -1,9 +1,6 @@
 .root {
     display: inline-block;
-    background-color: transparent;
-    min-width: 30px;
     outline: none;
-    color: white;
 }
 .label {
 }
@@ -11,4 +8,8 @@
     position: relative;
 }
 .error {
+}
+.root:empty::before {
+    content: attr(data-ph);
+    opacity: 0.4;
 }
