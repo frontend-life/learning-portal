@@ -166,8 +166,6 @@ function HomeworkView({ data }) {
         return _id === homeworkId && studentId.name === userName;
     });
 
-    console.log(currentHomework);
-
     if (!currentHomework) {
         return <h1>I don't know why, no such homework</h1>;
     }

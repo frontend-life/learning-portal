@@ -47,16 +47,7 @@ export const Notification = ({
     }, [id, onClose]);
 
     return (
-        <div
-            className={rootClass}
-            onClick={() => {
-                // For test
-                ref.current?.classList.remove(s.progress);
-                requestAnimationFrame(() => {
-                    ref.current?.classList.add(s.progress);
-                });
-            }}
-        >
+        <div className={rootClass}>
             <p className={s.text}>{text}</p>
             <p className={s.text}>{description}</p>
             <hr className={s.hr} />

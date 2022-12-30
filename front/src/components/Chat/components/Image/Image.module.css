@@ -18,12 +18,10 @@
     display: inline-block;
     margin: 5px;
 }
-.image {
-    width: 150px;
-    height: auto;
-}
 .image > div > img {
-    width: 200px;
-    height: 100px;
+    width: 100px;
+    height: 60px;
     object-fit: cover;
+    color: black;
+    font-family: auto;
 }

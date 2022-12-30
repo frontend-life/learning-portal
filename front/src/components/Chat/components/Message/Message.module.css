@@ -1,0 +1,28 @@
+.root {
+    position: relative;
+    margin-bottom: 5px;
+    display: flex;
+}
+
+.message {
+    position: relative;
+    padding: 10px;
+    padding-bottom: 15px;
+    background-color: white;
+    border-radius: 10px;
+
+    display: inline-block;
+}
+.text {
+    font-family: 'Courier New', Courier, monospace;
+    color: black;
+    padding-right: 35px;
+}
+.time {
+    position: absolute;
+    bottom: 5px;
+    right: 10px;
+    font-size: 12px;
+    font-family: auto;
+    color: black;
+}

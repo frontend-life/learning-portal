@@ -1,73 +1,56 @@
 .root {
-    background-color: transparent;
-    border-radius: 20px;
-    color: black;
-    font-family: Georgia, 'Times New Roman', Times, serif;
+    --border-radius: 20px;
+    display: inline-block;
+    border-radius: var(--border-radius);
+    padding: 10px;
+    background-color: grey;
+    background-repeat: no-repeat;
+    background-size: cover;
     position: relative;
-    max-width: 800px;
-}
-.textAndButtons,
-.buttons {
-    position: relative;
+    background-blend-mode: soft-light;
+
     display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 }
 
-.buttons button {
-    width: 50px;
-    height: 50px;
-    font-size: 20px;
-    background-color: aliceblue;
-    transition: background-color linear 0.3s;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    outline: none;
-    cursor: pointer;
-    margin-left: 5px;
-    border: 0px;
-}
-.buttons button:hover {
-    background-color: var(--primary-color);
+.rootBG {
+    border-radius: var(--border-radius);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    left: 0;
+    top: 0;
+    background-position: center;
+    mix-blend-mode: overlay;
+    z-index: 0;
 }
 
-.code {
-    display: block;
-    min-width: 300px;
-    min-height: 120px;
-    background-color: black;
-    color: white;
-    font-family: 'Courier New', Courier, monospace;
-    padding: 30px 10px;
-    border-radius: 30px;
+.messages {
+    max-height: 600px;
+    overflow: auto;
+    overscroll-behavior: none;
+    z-index: 1;
+}
+/* ===== Scrollbar CSS ===== */
+/* Firefox */
+.messages {
+    scrollbar-width: auto;
+    scrollbar-color: #a6a6a6 #ffffff;
 }
 
-.text {
-    box-sizing: border-box;
-    border-radius: 6px;
-    background-color: aliceblue;
-    color: black;
-    font-family: 'Times New Roman', Times, serif;
-    outline: none;
-    border: 1px solid grey;
-    min-width: 400px;
-
-    min-height: 34px;
-    max-height: none;
-    height: auto;
-    padding: 7px 90px 7px 13px;
+/* Chrome, Edge, and Safari */
+.messages::-webkit-scrollbar {
+    width: 10px;
 }
 
-.attachments {
-    margin-top: 10px;
+.messages::-webkit-scrollbar-track {
+    background: transparent;
 }
 
-.newMessageEditor {
-    padding: 20px;
-    background-color: white;
-    border-radius: 20px;
-    color: black;
-
-    min-width: 300px;
-    max-width: 600px;
+.messages::-webkit-scrollbar-thumb {
+    background-color: #4a4a4a8a;
+    border-radius: 10px;
 }

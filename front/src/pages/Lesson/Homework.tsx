@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import ModalImage from 'react-modal-image';
 import { format } from 'date-fns';
-import { Chat } from '../../components/Chat/Chat';
+import { NewMessage } from '../../components/Chat/components/NewMessage/NewMessage';
 import s from './Homework.module.css';
 import { getBaseUrl } from '../../utils/axios';
 
@@ -77,7 +77,7 @@ export const Homework = ({
                                     X
                                 </span>
                             </h1>
-                            <Chat
+                            <NewMessage
                                 lessonId={h.lessonId}
                                 hwId={h._id}
                                 onReload={onReload}

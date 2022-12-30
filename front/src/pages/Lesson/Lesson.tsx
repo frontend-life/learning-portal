@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { Chat } from '../../components/Chat/Chat';
 import MainBlockWrapper from '../../components/MainBlockWrapper/MainBlockWrapper';
 import { IHomework, ILesson, Roles } from '../../types/api';
 import { myRequest } from '../../utils/axios';
@@ -11,8 +10,9 @@ import { qp } from '../../utils/paths';
 import { useUserContext } from '../../store/UserDetails';
 import { CircleLoader } from '../../components/CircleLoader/CircleLoader';
 import { useLessonsContext } from '../../store/LessonsContext';
-import { HWDoneButton } from '../../components/HWDoneButton/HWDoneButton';
 import { Homework } from './Homework';
+import { Chat } from '../../components/Chat/Chat';
+import { url } from 'inspector';
 
 interface Params {
     lessonId: string;
@@ -130,9 +130,7 @@ function Lesson() {
                             __html: lesson.homework
                         }}
                     ></div>
-                    {!lessonDone && (
-                        <Chat lessonId={lesson._id} onReload={reloadHW} />
-                    )}
+                    <Chat />
                     {hws.length !== 0 && (
                         <div className={s.homeworks}>
                             {lessonDone && (
