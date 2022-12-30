@@ -1,13 +1,14 @@
 import { useCallback, useRef, useState } from 'react';
 import { addErrorNt, addWNt } from '../../utils/notification';
 import { generateUid } from '../../utils/uid';
-import { Image } from './Image';
+import { Image } from './components/Image/Image';
 
-import s from './Chat.module.css';
 import { myRequest } from '../../utils/axios';
 import { IHomework } from '../../types/api';
 import { Editor } from '../Editor/Editor';
 import { useForm } from 'react-hook-form';
+
+import s from './Chat.module.css';
 
 type ImgData = {
     url: string;

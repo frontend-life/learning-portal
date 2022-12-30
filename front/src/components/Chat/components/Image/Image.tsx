@@ -1,4 +1,4 @@
-import s from './Chat.module.css';
+import s from './Image.module.css';
 import ModalImage from 'react-modal-image';
 
 export const Image = ({ url, onRemove }: { url: string; onRemove: any }) => {
@@ -13,7 +13,7 @@ export const Image = ({ url, onRemove }: { url: string; onRemove: any }) => {
                 />
             </div>
             <div className={s.deleteImage} onClick={onRemove}>
-                X
+                <i className="fa-solid fa-xmark"></i>
             </div>
         </div>
     );
