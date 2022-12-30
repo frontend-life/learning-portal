@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Align } from '../../types/components';
+import { cls } from '../../utils/css';
 import s from './Editor.module.css';
 import { tab } from './utils';
 
@@ -14,6 +15,9 @@ export const Editor = (props: {
     labelAlign?: Align;
     error?: string;
     showHowItLooks?: boolean;
+    editorClassName?: string;
+    labelClassName?: string;
+    errorClassName?: string;
 }) => {
     const editorRef = useRef<HTMLDivElement>(null);
     // for preview
@@ -24,7 +28,10 @@ export const Editor = (props: {
         inputProps,
         rhfProps,
         error,
-        labelAlign = 'center'
+        labelAlign = 'center',
+        editorClassName = '',
+        labelClassName = '',
+        errorClassName = ''
     } = props;
 
     useEffect(() => {
@@ -42,7 +49,10 @@ export const Editor = (props: {
     const getLabel = () => {
         if (inputProps?.label) {
             return (
-                <p style={{ textAlign: labelAlign }} className={s.label}>
+                <p
+                    style={{ textAlign: labelAlign }}
+                    className={cls(s.label, labelClassName)}
+                >
                     {inputProps.label}
                 </p>
             );
@@ -56,7 +66,7 @@ export const Editor = (props: {
             <div
                 ref={editorRef}
                 contentEditable
-                className={s.root}
+                className={cls(s.root, editorClassName)}
                 onInput={(e) => {
                     setHtml(e.currentTarget.innerHTML);
                     rhfProps?.setValue(
@@ -82,7 +92,7 @@ export const Editor = (props: {
                     dangerouslySetInnerHTML={{ __html: html }}
                 ></div>
             )}
-            {error && <p className={s.error}>{error}</p>}
+            {error && <p className={cls(s.error, errorClassName)}>{error}</p>}
         </div>
     );
 };

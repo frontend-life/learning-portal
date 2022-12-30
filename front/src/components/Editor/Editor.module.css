@@ -1,31 +1,14 @@
 .root {
     display: inline-block;
-    padding: 10px 20px;
-    background: var(--secondary-color);
-    color: var(--input-color);
-    min-width: 655px;
-
-    min-height: 161px;
-    height: auto;
-    margin-bottom: 20px;
-    font-size: 25px;
-    font-family: Georgia, 'Times New Roman', Times, serif;
+    background-color: transparent;
+    min-width: 30px;
     outline: none;
+    color: white;
 }
 .label {
-    font-style: normal;
-    font-weight: 400;
-    font-size: 24px;
-    text-align: center;
-    color: white;
-    margin-bottom: 20px;
 }
 .wrapper {
     position: relative;
 }
 .error {
-    color: red;
-    position: absolute;
-    right: 5px;
-    bottom: 5px;
 }

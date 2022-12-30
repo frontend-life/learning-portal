@@ -130,6 +130,15 @@ export const Chat = ({ lessonId, onReload, hwId }: ChatProps) => {
     return (
         <div className={s.root}>
             <div className={s.textAndButtons}>
+                <Editor
+                    defaultValue={editorDefaultValue}
+                    showHowItLooks={false}
+                    rhfProps={{
+                        register,
+                        setValue,
+                        name: 'homework'
+                    }}
+                />
                 <div className={s.buttons}>
                     <button className={s.addImage} onClick={addImage}>
                         Add image
@@ -147,15 +156,6 @@ export const Chat = ({ lessonId, onReload, hwId }: ChatProps) => {
                         Send message
                     </button>
                 </div>
-                <Editor
-                    defaultValue={editorDefaultValue}
-                    showHowItLooks={false}
-                    rhfProps={{
-                        register,
-                        setValue,
-                        name: 'homework'
-                    }}
-                />
             </div>
             <div className={s.attachments}>
                 {imgsToPreview.map(({ url, uid }) => {
