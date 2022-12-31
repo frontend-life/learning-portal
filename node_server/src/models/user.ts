@@ -1,6 +1,6 @@
+import { Lesson } from "./lesson";
 import mongoose from "mongoose";
 import validator from "validator";
-import bcrypt from "bcryptjs";
 import IUser from "../interfaces/user";
 
 const userSchema = new mongoose.Schema(
@@ -37,8 +37,8 @@ const userSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    lessonsDone: { type: [mongoose.Schema.Types.ObjectId] },
-    lessonsOpen: { type: [mongoose.Schema.Types.ObjectId] },
+    lessonsDone: { type: [mongoose.Schema.Types.ObjectId], ref: Lesson },
+    lessonsOpen: { type: [mongoose.Schema.Types.ObjectId], ref: Lesson },
     roles: {
       type: [Number],
     },

@@ -77,11 +77,11 @@ export const Homework = ({
                                     X
                                 </span>
                             </h1>
-                            <NewMessage
+                            {/* <NewMessage
                                 lessonId={h.lessonId}
                                 hwId={h._id}
                                 onReload={onReload}
-                            />
+                            /> */}
                         </div>
                     )}
                 </>

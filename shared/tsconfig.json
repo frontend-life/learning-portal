@@ -1,0 +1,9 @@
+// myybe in future will use it as reference to front and back
+{
+  "compilerOptions": {
+    //...rest of compiler options
+    "paths": {
+      "@commonTypes": ["./commonParts.ts*"]
+    }
+  }
+}

@@ -1,7 +1,12 @@
 import { useCallback, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { IHomework } from '../../../../types/api';
-import { myRequest } from '../../../../utils/axios';
+import {
+    AttachmentCommon,
+    MessageCommon
+} from '../../../../../../shared/commonParts';
+import { useUserContext } from '../../../../store/UserDetails';
+import { IMessage } from '../../../../types/api';
+import { API_URLS, myRequest } from '../../../../utils/axios';
 import { addWNt, addErrorNt } from '../../../../utils/notification';
 import { generateUid } from '../../../../utils/uid';
 import { Editor } from '../../../Editor/Editor';
@@ -9,70 +14,69 @@ import { Attachments } from '../Attachments/Attachments';
 
 import s from './NewMessage.module.css';
 
-export type ImgData = {
-    url: string;
-    uid: string;
+export interface ImgData extends AttachmentCommon {
     formData: FormData;
-};
+}
 
 export interface ImgView extends Omit<ImgData, 'formData'> {}
 
 type NewMessageProps = {
-    lessonId: string;
-    hwId?: string;
-    onReload?: () => void;
+    chatId: MessageCommon['chatId'];
+    onSend: (message: MessageCommon) => void;
 };
 
-export const NewMessage = ({ lessonId, onReload, hwId }: NewMessageProps) => {
+export const NewMessage = ({ chatId, onSend }: NewMessageProps) => {
+    const user = useUserContext();
     const refEditable = useRef<HTMLDivElement>(null);
     const [imgsToPreview, setImgsToPreview] = useState<Array<ImgData>>([]);
     const imageInputRef = useRef<HTMLInputElement>(null);
     const { register, setValue, getValues } = useForm();
     const [editorDefaultValue, setEditorDefaultValue] = useState<string>();
 
-    const onSend = async () => {
-        if (!getValues().homework) {
+    const handleSend = async () => {
+        const { homework } = getValues();
+        if (!homework?.trim()) {
             addWNt('No text, no message');
             return;
         }
-        const textToSend = getValues().homework.trim();
+        const text = homework.trim();
 
-        if (textToSend === '' && imgsToPreview.length === 0) {
+        if (text === '' && imgsToPreview.length === 0) {
             return;
         }
 
-        const saveHwToServer = (data: IHomework) => {
-            const url = hwId ? `/homework?hwId=${hwId}` : '/homework';
-            return myRequest
-                .post(url, data)
-                .then(() => {
-                    setImgsToPreview([]);
-                    setValue('homework', '');
-                    setEditorDefaultValue('');
-                    setTimeout(() => {
-                        setEditorDefaultValue(undefined);
-                    }, 500);
-                    if (refEditable.current) {
-                        refEditable.current.innerText = '';
-                    }
-                })
-                .catch((e) => {
-                    addErrorNt('Failed update homeworks list');
-                })
-                .finally(() => {
-                    onReload && onReload();
-                });
+        const saveMessage = (data: IMessage) => {
+            const url = `${API_URLS.MESSAGE}`;
+            return myRequest.post(url, data).then((message) => {
+                onSend(message as unknown as MessageCommon);
+            });
+            // .then(() => {
+            //     setImgsToPreview([]);
+            //     setValue('homework', '');
+            //     setEditorDefaultValue('');
+            //     setTimeout(() => {
+            //         setEditorDefaultValue(undefined);
+            //     }, 500);
+            //     if (refEditable.current) {
+            //         refEditable.current.innerText = '';
+            //     }
+            // })
+            // .catch((e) => {
+            //     addErrorNt('Failed update homeworks list');
+            // })
+            // .finally(() => {
+            //     onReload && onReload();
+            // });
         };
 
-        let data: IHomework = {
-            content: {
-                text: textToSend
-            },
-            lessonId
+        let data: IMessage = {
+            text: text,
+            senderId: user.userDetails._id,
+            chatId
         };
 
         if (imgsToPreview.length === 0) {
-            saveHwToServer(data);
+            saveMessage(data);
             return;
         } else {
             sendImagesToServer()
@@ -80,8 +84,8 @@ export const NewMessage = ({ lessonId, onReload, hwId }: NewMessageProps) => {
                     const attachesIds = responseWithAttaches.map(
                         ({ status, value }) => value.attach._id
                     );
-                    data.content.attachments = attachesIds;
-                    // saveHwToServer(data);
+                    data.attachments = attachesIds;
+                    saveMessage(data);
                 })
                 .catch((e) => console.log(e));
         }
@@ -113,16 +117,16 @@ export const NewMessage = ({ lessonId, onReload, hwId }: NewMessageProps) => {
             const reader = new FileReader();
             reader.addEventListener('load', (e) => {
                 const uploaded_image = reader.result;
-                const url = String(uploaded_image);
-                const uid = generateUid();
+                const path = String(uploaded_image);
+                const _id = generateUid();
                 const formData = new FormData();
                 formData.append('file', file);
 
                 setImgsToPreview((prev) => [
                     ...prev,
                     {
-                        url,
-                        uid,
+                        path,
+                        _id,
                         formData
                     }
                 ]);
@@ -130,8 +134,8 @@ export const NewMessage = ({ lessonId, onReload, hwId }: NewMessageProps) => {
             reader.readAsDataURL(file);
         }
     };
-    const removeImage = (uid: ImgData['uid']) => {
-        setImgsToPreview((prev) => prev.filter(({ uid: id }) => id !== uid));
+    const removeImage = (uid: ImgData['_id']) => {
+        setImgsToPreview((prev) => prev.filter(({ _id: id }) => id !== uid));
     };
 
     return (
@@ -161,7 +165,7 @@ export const NewMessage = ({ lessonId, onReload, hwId }: NewMessageProps) => {
                         multiple
                         accept="image/jpeg, image/png, image/jpg"
                     ></input>
-                    <button onClick={onSend} className={s.sendButton}>
+                    <button onClick={handleSend} className={s.sendButton}>
                         <i className="fa-regular fa-paper-plane"></i>
                     </button>
                 </div>

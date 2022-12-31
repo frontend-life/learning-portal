@@ -6,7 +6,7 @@ export const Image = ({
     url,
     onRemove
 }: {
-    url: ImgView['url'];
+    url: ImgView['_id'];
     onRemove?: any;
 }) => {
     // eslint-disable-next-line jsx-a11y/alt-text

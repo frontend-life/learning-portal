@@ -1,19 +1,18 @@
 import { Attachments } from '../Attachments/Attachments';
-import { ImgView } from '../NewMessage/NewMessage';
+import { MessageCommon } from '../../../../../../shared/commonParts';
 import s from './Message.module.css';
+import { mongoDateTranform } from '../../../../utils/date';
 
-interface MessageProps {
+interface MessageProps
+    extends Omit<MessageCommon, '_id' | 'senderId' | 'chatId'> {
     isMine?: boolean;
-    attachments?: Array<ImgView>;
-    text?: string;
-    sentTime?: string;
 }
 
 export const Message = ({
     isMine = false,
     attachments,
     text,
-    sentTime
+    createdAt
 }: MessageProps) => {
     const rootStyles: React.CSSProperties = {};
     const messageStyles: React.CSSProperties = {};
@@ -29,14 +28,9 @@ export const Message = ({
         <div className={s.root} style={rootStyles}>
             <div className={s.message} style={messageStyles}>
                 <span className={s.text}>{text || 'Message disapeared'}</span>
-                <div className={s.time}>{sentTime || '--:--'}</div>
+                <div className={s.time}>{mongoDateTranform(createdAt)}</div>
                 {attachments && <Attachments attachments={attachments} />}
             </div>
         </div>
     );
 };
-
-export interface MessageType extends Omit<MessageProps, 'isMine'> {
-    senderId: string;
-    _id: string;
-}

@@ -70,5 +70,7 @@ export const API_URLS = {
     LESSONS: `/lesson/lessons`,
     COURSES: `/course/courses`,
     ME: '/user/me',
-    HOMEWORKS: '/homework'
+    HOMEWORK: '/homework',
+    CHAT: '/chat',
+    MESSAGE: '/message'
 };

@@ -1,3 +1,5 @@
+import { HomeworkCommon, MessageCommon } from '../../../shared/commonParts';
+
 export interface ILesson {
     description: string;
     homework: string;
@@ -31,12 +33,6 @@ export interface IUser {
     telegramChatId: number;
 }
 
-export interface IHomework {
-    // _id: string;
-    content: {
-        text: string;
-        attachments?: string[];
-    };
-    // studentId: string;
-    lessonId: string;
-}
+export interface IHomework extends HomeworkCommon {}
+
+export interface IMessage extends Omit<MessageCommon, '_id' | 'createdAt'> {}

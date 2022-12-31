@@ -3,56 +3,42 @@ import { telegram, tlgSendMessage, T_METHODS } from "./../service/axios";
 import { Roles } from "./../service/roles";
 import express from "express";
 
-import { Homework } from "../models/homework";
+import IHomework, { Homework } from "../models/homework";
 import { auth } from "../middleware/auth";
-import IHomework from "../interfaces/homework";
 import { isProd } from "../utils";
 import { User } from "../models/user";
+import { Chat } from "../models/chat";
 
 const router = express.Router();
 
-interface createHomeworkDTO extends Omit<IHomework, "_id" | "studentId"> {}
+interface createHomeworkDTO extends Omit<IHomework, "_id"> {}
 
 router.post("/homework", auth, async (req, res) => {
-  const dto = req.body as createHomeworkDTO;
-
-  const { hwId } = req.query;
-  const saveHomeworkToHomework = hwId;
-
-  if (saveHomeworkToHomework) {
-    try {
-      const hwToUpdate = await Homework.findOneAndUpdate(
-        { _id: hwId },
-        {
-          answer: { ...dto, teacherId: req.user._id },
-        },
-        { new: true }
-      );
-      if (hwToUpdate) {
-        const user = await User.findById(hwToUpdate.studentId);
-        if (!user) return;
-        tlgSendMessage({
-          chat_id: user.telegramChatId,
-          text: `
-There is answer to your homework
-
-${createMarkdown.lessonLink(hwToUpdate.lessonId.toString(), user._id)}
-`,
-        });
-      }
-
-      return res.status(201).send();
-    } catch {
-      return res.status(400).send();
-    }
-  }
+  const { studentId, lessonId } = req.body as createHomeworkDTO;
 
   try {
-    const hw = new Homework({
-      ...dto,
-      studentId: req.user._id,
+    const existingHomeworks = await Homework.find({ studentId, lessonId });
+    if (existingHomeworks.length > 0) {
+      return res
+        .status(400)
+        .send("Homework for this student and this lesson alreaedy exists");
+    }
+
+    const chat = new Chat();
+    await chat.save();
+
+    const homework = new Homework({
+      studentId: studentId,
+      lessonId: lessonId,
+      chatId: chat._id,
     });
-    const sentHw = await hw.save();
+    await homework.save();
+    return res.status(201).send({ homework: homework });
+  } catch {
+    return res.status(500).send();
+  }
+  /*
+  Send to tlg about homework
     if (isProd()) {
       try {
         const messageToMe = `
@@ -68,45 +54,24 @@ ${createMarkdown.lessonLink(hwToUpdate.lessonId.toString(), user._id)}
         console.log("Telegram send to me hw is lost");
       }
     }
-    return res.status(201).send({ homework: sentHw });
-  } catch (error) {
-    return res.status(400).send();
-  }
+  */
 });
 
 router.get("/homework", async (req, res) => {
+  const { lessonId, studentId } = req.query as Partial<IHomework>;
+
+  const params: Partial<IHomework> = {};
+
+  if (lessonId && studentId) {
+    Object.assign(params, { studentId, lessonId });
+  }
+
   try {
-    const hws = await Homework.find()
-      .populate("lessonId")
-      .populate("studentId")
-      .populate("content.attachments")
-      .populate("answer.content.attachments");
-    return res.status(200).send(hws);
+    const homeworks = await Homework.find(params);
+    return res.status(200).send(homeworks);
   } catch (error) {
     return res.status(500).send();
   }
-});
-
-router.get("/homeworksByLessonId", auth, async (req, res) => {
-  const { lessonId, studentId } = req.query;
-  const { _id, roles = [] } = req.user;
-
-  if (studentId === _id.toString() || roles.includes(Roles.TEACHER)) {
-    try {
-      const hws = await Homework.find({
-        lessonId: lessonId,
-        studentId: studentId,
-      })
-        .populate("content.attachments")
-        .populate("answer.content.attachments");
-      return res.status(200).send(hws);
-    } catch (error) {
-      return res.status(500).send();
-    }
-  }
-
-  console.log("This is not allowed request");
-  return res.status(200).send([]);
 });
 
 export default router;

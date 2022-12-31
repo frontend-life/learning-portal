@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import MainBlockWrapper from '../../components/MainBlockWrapper/MainBlockWrapper';
 import { IHomework, ILesson, Roles } from '../../types/api';
-import { myRequest } from '../../utils/axios';
+import { API_URLS, myRequest } from '../../utils/axios';
 import { addErrorNt } from '../../utils/notification';
 import { PATHS } from '../../utils/paths';
 import s from './Lesson.module.css';
@@ -10,27 +10,17 @@ import { qp } from '../../utils/paths';
 import { useUserContext } from '../../store/UserDetails';
 import { CircleLoader } from '../../components/CircleLoader/CircleLoader';
 import { useLessonsContext } from '../../store/LessonsContext';
-import { Homework } from './Homework';
 import { Chat } from '../../components/Chat/Chat';
-import { url } from 'inspector';
+import { getLang } from '../../utils/langs';
 
 interface Params {
     lessonId: string;
     studentId: string;
 }
-const onReloadHomework = (setHws: any, params: Params) => {
-    myRequest
-        .get<any, IHomework[]>(
-            `/homeworksByLessonId?lessonId=${params.lessonId}&studentId=${params?.studentId}`
-        )
-        .then((homeworks) => {
-            setHws(homeworks);
-        })
-        .catch(addErrorNt);
-};
 
 function Lesson() {
     const [loading, setLoading] = useState(true);
+    const [homework, setHomework] = useState<IHomework>();
 
     const location = useLocation();
     const params = qp(location.search) as Partial<Params>;
@@ -42,7 +32,6 @@ function Lesson() {
 
     const [lesson, setLesson] = useState<ILesson>();
 
-    const [hws, setHws] = useState<IHomework[]>([]);
     const navigate = useNavigate();
 
     const nothingToDoHere = !params || !params?.lessonId || !params?.studentId;
@@ -55,7 +44,7 @@ function Lesson() {
         if (lesson) {
             setLesson(lesson);
             setLoading(false);
-
+            getHomework();
             return;
         }
         if (!lesson) {
@@ -72,14 +61,33 @@ function Lesson() {
         }
     }, [lessons, params?.lessonId]);
 
-    const reloadHW = useCallback(() => {
-        onReloadHomework(setHws, params as Params);
-    }, [setHws, params]);
+    const handInHomework = () => {
+        myRequest
+            .post(API_URLS.HOMEWORK, {
+                studentId: params.studentId,
+                lessonId: params.lessonId
+            } as IHomework)
+            // @ts-ignore
+            .then(({ homework }: { homework: IHomework }) => {
+                setHomework(homework);
+                console.log(homework);
+            });
+    };
 
-    useEffect(() => {
-        if (loading || nothingToDoHere) return;
-        reloadHW();
-    }, [loading, nothingToDoHere]);
+    const getHomework = () => {
+        myRequest
+            .get(API_URLS.HOMEWORK, {
+                params: {
+                    lessonId: params.lessonId,
+                    studentId: params.studentId
+                }
+            })
+            // @ts-ignore
+            .then((response: IHomework[]) => {
+                setHomework(response[0]);
+                console.log(response[0]);
+            });
+    };
 
     if (nothingToDoHere) {
         return <Navigate to={PATHS.lessons} replace={true} />;
@@ -130,27 +138,10 @@ function Lesson() {
                             __html: lesson.homework
                         }}
                     ></div>
-                    <Chat />
-                    {hws.length !== 0 && (
-                        <div className={s.homeworks}>
-                            {lessonDone && (
-                                <div key="DONE" className={s.lessonDoneFlag}>
-                                    DONE
-                                </div>
-                            )}
-
-                            {hws.reverse().map((h: any) => {
-                                return (
-                                    <Homework
-                                        key={h._id}
-                                        h={h}
-                                        withAnswer={isTeacher}
-                                        onReload={reloadHW}
-                                    />
-                                );
-                            })}
-                        </div>
-                    )}
+                    <div className={s.handInHomework} onClick={handInHomework}>
+                        {getLang('start_homework_chat_button')}
+                    </div>
+                    {homework?.chatId && <Chat chatId={homework.chatId} />}
                 </div>
             </div>
         </MainBlockWrapper>

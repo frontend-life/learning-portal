@@ -9,11 +9,6 @@ const attachmentSchema = new mongoose.Schema(
     //   required: true,
     //   auto: true,
     // },
-    name: {
-      type: String,
-      required: true,
-      trim: true,
-    },
     path: {
       type: String,
       required: true,

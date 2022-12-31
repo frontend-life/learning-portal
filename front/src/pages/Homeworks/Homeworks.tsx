@@ -10,7 +10,7 @@ import { Homework } from '../Lesson/Homework';
 import s from './Homeworks.module.css';
 
 export const Homeworks = () => {
-    const { loading, data } = useGetArrayData<any>(API_URLS.HOMEWORKS);
+    const { loading, data } = useGetArrayData<any>(API_URLS.HOMEWORK);
 
     const renderContent = () => {
         return (

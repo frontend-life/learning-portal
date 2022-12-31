@@ -33,3 +33,11 @@
     color: var(--fourth-color);
     padding: 20px 40px;
 }
+
+.handInHomework {
+    padding: 30px;
+    background-color: black;
+    color: white;
+    cursor: pointer;
+    text-align: center;
+}

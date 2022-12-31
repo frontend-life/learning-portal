@@ -1,8 +1,15 @@
 import mongoose from "mongoose";
-import ILesson from "../interfaces/lesson";
-import { Course } from "./course";
+import { Attachment } from "./attachment";
 
-const lessonSchema = new mongoose.Schema(
+export interface IMessage {
+  chatId: string;
+  senderId: string;
+  text: string;
+  attachments: Array<string>;
+  createdAt: string;
+}
+
+const messageSchema = new mongoose.Schema(
   {
     // _id: {
     //   type: mongoose.Schema.Types.ObjectId,
@@ -10,33 +17,28 @@ const lessonSchema = new mongoose.Schema(
     //   required: true,
     //   auto: true,
     // },
-    title: {
+    chatId: {
       type: String,
       required: true,
       trim: true,
     },
-    description: {
-      type: String,
-      required: false,
-      trim: true,
-    },
-    homework: {
-      type: String,
-      required: false,
-      trim: true,
-    },
-    link: {
+    senderId: {
       type: String,
       required: true,
       trim: true,
     },
-    course: {
+    text: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    attachments: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
-      ref: Course,
+      required: false,
+      ref: Attachment,
     },
   },
   { timestamps: true }
 );
 
-export const Lesson = mongoose.model<ILesson>("Lesson", lessonSchema);
+export const Message = mongoose.model<IMessage>("Message", messageSchema);
