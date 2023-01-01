@@ -70,7 +70,38 @@ export const Editor = (props: {
                 ref={editorRef}
                 contentEditable
                 className={cls(editorClassName, s.root)}
+                onPaste={(e) => {
+                    // Prevent the default action
+                    e.preventDefault();
+
+                    // Get the copied text from the clipboard
+                    const text = e.clipboardData
+                        ? e.clipboardData.getData('text/plain')
+                        : '';
+
+                    if (document.queryCommandSupported('insertText')) {
+                        document.execCommand('insertText', false, text);
+                    } else {
+                        // Insert text at the current position of caret
+                        const range = document.getSelection()?.getRangeAt(0);
+                        if (range) {
+                            range.deleteContents();
+
+                            const textNode = document.createTextNode(text);
+                            range.insertNode(textNode);
+                            range.selectNodeContents(textNode);
+                            range.collapse(false);
+
+                            const selection = window.getSelection();
+                            if (selection) {
+                                selection.removeAllRanges();
+                                selection.addRange(range);
+                            }
+                        }
+                    }
+                }}
                 onInput={(e) => {
+                    console.log('input', e.currentTarget.innerHTML);
                     let { innerHTML } = e.currentTarget;
                     if (innerHTML === '<br>') {
                         innerHTML = '';
@@ -79,7 +110,11 @@ export const Editor = (props: {
                     setHtml(innerHTML);
                     rhfProps?.setValue(rhfProps.name, innerHTML);
                 }}
+                onChange={(e) => {
+                    e.preventDefault();
+                }}
                 onKeyDown={(e) => {
+                    console.log('input', e.keyCode);
                     if (e.key === 'Tab') {
                         e.preventDefault();
                         tab(e);

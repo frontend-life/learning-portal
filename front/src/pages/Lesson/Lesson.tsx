@@ -144,7 +144,9 @@ function Lesson() {
                             {getLang('start_homework_chat_button')}
                         </div>
                     )}
-                    {homework?.chatId && <Chat chatId={homework.chatId} />}
+                    {homework?.chatId && (
+                        <Chat chatId={homework.chatId} width={800} />
+                    )}
                 </div>
             </div>
         </MainBlockWrapper>

@@ -27,7 +27,12 @@ export const Message = ({
     return (
         <div className={s.root} style={rootStyles}>
             <div className={s.message} style={messageStyles}>
-                <span className={s.text}>{text || 'Message disapeared'}</span>
+                <span
+                    className={s.text}
+                    dangerouslySetInnerHTML={{
+                        __html: text || 'Message disapeared'
+                    }}
+                ></span>
                 <div className={s.time}>{mongoDateTranform(createdAt)}</div>
                 {attachments && <Attachments attachments={attachments} />}
             </div>

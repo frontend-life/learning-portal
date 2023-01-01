@@ -41,7 +41,6 @@ export const Chat = ({ width = 500, minHeight = 300, chatId }: Props) => {
                         );
                         return +new Date(b.createdAt) - +new Date(a.createdAt);
                     });
-                    console.log(sorted);
                     setMessages(sorted);
                 }
             });
