@@ -1,5 +1,6 @@
 import express from "express";
 import { Chat, IChat } from "../models/chat";
+import { Populative } from "../types";
 
 const router = express.Router();
 
@@ -13,10 +14,9 @@ router
     res.send();
   })
   .get(async (req, res) => {
-    const { chatId, populate } = req.query as {
+    const { chatId, populate } = req.query as unknown as {
       chatId: string;
-      populate: { [key in keyof IChat]: 1 | undefined };
-    };
+    } & Populative<IChat>;
     if (!chatId) {
       return res
         .status(400)
@@ -28,7 +28,7 @@ router
       return res.status(404).send("No such chat " + chatId);
     }
 
-    if (populate.messages) {
+    if (populate?.messages) {
       try {
         chat = await chat?.populate("messages");
       } catch (err) {

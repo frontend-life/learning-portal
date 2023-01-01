@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Chat } from '../../components/Chat/Chat';
 import { CircleLoader } from '../../components/CircleLoader/CircleLoader';
 import { HWDoneButton } from '../../components/HWDoneButton/HWDoneButton';
 import MainBlockWrapper from '../../components/MainBlockWrapper/MainBlockWrapper';
@@ -10,8 +11,10 @@ import { Homework } from '../Lesson/Homework';
 import s from './Homeworks.module.css';
 
 export const Homeworks = () => {
-    const { loading, data } = useGetArrayData<any>(API_URLS.HOMEWORK);
-
+    const { loading, data } = useGetArrayData<any>(
+        `${API_URLS.HOMEWORK}?populate[lessonId]=1&populate[studentId]=1`
+    );
+    console.log(data);
     const renderContent = () => {
         return (
             <div className={s.root}>
@@ -211,13 +214,11 @@ function LessonView({ lesson }) {
     );
 }
 function ChatView({ homework }) {
+    const { chatId, lessonId, studentId } = homework;
     return (
         <>
-            <Homework h={homework} withAnswer />
-            <HWDoneButton
-                lessonId={homework.lessonId}
-                studentId={homework.studentId}
-            />
+            <Chat chatId={chatId} />
+            <HWDoneButton lessonId={lessonId} studentId={studentId} />
         </>
     );
 }

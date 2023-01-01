@@ -41,7 +41,7 @@ function Lesson() {
         }
         const curLesson = lessons.find(({ _id }) => params.lessonId === _id);
         if (curLesson) {
-            setLesson(lesson);
+            setLesson(curLesson);
             setLoading(false);
             getHomework();
             return;
@@ -56,6 +56,7 @@ function Lesson() {
                 .then((l) => {
                     setLesson(l as unknown as ILesson);
                     setLoading(false);
+                    getHomework();
                 });
         }
     }, [lessons, params?.lessonId]);

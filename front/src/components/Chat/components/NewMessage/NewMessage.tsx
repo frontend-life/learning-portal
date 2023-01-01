@@ -47,26 +47,23 @@ export const NewMessage = ({ chatId, onSend }: NewMessageProps) => {
 
         const saveMessage = (data: IMessage) => {
             const url = `${API_URLS.MESSAGE}`;
-            return myRequest.post(url, data).then((message) => {
-                onSend(message as unknown as MessageCommon);
-            });
-            // .then(() => {
-            //     setImgsToPreview([]);
-            //     setValue('homework', '');
-            //     setEditorDefaultValue('');
-            //     setTimeout(() => {
-            //         setEditorDefaultValue(undefined);
-            //     }, 500);
-            //     if (refEditable.current) {
-            //         refEditable.current.innerText = '';
-            //     }
-            // })
-            // .catch((e) => {
-            //     addErrorNt('Failed update homeworks list');
-            // })
-            // .finally(() => {
-            //     onReload && onReload();
-            // });
+            return myRequest
+                .post(url, data)
+                .then((message) => {
+                    setImgsToPreview([]);
+                    setValue('homework', '');
+                    setEditorDefaultValue('');
+                    setTimeout(() => {
+                        setEditorDefaultValue(undefined);
+                    }, 500);
+                    if (refEditable.current) {
+                        refEditable.current.innerText = '';
+                    }
+                    onSend(message as unknown as MessageCommon);
+                })
+                .catch((e) => {
+                    addErrorNt('Failed send message');
+                });
         };
 
         let data: IMessage = {

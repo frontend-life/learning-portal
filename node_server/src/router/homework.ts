@@ -1,3 +1,4 @@
+import { Populative } from "./../types";
 import { createMarkdown } from "./../service/telegram";
 import { telegram, tlgSendMessage, T_METHODS } from "./../service/axios";
 import { Roles } from "./../service/roles";
@@ -58,7 +59,8 @@ router.post("/homework", auth, async (req, res) => {
 });
 
 router.get("/homework", async (req, res) => {
-  const { lessonId, studentId } = req.query as Partial<IHomework>;
+  const { lessonId, studentId, populate } =
+    req.query as unknown as Populative<IHomework>;
 
   const params: Partial<IHomework> = {};
 
@@ -67,7 +69,18 @@ router.get("/homework", async (req, res) => {
   }
 
   try {
-    const homeworks = await Homework.find(params);
+    let homeworks = [];
+    if (populate?.lessonId && populate?.studentId) {
+      homeworks = await Homework.find(params)
+        .populate("lessonId")
+        .populate("studentId");
+    } else if (populate?.lessonId) {
+      homeworks = await Homework.find(params).populate("lessonId");
+    } else if (populate?.studentId) {
+      homeworks = await Homework.find(params).populate("studentId");
+    } else {
+      homeworks = await Homework.find(params);
+    }
     return res.status(200).send(homeworks);
   } catch (error) {
     return res.status(500).send();

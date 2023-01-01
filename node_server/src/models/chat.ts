@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { Message } from "./message";
 
 export interface IChat {
+  _id: string;
   messages: Array<string>;
   createdAt: string;
 }
