@@ -1,9 +1,8 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import MainBlockWrapper from '../../components/MainBlockWrapper/MainBlockWrapper';
 import { IHomework, ILesson, Roles } from '../../types/api';
 import { API_URLS, myRequest } from '../../utils/axios';
-import { addErrorNt } from '../../utils/notification';
 import { PATHS } from '../../utils/paths';
 import s from './Lesson.module.css';
 import { qp } from '../../utils/paths';
@@ -40,14 +39,14 @@ function Lesson() {
         if (!params?.lessonId) {
             return;
         }
-        const lesson = lessons.find(({ _id }) => params.lessonId === _id);
-        if (lesson) {
+        const curLesson = lessons.find(({ _id }) => params.lessonId === _id);
+        if (curLesson) {
             setLesson(lesson);
             setLoading(false);
             getHomework();
             return;
         }
-        if (!lesson) {
+        if (!curLesson) {
             myRequest
                 .get('/lesson', {
                     params: {
@@ -70,7 +69,6 @@ function Lesson() {
             // @ts-ignore
             .then(({ homework }: { homework: IHomework }) => {
                 setHomework(homework);
-                console.log(homework);
             });
     };
 
@@ -85,7 +83,6 @@ function Lesson() {
             // @ts-ignore
             .then((response: IHomework[]) => {
                 setHomework(response[0]);
-                console.log(response[0]);
             });
     };
 
