@@ -138,9 +138,14 @@ function Lesson() {
                             __html: lesson.homework
                         }}
                     ></div>
-                    <div className={s.handInHomework} onClick={handInHomework}>
-                        {getLang('start_homework_chat_button')}
-                    </div>
+                    {!homework?.chatId && (
+                        <div
+                            className={s.handInHomework}
+                            onClick={handInHomework}
+                        >
+                            {getLang('start_homework_chat_button')}
+                        </div>
+                    )}
                     {homework?.chatId && <Chat chatId={homework.chatId} />}
                 </div>
             </div>

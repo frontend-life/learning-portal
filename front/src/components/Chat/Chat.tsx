@@ -34,13 +34,21 @@ export const Chat = ({ width = 500, minHeight = 300, chatId }: Props) => {
             })
             .then((chat: any) => {
                 if (chat?.messages as MessageCommon[]) {
-                    setMessages(chat.messages);
+                    const sorted = chat.messages.sort((a, b) => {
+                        console.log(
+                            +new Date(a.createdAt),
+                            +new Date(b.createdAt)
+                        );
+                        return +new Date(b.createdAt) - +new Date(a.createdAt);
+                    });
+                    console.log(sorted);
+                    setMessages(sorted);
                 }
             });
     }, []);
 
     const addMessageToView = (message: MessageCommon) => {
-        setMessages((prev) => [...prev, message]);
+        setMessages((prev) => [message, ...prev]);
     };
 
     return (
@@ -54,6 +62,8 @@ export const Chat = ({ width = 500, minHeight = 300, chatId }: Props) => {
             }}
         >
             <GreenYellowBG />
+            <NewMessage chatId={chatId} onSend={addMessageToView} />
+
             <div className={s.messages}>
                 {messages?.map(
                     ({ _id, attachments, senderId, text, createdAt }) => {
@@ -69,7 +79,6 @@ export const Chat = ({ width = 500, minHeight = 300, chatId }: Props) => {
                     }
                 )}
             </div>
-            <NewMessage chatId={chatId} onSend={addMessageToView} />
         </div>
     );
 };

@@ -63,9 +63,34 @@
 .newMessageEditor {
     padding: 20px;
     background-color: white;
-    border-radius: 20px 20px 0 20px;
+    border-radius: 20px 0 20px 20px;
     color: black;
 
     min-width: 300px;
     max-width: 600px;
+
+    max-height: 300px;
+    overflow: auto;
+    overscroll-behavior: none;
+}
+
+/* ===== Scrollbar CSS ===== */
+/* Firefox */
+.newMessageEditor {
+    scrollbar-width: auto;
+    scrollbar-color: #a6a6a6 #ffffff;
+}
+
+/* Chrome, Edge, and Safari */
+.newMessageEditor::-webkit-scrollbar {
+    width: 5px;
+}
+
+.newMessageEditor::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.newMessageEditor::-webkit-scrollbar-thumb {
+    background-color: #4a4a4a8a;
+    border-radius: 10px;
 }

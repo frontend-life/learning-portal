@@ -138,9 +138,17 @@ export const NewMessage = ({ chatId, onSend }: NewMessageProps) => {
         setImgsToPreview((prev) => prev.filter(({ _id: id }) => id !== uid));
     };
 
+    const handleCntrlSend = (e) => {
+        const ENTER_KEY = 13;
+
+        if (e.keyCode === ENTER_KEY && e.ctrlKey) {
+            handleSend();
+        }
+    };
+
     return (
         <div className={s.root}>
-            <div className={s.textAndButtons}>
+            <div className={s.textAndButtons} onKeyDown={handleCntrlSend}>
                 <Editor
                     defaultValue={editorDefaultValue}
                     showHowItLooks={false}
