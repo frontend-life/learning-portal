@@ -1,10 +1,15 @@
+import { PopulatedHomework } from '@commonTypes';
 import { useLocation } from 'react-router-dom';
 import { qp } from '../../../../utils/paths';
 import { ChatView } from '../ChatView/ChatView';
 import { LessonView } from '../LessonView/LessonView';
 import s from './View.module.css';
 
-export function View({ data }) {
+interface Props {
+    data: PopulatedHomework[];
+}
+
+export function View({ data }: Props) {
     const location = useLocation();
     const { homeworkId, userName } = qp(location.search);
 

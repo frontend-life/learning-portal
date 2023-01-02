@@ -1,3 +1,4 @@
+import { PopulatedHomework } from '@commonTypes';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CircleLoader } from '../../../../components/CircleLoader/CircleLoader';
@@ -6,7 +7,12 @@ import { cls } from '../../../../utils/css';
 import s from './List.module.css';
 import { useHomeworksSearch } from './useSearchHomeworks';
 
-export function List({ loading, data }) {
+interface Props {
+    loading: boolean;
+    data: PopulatedHomework[];
+}
+
+export function List({ loading, data }: Props) {
     const navigate = useNavigate();
     const [userSearch, setUserSearch] = useState('');
     const [lessonSearch, setLessonSearch] = useState('');

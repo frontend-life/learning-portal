@@ -1,13 +1,8 @@
 import { Populative } from "./../types";
-import { createMarkdown } from "./../service/telegram";
-import { telegram, tlgSendMessage, T_METHODS } from "./../service/axios";
-import { Roles } from "./../service/roles";
 import express from "express";
 
 import IHomework, { Homework } from "../models/homework";
 import { auth } from "../middleware/auth";
-import { isProd } from "../utils";
-import { User } from "../models/user";
 import { Chat } from "../models/chat";
 
 const router = express.Router();

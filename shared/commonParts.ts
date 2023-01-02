@@ -1,3 +1,8 @@
+export enum Roles {
+  TEACHER = 0,
+  STUDENT = 1,
+}
+
 export interface AttachmentCommon {
   _id: string;
   path: string;
@@ -22,3 +27,28 @@ export interface ChatCommon {
   _id: string;
   messages: string[];
 }
+
+export interface LessonCommon {
+  _id: string;
+  messages: string[];
+}
+
+export interface UserCommon {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+  salary: number;
+  lessonsDone: string[];
+  lessonsOpen: string[];
+  roles: Roles[];
+  telegramChatId: number;
+}
+
+export type PopulatedHomework = Omit<
+  HomeworkCommon,
+  "studentId" | "lessonId"
+> & {
+  studentId: any; // TODO: change type to normal
+  lessonId: any; // TODO: change type to normal
+};

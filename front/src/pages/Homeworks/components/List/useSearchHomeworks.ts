@@ -1,4 +1,4 @@
-import { HomeworkCommon } from '@commonTypes';
+import { PopulatedHomework } from '@commonTypes';
 import { useMemo } from 'react';
 
 type HomeworkItem = {
@@ -6,11 +6,6 @@ type HomeworkItem = {
     user: string;
     lesson: string;
     approved: boolean;
-};
-
-type PopulatedHomework = Omit<HomeworkCommon, 'studentId' | 'lessonId'> & {
-    studentId: any; // TODO: change type to normal
-    lessonId: any; // TODO: change type to normal
 };
 
 export const useHomeworksSearch = (

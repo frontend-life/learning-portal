@@ -1,7 +1,19 @@
 import { Lesson } from "./lesson";
 import mongoose from "mongoose";
 import validator from "validator";
-import IUser from "../interfaces/user";
+import { Roles } from "../../../shared/commonParts";
+
+export interface IUser {
+  _id: string;
+  name: string;
+  email: string;
+  password: string;
+  salary: number;
+  lessonsDone: string[];
+  lessonsOpen: string[];
+  roles: Roles[];
+  telegramChatId: number;
+}
 
 const userSchema = new mongoose.Schema(
   {

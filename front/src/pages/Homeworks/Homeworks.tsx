@@ -1,3 +1,4 @@
+import { PopulatedHomework } from '@commonTypes';
 import { CircleLoader } from '../../components/CircleLoader/CircleLoader';
 import MainBlockWrapper from '../../components/MainBlockWrapper/MainBlockWrapper';
 import { API_URLS } from '../../utils/axios';
@@ -7,10 +8,10 @@ import { View } from './components/View/View';
 import s from './Homeworks.module.css';
 
 export const Homeworks = () => {
-    const { loading, data } = useGetArrayData<any>(
+    const { loading, data } = useGetArrayData<PopulatedHomework[]>(
         `${API_URLS.HOMEWORK}?populate[lessonId]=1&populate[studentId]=1`
     );
-    console.log(data);
+
     const renderContent = () => {
         return (
             <div className={s.root}>
