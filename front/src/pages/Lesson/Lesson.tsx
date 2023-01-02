@@ -132,6 +132,7 @@ function Lesson() {
                 <div className={s.homework}>
                     <h3>Homework</h3>
                     <div
+                        className={s.homeworkContent}
                         dangerouslySetInnerHTML={{
                             __html: lesson.homework
                         }}

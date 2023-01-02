@@ -14,7 +14,7 @@
     display: inline-block;
 }
 .text {
-    font-family: 'Courier New', Courier, monospace;
+    font-family: monospace;
     color: black;
     padding-right: 35px;
 }

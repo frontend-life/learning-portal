@@ -6,6 +6,7 @@
     padding-bottom: 100px;
     position: relative;
     overflow: auto;
+    font-family: monospace;
 }
 
 .description {
@@ -40,4 +41,8 @@
     color: white;
     cursor: pointer;
     text-align: center;
+}
+
+.homeworkContent {
+    margin: 20px 0;
 }

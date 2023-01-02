@@ -27,6 +27,7 @@ export const Chat = ({ width = 500, minHeight = 300, chatId }: Props) => {
     const [isReady, setIsReady] = useState(false);
 
     useEffect(() => {
+        setIsReady(false);
         myRequest
             .get(API_URLS.CHAT, {
                 params: {
@@ -47,7 +48,7 @@ export const Chat = ({ width = 500, minHeight = 300, chatId }: Props) => {
             .finally(() => {
                 setIsReady(true);
             });
-    }, []);
+    }, [chatId]);
 
     const addMessageToView = (message: MessageCommon) => {
         setMessages((prev) => [message, ...prev]);
@@ -69,22 +70,24 @@ export const Chat = ({ width = 500, minHeight = 300, chatId }: Props) => {
         >
             {!isReady && <CircleLoader inCenterOfBlock isAbsolute />}
             <GreenYellowBG />
-            <NewMessage chatId={chatId} onSend={addMessageToView} />
+            <div className={s.body}>
+                <NewMessage chatId={chatId} onSend={addMessageToView} />
 
-            <div className={s.messages}>
-                {messages?.map(
-                    ({ _id, attachments, senderId, text, createdAt }) => {
-                        return (
-                            <Message
-                                key={_id}
-                                isMine={senderId === userDetails?._id}
-                                attachments={attachments}
-                                text={text}
-                                createdAt={createdAt}
-                            />
-                        );
-                    }
-                )}
+                <div className={s.messages}>
+                    {messages?.map(
+                        ({ _id, attachments, senderId, text, createdAt }) => {
+                            return (
+                                <Message
+                                    key={_id}
+                                    isMine={senderId === userDetails?._id}
+                                    attachments={attachments}
+                                    text={text}
+                                    createdAt={createdAt}
+                                />
+                            );
+                        }
+                    )}
+                </div>
             </div>
         </div>
     );
