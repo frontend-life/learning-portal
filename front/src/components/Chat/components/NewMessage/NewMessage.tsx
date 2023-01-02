@@ -7,8 +7,10 @@ import {
 import { useUserContext } from '../../../../store/UserDetails';
 import { IMessage } from '../../../../types/api';
 import { API_URLS, myRequest } from '../../../../utils/axios';
+import { cls } from '../../../../utils/css';
 import { addWNt, addErrorNt } from '../../../../utils/notification';
 import { generateUid } from '../../../../utils/uid';
+import { CircleLoader } from '../../../CircleLoader/CircleLoader';
 import { Editor } from '../../../Editor/Editor';
 import { Attachments } from '../Attachments/Attachments';
 
@@ -33,6 +35,8 @@ export const NewMessage = ({ chatId, onSend }: NewMessageProps) => {
     const { register, setValue, getValues } = useForm();
     const [editorDefaultValue, setEditorDefaultValue] = useState<string>();
 
+    const [isLoading, setIsLoading] = useState(false);
+
     const handleSend = async () => {
         const { homework } = getValues();
         if (!homework?.trim()) {
@@ -44,6 +48,8 @@ export const NewMessage = ({ chatId, onSend }: NewMessageProps) => {
         if (text === '' && imgsToPreview.length === 0) {
             return;
         }
+
+        setIsLoading(true);
 
         const saveMessage = (data: IMessage) => {
             const url = `${API_URLS.MESSAGE}`;
@@ -73,7 +79,9 @@ export const NewMessage = ({ chatId, onSend }: NewMessageProps) => {
         };
 
         if (imgsToPreview.length === 0) {
-            saveMessage(data);
+            saveMessage(data).finally(() => {
+                setIsLoading(false);
+            });
             return;
         } else {
             sendImagesToServer()
@@ -84,7 +92,10 @@ export const NewMessage = ({ chatId, onSend }: NewMessageProps) => {
                     data.attachments = attachesIds;
                     saveMessage(data);
                 })
-                .catch((e) => console.log(e));
+                .catch((e) => console.log(e))
+                .finally(() => {
+                    setIsLoading(false);
+                });
         }
     };
 
@@ -145,7 +156,13 @@ export const NewMessage = ({ chatId, onSend }: NewMessageProps) => {
 
     return (
         <div className={s.root}>
-            <div className={s.textAndButtons} onKeyDown={handleCntrlSend}>
+            {/* {isLoading && <CircleLoader isAbsolute inCenterOfBlock />} */}
+            <div
+                className={cls(s.textAndButtons, {
+                    [s.textAndButtonsLoading]: isLoading
+                })}
+                onKeyDown={handleCntrlSend}
+            >
                 <Editor
                     defaultValue={editorDefaultValue}
                     showHowItLooks={false}
@@ -158,7 +175,11 @@ export const NewMessage = ({ chatId, onSend }: NewMessageProps) => {
                     placeholder="New message"
                 />
                 <div className={s.buttons}>
-                    <button className={s.addImage} onClick={addImage}>
+                    <button
+                        className={s.addImage}
+                        onClick={addImage}
+                        disabled={isLoading}
+                    >
                         <i className="fa-solid fa-paperclip"></i>
                     </button>
                     <input
@@ -170,7 +191,11 @@ export const NewMessage = ({ chatId, onSend }: NewMessageProps) => {
                         multiple
                         accept="image/jpeg, image/png, image/jpg"
                     ></input>
-                    <button onClick={handleSend} className={s.sendButton}>
+                    <button
+                        onClick={handleSend}
+                        className={s.sendButton}
+                        disabled={isLoading}
+                    >
                         <i className="fa-regular fa-paper-plane"></i>
                     </button>
                 </div>

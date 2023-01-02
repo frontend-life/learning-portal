@@ -13,6 +13,10 @@
     display: flex;
     justify-content: center;
 }
+.textAndButtonsLoading {
+    pointer-events: none;
+    opacity: 0.2;
+}
 
 .buttons button {
     width: 50px;

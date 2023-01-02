@@ -8,6 +8,8 @@ import { useEffect, useState } from 'react';
 import { MessageCommon } from '../../../../shared/commonParts';
 import { API_URLS, myRequest } from '../../utils/axios';
 import { useChatEvents } from './hooks/useChatEvents';
+import { cls } from '../../utils/css';
+import { CircleLoader } from '../CircleLoader/CircleLoader';
 
 const GreenYellowBG = () => (
     <div className={s.rootBG} style={{ backgroundImage: `url(${chatBG2})` }} />
@@ -22,6 +24,7 @@ interface Props {
 export const Chat = ({ width = 500, minHeight = 300, chatId }: Props) => {
     const { userDetails } = useUserContext();
     const [messages, setMessages] = useState<MessageCommon[]>([]);
+    const [isReady, setIsReady] = useState(false);
 
     useEffect(() => {
         myRequest
@@ -40,6 +43,9 @@ export const Chat = ({ width = 500, minHeight = 300, chatId }: Props) => {
                     });
                     setMessages(sorted);
                 }
+            })
+            .finally(() => {
+                setIsReady(true);
             });
     }, []);
 
@@ -53,7 +59,7 @@ export const Chat = ({ width = 500, minHeight = 300, chatId }: Props) => {
 
     return (
         <div
-            className={s.root}
+            className={cls(s.root, { [s.rootLoading]: !isReady })}
             style={{
                 backgroundImage: `url(${chatBG})`,
                 width,
@@ -61,6 +67,7 @@ export const Chat = ({ width = 500, minHeight = 300, chatId }: Props) => {
                 minHeight
             }}
         >
+            {!isReady && <CircleLoader inCenterOfBlock isAbsolute />}
             <GreenYellowBG />
             <NewMessage chatId={chatId} onSend={addMessageToView} />
 
