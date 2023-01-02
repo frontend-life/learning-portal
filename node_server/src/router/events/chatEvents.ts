@@ -51,7 +51,7 @@ router.get("/chatevents", (req, res) => {
       participants: [newParticipant],
     };
   }
-  console.log(chats, chats[chat_id].participants.length);
+  // console.log(chats, chats[chat_id].participants.length);
 
   req.on("close", () => {
     console.log("Chat events connection closed");
