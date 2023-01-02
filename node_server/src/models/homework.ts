@@ -1,14 +1,11 @@
 import mongoose, { Document } from "mongoose";
+import { HomeworkCommon } from "../../../shared/commonParts";
 import { Chat } from "./chat";
 import { Lesson } from "./lesson";
 import { User } from "./user";
 
-export default interface IHomework {
-  _id: mongoose.Schema.Types.ObjectId;
-  studentId: string;
-  lessonId: string;
+export default interface IHomework extends HomeworkCommon {
   teacherId?: string;
-  chatId?: string;
 }
 
 const homeworkSchema = new mongoose.Schema(
@@ -32,6 +29,10 @@ const homeworkSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       required: false,
       ref: Chat,
+    },
+    approved: {
+      type: mongoose.Schema.Types.Boolean,
+      default: false,
     },
   },
   { timestamps: true }

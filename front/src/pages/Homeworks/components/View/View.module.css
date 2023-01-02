@@ -1,0 +1,16 @@
+.root {
+}
+.lessonColumn,
+.chatColumn {
+    flex: 1;
+    border: 1px solid black;
+    color: black;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.chatColumn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

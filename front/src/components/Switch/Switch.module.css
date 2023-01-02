@@ -3,6 +3,7 @@
     display: inline-block;
     width: 60px;
     height: 34px;
+    pointer-events: none;
 }
 
 .switch .input {
@@ -36,7 +37,7 @@
     transition: 0.4s;
 }
 
-.input:checked + .slider:before {
+.inputChecked + .slider:before {
     -webkit-transform: translateX(26px);
     -ms-transform: translateX(26px);
     transform: translateX(26px);

@@ -25,21 +25,16 @@ export const useChatEvents = (
                 }
 
                 const parsedData = JSON.parse(e.data);
-                /**
-                 *  Here will be switcher of events
-                 *
-                 */
+
                 onUpdate(parsedData as MessageCommon);
             });
 
             setListening(true);
-            // console.log('setListening');
 
             closeStream = () => eventsStream.close();
         }
-        // console.log('useEffect');
+
         return () => {
-            // console.log('return');
             closeStream();
         };
     }, [isSignedIn, chat_id, _id]);

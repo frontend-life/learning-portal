@@ -4,18 +4,7 @@
     height: 100%;
     font-family: monospace;
 }
-.search {
-}
-.searchInput {
-    margin: 10px 10px 0px;
-    box-sizing: border-box;
-    padding: 20px;
-    background-color: aliceblue;
-    border-radius: 10px;
-    outline: none;
-    border: 0;
-    width: 90%;
-}
+
 .homeworksColumn {
     width: 250px;
     flex-shrink: 0;
@@ -23,36 +12,9 @@
     display: flex;
     flex-direction: column;
 }
-.homeworksList {
-    flex: 1;
-    display: flex;
-    overflow: auto;
-    flex-direction: column;
-}
-.homeworkItem {
-    padding: 20px;
-    margin-top: 20px;
-    background-color: blanchedalmond;
-    color: black;
-    cursor: pointer;
-}
+
 .viewColumn {
     flex: 1;
     background-color: antiquewhite;
     display: flex;
-}
-.lessonColumn,
-.chatColumn {
-    flex: 1;
-    border: 1px solid black;
-    color: black;
-    overflow-y: auto;
-    padding: 20px;
-}
-
-.chatColumn {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    flex-direction: column;
 }

@@ -17,7 +17,8 @@
         "jsx": "react-jsx",
         "noImplicitAny": false,
         "paths": {
-            "@commonTypes": ["../shared/commonParts"]
+            "@commonTypes": ["../shared/commonParts"],
+            "@utils/*": ["./src/utils/*"]
         }
     },
     "include": ["src", "../shared/commonParts.ts"]

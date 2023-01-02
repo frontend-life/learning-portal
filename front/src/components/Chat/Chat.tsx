@@ -56,8 +56,6 @@ export const Chat = ({ width = 500, minHeight = 300, chatId }: Props) => {
 
     useChatEvents(chatId, addMessageToView);
 
-    console.log(messages);
-
     return (
         <div
             className={cls(s.root, { [s.rootLoading]: !isReady })}

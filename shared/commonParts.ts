@@ -16,6 +16,7 @@ export interface HomeworkCommon {
   studentId: string;
   lessonId: string;
   chatId?: string;
+  approved: boolean;
 }
 export interface ChatCommon {
   _id: string;

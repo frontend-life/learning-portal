@@ -22,7 +22,7 @@ router.post("/homework", auth, async (req, res) => {
     if (existingHomeworks.length > 0) {
       return res
         .status(400)
-        .send("Homework for this student and this lesson alreaedy exists");
+        .send("Homework for this student and this lesson already exists");
     }
 
     const chat = new Chat();

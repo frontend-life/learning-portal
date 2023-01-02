@@ -7,7 +7,6 @@ const router = express.Router();
 router
   .route("/chat")
   .post((req, res) => {
-    console.log(req.body);
     console.log(
       "You want to create chat, we do nothing now on back in this case"
     );
