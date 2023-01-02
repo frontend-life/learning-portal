@@ -7,6 +7,7 @@ import { useUserContext } from '../../store/UserDetails';
 import { useEffect, useState } from 'react';
 import { MessageCommon } from '../../../../shared/commonParts';
 import { API_URLS, myRequest } from '../../utils/axios';
+import { useChatEvents } from './hooks/useChatEvents';
 
 const GreenYellowBG = () => (
     <div className={s.rootBG} style={{ backgroundImage: `url(${chatBG2})` }} />
@@ -35,10 +36,6 @@ export const Chat = ({ width = 500, minHeight = 300, chatId }: Props) => {
             .then((chat: any) => {
                 if (chat?.messages as MessageCommon[]) {
                     const sorted = chat.messages.sort((a, b) => {
-                        console.log(
-                            +new Date(a.createdAt),
-                            +new Date(b.createdAt)
-                        );
                         return +new Date(b.createdAt) - +new Date(a.createdAt);
                     });
                     setMessages(sorted);
@@ -49,6 +46,10 @@ export const Chat = ({ width = 500, minHeight = 300, chatId }: Props) => {
     const addMessageToView = (message: MessageCommon) => {
         setMessages((prev) => [message, ...prev]);
     };
+
+    useChatEvents(chatId, addMessageToView);
+
+    console.log(messages);
 
     return (
         <div

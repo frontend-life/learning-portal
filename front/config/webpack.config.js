@@ -327,13 +327,13 @@ module.exports = function (webpackEnv) {
                     'react-dom$': 'react-dom/profiling',
                     'scheduler/tracing': 'scheduler/tracing-profiling'
                 }),
-                ...(modules.webpackAliases || {})
+                ...(modules.webpackAliases || {}),
 
                 //maybe in future
-                // '@commonTypes': path.resolve(
-                //     __dirname,
-                //     '../../shared/commonParts.ts'
-                // )
+                '@commonTypes': path.resolve(
+                    __dirname,
+                    '../../shared/commonParts.ts'
+                )
             },
             plugins: [
                 // Prevents users from importing files from outside of src/ (or node_modules/).

@@ -145,7 +145,7 @@ function Lesson() {
                         </div>
                     )}
                     {homework?.chatId && (
-                        <Chat chatId={homework.chatId} width={800} />
+                        <Chat chatId={homework.chatId} width={500} />
                     )}
                 </div>
             </div>

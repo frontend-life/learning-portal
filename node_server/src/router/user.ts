@@ -16,7 +16,7 @@ import {
   sendLessonsDoneToUser,
   sendLessonsOpenToUser,
   sendNewUserDataToUser,
-} from "./events";
+} from "./events/events";
 import IUser from "../interfaces/user";
 import { Roles } from "../service/roles";
 import { createMarkdown } from "../service/telegram";

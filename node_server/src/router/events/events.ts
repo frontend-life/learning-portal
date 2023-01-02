@@ -1,3 +1,5 @@
+import { createEventMessage } from "./utils";
+
 const clients: { id: any } | {} = {};
 export function eventsHandler(request, response) {
   const user_id = request.originalUrl.split("=")[1];
@@ -23,9 +25,7 @@ export function eventsHandler(request, response) {
     delete clients[user_id];
   });
 }
-function createEventMessage(data: any) {
-  return `data: ${typeof data === "string" ? data : JSON.stringify(data)} \n\n`;
-}
+
 export function sendLessonsDoneToUser(user_id, newLessonsDone) {
   clients[user_id]?.write(createEventMessage({ lessonsDone: newLessonsDone }));
 }

@@ -217,7 +217,7 @@ function ChatView({ homework }) {
     const { chatId, lessonId, studentId } = homework;
     return (
         <>
-            <Chat chatId={chatId} />
+            <Chat chatId={chatId} width={300} />
             <HWDoneButton lessonId={lessonId} studentId={studentId} />
         </>
     );

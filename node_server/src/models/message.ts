@@ -32,11 +32,13 @@ const messageSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    attachments: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: false,
-      ref: Attachment,
-    },
+    attachments: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        required: false,
+        ref: Attachment,
+      },
+    ],
   },
   { timestamps: true }
 );

@@ -101,7 +101,6 @@ export const Editor = (props: {
                     }
                 }}
                 onInput={(e) => {
-                    console.log('input', e.currentTarget.innerHTML);
                     let { innerHTML } = e.currentTarget;
                     if (innerHTML === '<br>') {
                         innerHTML = '';
@@ -114,7 +113,6 @@ export const Editor = (props: {
                     e.preventDefault();
                 }}
                 onKeyDown={(e) => {
-                    console.log('input', e.keyCode);
                     if (e.key === 'Tab') {
                         e.preventDefault();
                         tab(e);

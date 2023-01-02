@@ -1,6 +1,7 @@
 import express from "express";
 import { Chat } from "../models/chat";
 import { IMessage, Message } from "../models/message";
+import { sendMessageToChat } from "./events/chatEvents";
 const router = express.Router();
 
 router
@@ -25,10 +26,13 @@ router
         attachments,
         chatId,
       });
-      const saved_new_message = await new_message.save();
+      let saved_new_message = await new_message.save();
+      saved_new_message = await saved_new_message.populate("attachments");
 
       chat.messages = [...chat.messages, saved_new_message._id.toString()];
       await chat.save();
+
+      sendMessageToChat(chatId, senderId, saved_new_message);
 
       res.status(201).send(saved_new_message);
     } catch (err) {

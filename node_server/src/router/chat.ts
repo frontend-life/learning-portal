@@ -30,7 +30,10 @@ router
 
     if (populate?.messages) {
       try {
-        chat = await chat?.populate("messages");
+        chat = await chat?.populate({
+          path: "messages",
+          populate: { path: "attachments" },
+        });
       } catch (err) {
         console.log(err);
       }
