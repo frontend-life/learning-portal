@@ -15,7 +15,7 @@
 }
 .textAndButtonsLoading {
     pointer-events: none;
-    opacity: 0.2;
+    /* opacity: 0.2; */
 }
 
 .buttons button {
