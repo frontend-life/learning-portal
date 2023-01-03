@@ -1,4 +1,5 @@
 import { PopulatedHomework } from '@commonTypes';
+import { getLang } from '@utils/langs';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CircleLoader } from '../../../../components/CircleLoader/CircleLoader';
@@ -44,7 +45,7 @@ export function List({ loading, data }: Props) {
                         setApprovedSearch((p) => !p);
                     }}
                 >
-                    <p>Show approved</p>
+                    <p>{getLang('show_approved')}</p>
                     <Switch defaultCheck={approvedSearch} />
                 </div>
             </div>

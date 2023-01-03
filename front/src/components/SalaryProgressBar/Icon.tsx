@@ -1,5 +1,4 @@
 import s from './SalaryProgressBar.module.css';
-import { stamps } from './SalaryProgressBar';
 
 export const Icon = ({
     mode,
@@ -7,7 +6,7 @@ export const Icon = ({
     money
 }: {
     mode: 'light' | 'dark';
-    percent: typeof stamps[number];
+    percent: number;
     money: number;
 }) => {
     return (
