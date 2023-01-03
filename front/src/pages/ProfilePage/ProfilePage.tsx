@@ -1,8 +1,8 @@
+import { getLang } from '@utils/langs';
 import MainBlockWrapper from '../../components/MainBlockWrapper/MainBlockWrapper';
 import { SalaryCounter } from '../../components/SalaryCounter/SalaryCounter';
 import { SalaryProgressBar } from '../../components/SalaryProgressBar/SalaryProgressBar';
 import { useUserContext } from '../../store/UserDetails';
-import { myRequest } from '../../utils/axios';
 import s from './ProfilePage.module.css';
 
 export const ProfilePage = () => {
@@ -11,7 +11,7 @@ export const ProfilePage = () => {
     } = useUserContext();
 
     return (
-        <MainBlockWrapper title="МОЙ ПРОФИЛЬ">
+        <MainBlockWrapper title={getLang('my_profile')}>
             <div className={s.root}>
                 <div className={s.info}>
                     <div className={s.avatarSkeleton}>
@@ -22,8 +22,8 @@ export const ProfilePage = () => {
                         <p>
                             <i>
                                 {telegramChatId
-                                    ? 'You are connected to telegram bot'
-                                    : 'No connection with telegram'}
+                                    ? getLang('you_are_connected_to_telegram')
+                                    : getLang('no_connection_with_telegram')}
                             </i>
                         </p>
                         <a
@@ -32,7 +32,7 @@ export const ProfilePage = () => {
                             rel="noreferrer"
                             href="https://web.telegram.org/z/#5965431146"
                         >
-                            Link to telegram bot
+                            {getLang('link_to_telegram_bot')}
                         </a>
                         <span className={s.telegramConnectionId}>
                             Your id is: {_id}
@@ -41,7 +41,9 @@ export const ProfilePage = () => {
                 </div>
                 <div className={s.salary}>
                     <div>
-                        моя зарплата <SalaryCounter value={salary} />в месяц
+                        {getLang('my_salary') + ' '}
+                        <SalaryCounter value={salary} />
+                        $/m
                     </div>
                     <div className={s.progress}>
                         <SalaryProgressBar value={salary} />

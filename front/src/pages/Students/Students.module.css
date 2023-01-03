@@ -99,6 +99,11 @@
     padding: 10px;
     width: 250px;
 }
+.status:nth-child(2) {
+    cursor: default;
+    pointer-events: none;
+    filter: grayscale(1);
+}
 
 .isOpen .switchText:first-of-type,
 .isDone .switchText:first-of-type {

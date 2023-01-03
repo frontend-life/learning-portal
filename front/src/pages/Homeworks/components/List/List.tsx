@@ -1,9 +1,11 @@
 import { PopulatedHomework } from '@commonTypes';
+import { getLang } from '@utils/langs';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CircleLoader } from '../../../../components/CircleLoader/CircleLoader';
 import { Switch } from '../../../../components/Switch/Switch';
 import { cls } from '../../../../utils/css';
+import { useParams } from '../View/hooks/useParams';
 import s from './List.module.css';
 import { useHomeworksSearch } from './useSearchHomeworks';
 
@@ -13,6 +15,8 @@ interface Props {
 }
 
 export function List({ loading, data }: Props) {
+    const { homeworkId, userName } = useParams();
+
     const navigate = useNavigate();
     const [userSearch, setUserSearch] = useState('');
     const [lessonSearch, setLessonSearch] = useState('');
@@ -44,7 +48,7 @@ export function List({ loading, data }: Props) {
                         setApprovedSearch((p) => !p);
                     }}
                 >
-                    <p>Show approved</p>
+                    <p>{getLang('show_approved')}</p>
                     <Switch defaultCheck={approvedSearch} />
                 </div>
             </div>
@@ -60,7 +64,9 @@ export function List({ loading, data }: Props) {
                         <div
                             key={id}
                             className={cls(s.homeworkItem, {
-                                [s.homeworkItemApproved]: approved
+                                [s.homeworkItemApproved]: approved,
+                                [s.homeworkChosen]:
+                                    homeworkId === id && userName === user
                             })}
                             onClick={() => {
                                 navigate(

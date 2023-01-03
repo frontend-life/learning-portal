@@ -23,7 +23,7 @@ import { Roles } from "../../../shared/commonParts";
 
 const router = express.Router();
 
-const EACH_LESSON_PAY_UP_MONTHLY = 5000;
+const EACH_LESSON_PAY_UP = 7.7;
 
 router.post("/user/signup", async (req, res) => {
   const dto = req.body as signupUserDTO;
@@ -74,6 +74,7 @@ router.post("/user/signin", async (req, res) => {
 });
 
 router.get("/user/me", auth, async (req, res) => {
+  // @ts-ignore
   return res.status(200).send(req.user);
 });
 
@@ -147,7 +148,7 @@ router.post("/user/done", auth, async (req, res) => {
   newLessonsList.push(lessonId);
   newLessonsList = Array.from(new Set(newLessonsList));
 
-  const newSalary = user.salary + EACH_LESSON_PAY_UP_MONTHLY;
+  const newSalary = salaryHelper(user.salary, "+");
 
   const result = await User.findOneAndUpdate(
     { _id: userId },
@@ -187,8 +188,7 @@ router.post("/user/notdone", auth, async (req, res) => {
     (id) => id.toString() !== lessonId
   );
 
-  let newSalary = user.salary - EACH_LESSON_PAY_UP_MONTHLY;
-  newSalary = newSalary < 0 ? 0 : newSalary;
+  const newSalary = salaryHelper(user.salary, "-");
 
   const result = await User.findOneAndUpdate(
     { _id: userId },
@@ -226,7 +226,7 @@ async function notificateThroughTlg(
     if (!lesson) return;
 
     const { title, course } = lesson;
-    const text = `
+    let text = `
 _Your homework was mark ${type}_ 
 
 Lesson\\: ${title}
@@ -236,11 +236,31 @@ Your salary now: ${user.salary}
 
 ${createMarkdown.lessonLink(lessonId, user._id)}
 `;
+
+    text = tgTextFormatter(text);
     tlgSendMessage({
       chat_id: user?.telegramChatId,
       text,
     });
   }
+}
+
+function tgTextFormatter(text: string): string {
+  return text.replace(/\./, "\\.");
+}
+
+function salaryHelper(salary: number, type: "+" | "-"): number {
+  if (type === "+") {
+    salary = salary + EACH_LESSON_PAY_UP;
+  } else {
+    salary = salary - EACH_LESSON_PAY_UP;
+  }
+
+  if (salary < 0) {
+    return 0;
+  }
+
+  return +salary.toFixed(2);
 }
 
 export default router;
