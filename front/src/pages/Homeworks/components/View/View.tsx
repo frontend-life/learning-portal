@@ -1,8 +1,10 @@
 import { PopulatedHomework } from '@commonTypes';
 import { useLocation } from 'react-router-dom';
 import { qp } from '../../../../utils/paths';
-import { ChatView } from '../ChatView/ChatView';
-import { LessonView } from '../LessonView/LessonView';
+import { ChatView } from './components/ChatView/ChatView';
+import { LessonView } from './components/LessonView/LessonView';
+import { useParams } from './hooks/useParams';
+
 import s from './View.module.css';
 
 interface Props {
@@ -10,8 +12,7 @@ interface Props {
 }
 
 export function View({ data }: Props) {
-    const location = useLocation();
-    const { homeworkId, userName } = qp(location.search);
+    const { homeworkId, userName } = useParams();
 
     if (!homeworkId || !userName) {
         return null;
