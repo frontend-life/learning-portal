@@ -226,7 +226,7 @@ async function notificateThroughTlg(
     if (!lesson) return;
 
     const { title, course } = lesson;
-    const text = `
+    let text = `
 _Your homework was mark ${type}_ 
 
 Lesson\\: ${title}
@@ -236,11 +236,17 @@ Your salary now: ${user.salary}
 
 ${createMarkdown.lessonLink(lessonId, user._id)}
 `;
+
+    text = tgTextFormatter(text);
     tlgSendMessage({
       chat_id: user?.telegramChatId,
       text,
     });
   }
+}
+
+function tgTextFormatter(text: string): string {
+  return text.replace(/\./, "\\.");
 }
 
 function salaryHelper(salary: number, type: "+" | "-"): number {
