@@ -1,36 +1,26 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { Chat } from '../../components/Chat/Chat';
 import MainBlockWrapper from '../../components/MainBlockWrapper/MainBlockWrapper';
 import { IHomework, ILesson, Roles } from '../../types/api';
-import { myRequest } from '../../utils/axios';
-import { addErrorNt } from '../../utils/notification';
+import { API_URLS, myRequest } from '../../utils/axios';
 import { PATHS } from '../../utils/paths';
 import s from './Lesson.module.css';
 import { qp } from '../../utils/paths';
 import { useUserContext } from '../../store/UserDetails';
 import { CircleLoader } from '../../components/CircleLoader/CircleLoader';
 import { useLessonsContext } from '../../store/LessonsContext';
-import { HWDoneButton } from '../../components/HWDoneButton/HWDoneButton';
-import { Homework } from './Homework';
+import { Chat } from '../../components/Chat/Chat';
+import { getLang } from '../../utils/langs';
+import { DoneSign } from '../../components/DoneSign/DoneSign';
 
 interface Params {
     lessonId: string;
     studentId: string;
 }
-const onReloadHomework = (setHws: any, params: Params) => {
-    myRequest
-        .get<any, IHomework[]>(
-            `/homeworksByLessonId?lessonId=${params.lessonId}&studentId=${params?.studentId}`
-        )
-        .then((homeworks) => {
-            setHws(homeworks);
-        })
-        .catch(addErrorNt);
-};
 
 function Lesson() {
     const [loading, setLoading] = useState(true);
+    const [homework, setHomework] = useState<IHomework>();
 
     const location = useLocation();
     const params = qp(location.search) as Partial<Params>;
@@ -42,7 +32,6 @@ function Lesson() {
 
     const [lesson, setLesson] = useState<ILesson>();
 
-    const [hws, setHws] = useState<IHomework[]>([]);
     const navigate = useNavigate();
 
     const nothingToDoHere = !params || !params?.lessonId || !params?.studentId;
@@ -51,14 +40,14 @@ function Lesson() {
         if (!params?.lessonId) {
             return;
         }
-        const lesson = lessons.find(({ _id }) => params.lessonId === _id);
-        if (lesson) {
-            setLesson(lesson);
+        const curLesson = lessons.find(({ _id }) => params.lessonId === _id);
+        if (curLesson) {
+            setLesson(curLesson);
             setLoading(false);
-
+            getHomework();
             return;
         }
-        if (!lesson) {
+        if (!curLesson) {
             myRequest
                 .get('/lesson', {
                     params: {
@@ -68,18 +57,36 @@ function Lesson() {
                 .then((l) => {
                     setLesson(l as unknown as ILesson);
                     setLoading(false);
+                    getHomework();
                 });
         }
     }, [lessons, params?.lessonId]);
 
-    const reloadHW = useCallback(() => {
-        onReloadHomework(setHws, params as Params);
-    }, [setHws, params]);
+    const handInHomework = () => {
+        myRequest
+            .post(API_URLS.HOMEWORK, {
+                studentId: params.studentId,
+                lessonId: params.lessonId
+            } as IHomework)
+            // @ts-ignore
+            .then(({ homework }: { homework: IHomework }) => {
+                setHomework(homework);
+            });
+    };
 
-    useEffect(() => {
-        if (loading || nothingToDoHere) return;
-        reloadHW();
-    }, [loading, nothingToDoHere]);
+    const getHomework = () => {
+        myRequest
+            .get(API_URLS.HOMEWORK, {
+                params: {
+                    lessonId: params.lessonId,
+                    studentId: params.studentId
+                }
+            })
+            // @ts-ignore
+            .then((response: IHomework[]) => {
+                setHomework(response[0]);
+            });
+    };
 
     if (nothingToDoHere) {
         return <Navigate to={PATHS.lessons} replace={true} />;
@@ -106,7 +113,7 @@ function Lesson() {
     return (
         <MainBlockWrapper title="Lesson" alignSecond="flex-start">
             <div className={s.root}>
-                {lessonDone && <div className={s.lessonDoneFlag}>DONE</div>}
+                {lessonDone && <DoneSign />}
                 <h1 {...headerProps}>{lesson.title}</h1>
                 <h3>Description</h3>
                 <div
@@ -126,32 +133,21 @@ function Lesson() {
                 <div className={s.homework}>
                     <h3>Homework</h3>
                     <div
+                        className={s.homeworkContent}
                         dangerouslySetInnerHTML={{
                             __html: lesson.homework
                         }}
                     ></div>
-                    {!lessonDone && (
-                        <Chat lessonId={lesson._id} onReload={reloadHW} />
-                    )}
-                    {hws.length !== 0 && (
-                        <div className={s.homeworks}>
-                            {lessonDone && (
-                                <div key="DONE" className={s.lessonDoneFlag}>
-                                    DONE
-                                </div>
-                            )}
-
-                            {hws.reverse().map((h: any) => {
-                                return (
-                                    <Homework
-                                        key={h._id}
-                                        h={h}
-                                        withAnswer={isTeacher}
-                                        onReload={reloadHW}
-                                    />
-                                );
-                            })}
+                    {!homework?.chatId && (
+                        <div
+                            className={s.handInHomework}
+                            onClick={handInHomework}
+                        >
+                            {getLang('start_homework_chat_button')}
                         </div>
+                    )}
+                    {homework?.chatId && (
+                        <Chat chatId={homework.chatId} width={500} />
                     )}
                 </div>
             </div>

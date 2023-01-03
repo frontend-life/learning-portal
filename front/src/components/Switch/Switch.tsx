@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { cls } from '@utils/css';
 import s from './Switch.module.css';
 
 export const Switch = ({
@@ -6,24 +6,12 @@ export const Switch = ({
 }: {
     defaultCheck?: boolean;
 }) => {
-    const [checked, setChecked] = useState(defaultCheck);
-
-    const handleCheck = () => {
-        setChecked((prev) => !prev);
-    };
-
-    useEffect(() => {
-        setChecked(defaultCheck);
-    }, [defaultCheck]);
-
     return (
         <label className={s.switch}>
             <input
-                className={s.input}
-                onClick={(e) => e.stopPropagation()}
+                className={cls(s.input, { [s.inputChecked]: defaultCheck })}
                 type="checkbox"
-                checked={checked}
-                onChange={handleCheck}
+                defaultChecked={defaultCheck}
             />
             <span className={`${s.slider} ${s.round}`}></span>
         </label>

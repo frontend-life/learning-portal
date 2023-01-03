@@ -1,3 +1,5 @@
+import { getBaseUrl } from './axios';
+
 export const PATHS = {
     profile: '/profile',
     about: '/about',
@@ -25,4 +27,8 @@ export const qp = (queryString: string) => {
             acc[key] = value;
             return acc;
         }, {});
+};
+
+export const getAttachPath = (path: string) => {
+    return `${getBaseUrl()}${path.split('/public')[1]}`;
 };

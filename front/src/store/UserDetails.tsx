@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { LoadingAnimation } from '../components/LoadingAnimation/LoadingAnimation';
-import { IUser } from '../types/api';
+import { IUser, Roles } from '../types/api';
 import { getToken } from '../utils/auth';
 import { API_URLS, myRequest } from '../utils/axios';
 import { useServerEvents } from '../utils/hooks';
@@ -15,7 +15,8 @@ type StartStore = {
 
 const start: StartStore = {
     userDetails: {
-        isSignedIn: false
+        isSignedIn: false,
+        roles: [] as Roles[]
     } as UserData,
     setUserDetails: () => {}
 };

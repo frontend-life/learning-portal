@@ -1,4 +1,3 @@
-// import { telegram, T_METHODS, setOffset, getOffset } from "./service/axios";
 require("dotenv").config();
 import express from "express";
 import cors from "cors";
@@ -25,23 +24,6 @@ app.use(cors());
 app.use(express.static("public"));
 
 app.use("/api", apiRouter);
-
-// setInterval(() => {
-//   telegram
-//     .post(T_METHODS.GET_UPDATES, {
-//       offset: getOffset(),
-//     })
-//     .then((res) => {
-//       const updates = res?.data?.result || [];
-//       if (updates.length === 0) {
-//         console.log(updates);
-//         return;
-//       }
-//       const offset = updates[updates.length - 1].update_id + 1;
-//       setOffset(offset);
-//       console.log(updates);
-//     });
-// }, 5000);
 
 app.get("*", (res, req) => {
   if (!isProd()) {

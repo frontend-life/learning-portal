@@ -1,0 +1,27 @@
+.deleteImage {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    border-radius: 50%;
+    background-color: black;
+    color: aliceblue;
+    font-size: 10px;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.imgContainer {
+    position: relative;
+    display: inline-block;
+    margin: 5px;
+}
+.image > div > img {
+    width: 100px;
+    height: 60px;
+    object-fit: cover;
+    color: black;
+    font-family: auto;
+}

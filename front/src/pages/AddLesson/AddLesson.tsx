@@ -73,7 +73,7 @@ export const AddLesson = () => {
     const action = lessonToEdit ? 'Изменить' : 'Добавить';
 
     return (
-        <MainBlockWrapper alignMain="left">
+        <MainBlockWrapper alignMain="left" alignSecond="flex-start">
             <div className={s.root}>
                 <h1 className={s.headerText}>{action + ' урок'}</h1>
                 <form onSubmit={handleSubmit(onSubmit)}>
@@ -107,6 +107,9 @@ export const AddLesson = () => {
                             setValue
                         }}
                         error={errors.description?.message as string}
+                        editorClassName={s.editorInput}
+                        labelClassName={s.editorLabel}
+                        errorClassName={s.errorError}
                     />
                     <Editor
                         defaultValue={lessonToEdit?.homework}
@@ -118,6 +121,9 @@ export const AddLesson = () => {
                             setValue
                         }}
                         error={errors.description?.message as string}
+                        editorClassName={s.editorInput}
+                        labelClassName={s.editorLabel}
+                        errorClassName={s.errorError}
                     />
                     <Input
                         labelAlign="left"

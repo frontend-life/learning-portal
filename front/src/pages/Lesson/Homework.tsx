@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import ModalImage from 'react-modal-image';
 import { format } from 'date-fns';
-import { Chat } from '../../components/Chat/Chat';
+import { NewMessage } from '../../components/Chat/components/NewMessage/NewMessage';
 import s from './Homework.module.css';
 import { getBaseUrl } from '../../utils/axios';
 
@@ -32,9 +32,7 @@ export const Homework = ({
             </pre>
             <div className={s.attachments}>
                 {attachments.map((att) => {
-                    console.log(attachments);
                     const url = `${getBaseUrl()}${att.path.split('public')[1]}`;
-                    console.log('attachment url', url);
                     return (
                         <div key={att._id} className={s.hw_img}>
                             <ModalImage
@@ -77,11 +75,11 @@ export const Homework = ({
                                     X
                                 </span>
                             </h1>
-                            <Chat
+                            {/* <NewMessage
                                 lessonId={h.lessonId}
                                 hwId={h._id}
                                 onReload={onReload}
-                            />
+                            /> */}
                         </div>
                     )}
                 </>

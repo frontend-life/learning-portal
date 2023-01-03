@@ -1,172 +1,91 @@
-import { useCallback, useRef, useState } from 'react';
-import { addErrorNt, addWNt } from '../../utils/notification';
-import { generateUid } from '../../utils/uid';
-import { Image } from './Image';
-
+import { NewMessage } from './components/NewMessage/NewMessage';
 import s from './Chat.module.css';
-import { myRequest } from '../../utils/axios';
-import { IHomework } from '../../types/api';
-import { Editor } from '../Editor/Editor';
-import { useForm } from 'react-hook-form';
+import { Message } from './components/Message/Message';
+import chatBG from './chatBG.png';
+import chatBG2 from './chatBG2.png';
+import { useUserContext } from '../../store/UserDetails';
+import { useEffect, useState } from 'react';
+import { MessageCommon } from '../../../../shared/commonParts';
+import { API_URLS, myRequest } from '../../utils/axios';
+import { useChatEvents } from './hooks/useChatEvents';
+import { cls } from '../../utils/css';
+import { CircleLoader } from '../CircleLoader/CircleLoader';
 
-type ImgData = {
-    url: string;
-    uid: string;
-    formData: FormData;
-};
+const GreenYellowBG = () => (
+    <div className={s.rootBG} style={{ backgroundImage: `url(${chatBG2})` }} />
+);
 
-type ChatProps = {
-    lessonId: string;
-    hwId?: string;
-    onReload?: () => void;
-};
+interface Props {
+    width?: number;
+    minHeight?: number;
+    chatId: string;
+}
 
-export const Chat = ({ lessonId, onReload, hwId }: ChatProps) => {
-    const refEditable = useRef<HTMLDivElement>(null);
-    const [imgsToPreview, setImgsToPreview] = useState<Array<ImgData>>([]);
-    const imageInputRef = useRef<HTMLInputElement>(null);
-    const { register, setValue, getValues } = useForm();
-    const [editorDefaultValue, setEditorDefaultValue] = useState<string>();
+export const Chat = ({ width = 500, minHeight = 300, chatId }: Props) => {
+    const { userDetails } = useUserContext();
+    const [messages, setMessages] = useState<MessageCommon[]>([]);
+    const [isReady, setIsReady] = useState(false);
 
-    const onSend = async () => {
-        if (getValues().homework === undefined) {
-            addWNt('No text, no message');
-            return;
-        }
-        const textToSend = getValues().homework.trim();
-
-        if (textToSend === '' && imgsToPreview.length === 0) {
-            return;
-        }
-
-        const saveHwToServer = (data: IHomework) => {
-            const url = hwId ? `/homework?hwId=${hwId}` : '/homework';
-            return myRequest
-                .post(url, data)
-                .then(() => {
-                    setImgsToPreview([]);
-                    setValue('homework', '');
-                    setEditorDefaultValue('');
-                    setTimeout(() => {
-                        setEditorDefaultValue(undefined);
-                    }, 500);
-                    if (refEditable.current) {
-                        refEditable.current.innerText = '';
+    useEffect(() => {
+        setIsReady(false);
+        myRequest
+            .get(API_URLS.CHAT, {
+                params: {
+                    chatId,
+                    populate: {
+                        messages: 1
                     }
-                })
-                .catch((e) => {
-                    addErrorNt('Failed update homeworks list');
-                })
-                .finally(() => {
-                    onReload && onReload();
-                });
-        };
-
-        let data: IHomework = {
-            content: {
-                text: textToSend
-            },
-            lessonId
-        };
-
-        if (imgsToPreview.length === 0) {
-            saveHwToServer(data);
-            return;
-        } else {
-            sendImagesToServer()
-                .then((responseWithAttaches) => {
-                    const attachesIds = responseWithAttaches.map(
-                        ({ attach }) => attach._id
-                    );
-                    data.content.attachments = attachesIds;
-                    saveHwToServer(data);
-                })
-                .catch((e) => console.log(e));
-        }
-    };
-
-    //  Метод посылает аттачи (картинки) на сервер пачкой запросов, собирает все промис ол и возвращает нам это
-    const sendImagesToServer = useCallback<() => any>(() => {
-        const imgsToSend = imgsToPreview.map(({ formData }) => formData);
-        return Promise.all(
-            imgsToSend.map((formData) =>
-                myRequest.post('/attachment', formData)
-            )
-        ).catch((e) => {
-            addErrorNt('Some error with saving attachments');
-            throw e;
-        });
-    }, [imgsToPreview, myRequest.post, addErrorNt]);
-
-    const addImage = () => {
-        imageInputRef.current?.click();
-    };
-    const catchImage = (e) => {
-        for (let file of e.target.files) {
-            const reader = new FileReader();
-            reader.addEventListener('load', (e) => {
-                const uploaded_image = reader.result;
-                const url = String(uploaded_image);
-                const uid = generateUid();
-                const formData = new FormData();
-                formData.append('file', file);
-
-                setImgsToPreview((prev) => [
-                    ...prev,
-                    {
-                        url,
-                        uid,
-                        formData
-                    }
-                ]);
+                }
+            })
+            .then((chat: any) => {
+                if (chat?.messages as MessageCommon[]) {
+                    const sorted = chat.messages.sort((a, b) => {
+                        return +new Date(b.createdAt) - +new Date(a.createdAt);
+                    });
+                    setMessages(sorted);
+                }
+            })
+            .finally(() => {
+                setIsReady(true);
             });
-            reader.readAsDataURL(file);
-        }
+    }, [chatId]);
+
+    const addMessageToView = (message: MessageCommon) => {
+        setMessages((prev) => [message, ...prev]);
     };
-    const removeImage = (uid: ImgData['uid']) => {
-        setImgsToPreview((prev) => prev.filter(({ uid: id }) => id !== uid));
-    };
+
+    useChatEvents(chatId, addMessageToView);
 
     return (
-        <div className={s.root}>
-            <div className={s.textAndButtons}>
-                <div className={s.buttons}>
-                    <button className={s.addImage} onClick={addImage}>
-                        Add image
-                    </button>
-                    <input
-                        style={{ display: 'none' }}
-                        onChange={catchImage}
-                        ref={imageInputRef}
-                        type="file"
-                        id="image-input"
-                        multiple
-                        accept="image/jpeg, image/png, image/jpg"
-                    ></input>
-                    <button onClick={onSend} className={s.sendButton}>
-                        Send message
-                    </button>
+        <div
+            className={cls(s.root, { [s.rootLoading]: !isReady })}
+            style={{
+                backgroundImage: `url(${chatBG})`,
+                width,
+                minWidth: width,
+                minHeight
+            }}
+        >
+            {!isReady && <CircleLoader inCenterOfBlock isAbsolute />}
+            <GreenYellowBG />
+            <div className={s.body}>
+                <NewMessage chatId={chatId} onSend={addMessageToView} />
+
+                <div className={s.messages}>
+                    {messages?.map(
+                        ({ _id, attachments, senderId, text, createdAt }) => {
+                            return (
+                                <Message
+                                    key={_id}
+                                    isMine={senderId === userDetails?._id}
+                                    attachments={attachments}
+                                    text={text}
+                                    createdAt={createdAt}
+                                />
+                            );
+                        }
+                    )}
                 </div>
-                <Editor
-                    defaultValue={editorDefaultValue}
-                    showHowItLooks={false}
-                    rhfProps={{
-                        register,
-                        setValue,
-                        name: 'homework'
-                    }}
-                />
-            </div>
-            <div className={s.attachments}>
-                {imgsToPreview.map(({ url, uid }) => {
-                    return (
-                        <Image
-                            key={uid}
-                            url={url}
-                            onRemove={() => removeImage(uid)}
-                        />
-                    );
-                })}
             </div>
         </div>
     );

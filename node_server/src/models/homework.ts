@@ -1,65 +1,38 @@
-import mongoose from "mongoose";
-import IHomework from "../interfaces/homework";
+import mongoose, { Document } from "mongoose";
+import { HomeworkCommon } from "../../../shared/commonParts";
+import { Chat } from "./chat";
+import { Lesson } from "./lesson";
+import { User } from "./user";
 
-//  The same as homeworkSchema
-const answerSchema = new mongoose.Schema(
-  {
-    content: {
-      text: {
-        type: String,
-      },
-      attachments: [
-        { type: mongoose.Schema.Types.ObjectId, ref: "Attachment" },
-      ],
-    },
-    studentId: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: false,
-      ref: "User",
-    },
-    lessonId: {
-      type: mongoose.Schema.Types.ObjectId,
-    },
-    teacherId: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: false,
-      ref: "User",
-    },
-    answer: {
-      type: mongoose.Schema.Types.Mixed,
-      required: false,
-    },
-  },
-  { timestamps: true }
-);
+export default interface IHomework extends HomeworkCommon {
+  teacherId?: string;
+}
 
 const homeworkSchema = new mongoose.Schema(
   {
-    content: {
-      text: {
-        type: String,
-      },
-      attachments: [
-        { type: mongoose.Schema.Types.ObjectId, ref: "Attachment" },
-      ],
-    },
     studentId: {
       type: mongoose.Schema.Types.ObjectId,
-      required: false,
-      ref: "User",
+      required: true,
+      ref: User,
     },
     lessonId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Lesson",
+      required: true,
+      ref: Lesson,
     },
     teacherId: {
       type: mongoose.Schema.Types.ObjectId,
       required: false,
-      ref: "User",
+      ref: User,
     },
-    answer: {
-      type: answerSchema,
+    chatId: {
+      type: mongoose.Schema.Types.ObjectId,
       required: false,
+      ref: Chat,
+    },
+    approved: {
+      type: mongoose.Schema.Types.Boolean,
+      default: false,
     },
   },
   { timestamps: true }

@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import ILesson from "../interfaces/lesson";
+import { Course } from "./course";
 
 const lessonSchema = new mongoose.Schema(
   {
@@ -32,7 +33,7 @@ const lessonSchema = new mongoose.Schema(
     course: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: "Course",
+      ref: Course,
     },
   },
   { timestamps: true }

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Align } from '../../types/components';
+import { cls } from '../../utils/css';
 import s from './Editor.module.css';
 import { tab } from './utils';
 
@@ -14,6 +15,10 @@ export const Editor = (props: {
     labelAlign?: Align;
     error?: string;
     showHowItLooks?: boolean;
+    editorClassName?: string;
+    labelClassName?: string;
+    errorClassName?: string;
+    placeholder?: string;
 }) => {
     const editorRef = useRef<HTMLDivElement>(null);
     // for preview
@@ -24,7 +29,11 @@ export const Editor = (props: {
         inputProps,
         rhfProps,
         error,
-        labelAlign = 'center'
+        labelAlign = 'center',
+        editorClassName = '',
+        labelClassName = '',
+        errorClassName = '',
+        placeholder = 'Type here'
     } = props;
 
     useEffect(() => {
@@ -42,7 +51,10 @@ export const Editor = (props: {
     const getLabel = () => {
         if (inputProps?.label) {
             return (
-                <p style={{ textAlign: labelAlign }} className={s.label}>
+                <p
+                    style={{ textAlign: labelAlign }}
+                    className={cls(s.label, labelClassName)}
+                >
                     {inputProps.label}
                 </p>
             );
@@ -54,15 +66,51 @@ export const Editor = (props: {
         <div className={s.wrapper}>
             {getLabel()}
             <div
+                data-ph={placeholder}
                 ref={editorRef}
                 contentEditable
-                className={s.root}
+                className={cls(editorClassName, s.root)}
+                onPaste={(e) => {
+                    // Prevent the default action
+                    e.preventDefault();
+
+                    // Get the copied text from the clipboard
+                    const text = e.clipboardData
+                        ? e.clipboardData.getData('text/plain')
+                        : '';
+
+                    if (document.queryCommandSupported('insertText')) {
+                        document.execCommand('insertText', false, text);
+                    } else {
+                        // Insert text at the current position of caret
+                        const range = document.getSelection()?.getRangeAt(0);
+                        if (range) {
+                            range.deleteContents();
+
+                            const textNode = document.createTextNode(text);
+                            range.insertNode(textNode);
+                            range.selectNodeContents(textNode);
+                            range.collapse(false);
+
+                            const selection = window.getSelection();
+                            if (selection) {
+                                selection.removeAllRanges();
+                                selection.addRange(range);
+                            }
+                        }
+                    }
+                }}
                 onInput={(e) => {
-                    setHtml(e.currentTarget.innerHTML);
-                    rhfProps?.setValue(
-                        rhfProps.name,
-                        e.currentTarget.innerHTML
-                    );
+                    let { innerHTML } = e.currentTarget;
+                    if (innerHTML === '<br>') {
+                        innerHTML = '';
+                        e.currentTarget.innerHTML = '';
+                    }
+                    setHtml(innerHTML);
+                    rhfProps?.setValue(rhfProps.name, innerHTML);
+                }}
+                onChange={(e) => {
+                    e.preventDefault();
                 }}
                 onKeyDown={(e) => {
                     if (e.key === 'Tab') {
@@ -82,7 +130,7 @@ export const Editor = (props: {
                     dangerouslySetInnerHTML={{ __html: html }}
                 ></div>
             )}
-            {error && <p className={s.error}>{error}</p>}
+            {error && <p className={cls(s.error, errorClassName)}>{error}</p>}
         </div>
     );
 };

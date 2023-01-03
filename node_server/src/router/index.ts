@@ -6,8 +6,11 @@ import courseRouter from "./course";
 import homeworkRouter from "./homework";
 import attachRouter from "./attachments";
 import telegramRouter from "./telegram";
+import messageRouter from "./message";
+import chatRouter from "./chat";
+import chatEventsRouter from "./events/chatEvents";
 
-import { eventsHandler } from "./events";
+import { eventsHandler } from "./events/events";
 
 const router = Router();
 
@@ -17,6 +20,9 @@ router.use(courseRouter);
 router.use(homeworkRouter);
 router.use(attachRouter);
 router.use(telegramRouter);
+router.use(messageRouter);
+router.use(chatRouter);
+router.use(chatEventsRouter);
 
 router.get("/events", eventsHandler);
 

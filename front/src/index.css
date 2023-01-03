@@ -22,6 +22,8 @@ body {
 
     --input-color: #292929;
 
+    --zindex-notification-system: 100;
+
     margin: 0;
     font-family: MrAmazin, -apple-system, BlinkMacSystemFont, 'Segoe UI',
         'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',

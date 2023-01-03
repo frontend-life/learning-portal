@@ -1,6 +1,9 @@
+import { ICourse } from "./../../../front/src/types/api";
+import { Lesson } from "./../models/lesson";
+import { tlgSendMessage } from "./../service/axios";
 import express from "express";
 
-import { User } from "./../models/user";
+import { User, IUser } from "./../models/user";
 import {
   comparePasswords,
   generateAuthToken,
@@ -13,9 +16,10 @@ import {
   sendLessonsDoneToUser,
   sendLessonsOpenToUser,
   sendNewUserDataToUser,
-} from "./events";
-import IUser from "../interfaces/user";
-import { Roles } from "../service/roles";
+} from "./events/events";
+import { createMarkdown } from "../service/telegram";
+import { Homework } from "../models/homework";
+import { Roles } from "../../../shared/commonParts";
 
 const router = express.Router();
 
@@ -69,7 +73,7 @@ router.post("/user/signin", async (req, res) => {
   }
 });
 
-router.get("/user/me", auth, (req, res) => {
+router.get("/user/me", auth, async (req, res) => {
   return res.status(200).send(req.user);
 });
 
@@ -135,6 +139,9 @@ router.post("/user/done", auth, async (req, res) => {
   const { userId, lessonId } = req.body as { userId: string; lessonId: string };
 
   const [user] = await User.find({ _id: userId });
+  if (!user) {
+    res.send(404).send();
+  }
 
   let newLessonsList = [...user.lessonsDone.map((id) => id.toString())];
   newLessonsList.push(lessonId);
@@ -149,14 +156,32 @@ router.post("/user/done", auth, async (req, res) => {
       new: true,
     }
   );
+
+  const homework = await Homework.findOneAndUpdate(
+    {
+      lessonId,
+      studentId: userId,
+    },
+    {
+      approved: true,
+    },
+    {
+      new: true,
+    }
+  );
+
   sendLessonsDoneToUser(userId, newLessonsList);
   sendNewUserDataToUser(userId, result);
+  notificateThroughTlg(result as IUser, lessonId, "DONE");
 
   return res.status(200).send(result);
 });
 router.post("/user/notdone", auth, async (req, res) => {
   const { userId, lessonId } = req.body as { userId: string; lessonId: string };
   const [user] = await User.find({ _id: userId });
+  if (!user) {
+    res.send(404).send();
+  }
 
   let newLessonsList = user.lessonsDone.filter(
     (id) => id.toString() !== lessonId
@@ -173,10 +198,49 @@ router.post("/user/notdone", auth, async (req, res) => {
     }
   );
 
+  await Homework.findOneAndUpdate(
+    {
+      lessonId,
+      studentId: userId,
+    },
+    {
+      approved: false,
+    }
+  );
+
   sendLessonsDoneToUser(userId, newLessonsList);
   sendNewUserDataToUser(userId, result);
+  notificateThroughTlg(result as IUser, lessonId, "NOT DONE");
 
   return res.status(200).send(result);
 });
+
+type Notification = "DONE" | "NOT DONE";
+async function notificateThroughTlg(
+  user: IUser,
+  lessonId: string,
+  type: Notification
+) {
+  if (user.telegramChatId) {
+    const lesson = await Lesson.findById(lessonId).populate("course");
+    if (!lesson) return;
+
+    const { title, course } = lesson;
+    const text = `
+_Your homework was mark ${type}_ 
+
+Lesson\\: ${title}
+Course\\: ${(course as ICourse).title}
+
+Your salary now: ${user.salary}
+
+${createMarkdown.lessonLink(lessonId, user._id)}
+`;
+    tlgSendMessage({
+      chat_id: user?.telegramChatId,
+      text,
+    });
+  }
+}
 
 export default router;

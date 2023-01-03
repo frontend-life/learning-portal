@@ -1,0 +1,40 @@
+.root {
+}
+.search {
+}
+.searchInput {
+    margin: 10px 10px 0px;
+    box-sizing: border-box;
+    padding: 20px;
+    background-color: aliceblue;
+    border-radius: 10px;
+    outline: none;
+    border: 0;
+    width: 90%;
+}
+.approveFilter {
+    display: flex;
+    align-items: center;
+    margin: 10px;
+    cursor: pointer;
+}
+.approveFilter p {
+    margin-right: 10px;
+}
+
+.homeworksList {
+    flex: 1;
+    display: flex;
+    overflow: auto;
+    flex-direction: column;
+}
+.homeworkItem {
+    padding: 20px;
+    margin-top: 20px;
+    background-color: blanchedalmond;
+    color: black;
+    cursor: pointer;
+}
+.homeworkItemApproved {
+    background-color: greenyellow;
+}

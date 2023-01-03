@@ -8,13 +8,16 @@ const timerMax = 3;
 export const HWDoneButton = ({
     onAfterAprove,
     lessonId,
-    studentId
+    studentId,
+    type
 }: {
     onAfterAprove?: any;
     lessonId: string | undefined;
     studentId: string | undefined;
+    type: 'approve' | 'disaprove';
 }) => {
     const [counter, setCounter] = useState(0);
+    const isApproving = type === 'approve';
     const aproveHomework = () => {
         if (timer) {
             clearTimeout(timer);
@@ -27,8 +30,9 @@ export const HWDoneButton = ({
             if (!lessonId || !studentId) {
                 return;
             }
+            const url = isApproving ? '/user/done' : '/user/notdone';
             myRequest
-                .post('/user/done', {
+                .post(url, {
                     lessonId,
                     userId: studentId
                 })
@@ -55,7 +59,11 @@ export const HWDoneButton = ({
 
     return (
         <div className={s.root} onClick={aproveHomework}>
-            {counter ? 'Cancel approve: ' + counter : 'Approve homework'}
+            {counter
+                ? `Cancel ${isApproving ? 'approve' : 'disaprove'}: ${counter}`
+                : isApproving
+                ? 'Approve homework'
+                : 'Disapprove homework'}
         </div>
     );
 };

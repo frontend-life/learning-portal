@@ -1,86 +1,62 @@
 .root {
-    background-color: transparent;
-    border-radius: 20px;
-    color: black;
-    font-family: Georgia, 'Times New Roman', Times, serif;
-    position: relative;
-}
-.textAndButtons {
-    position: relative;
-}
-
-.buttons {
-    position: absolute;
-    left: 20px;
-    bottom: -25px;
-}
-
-.code {
-    display: block;
-    min-width: 300px;
-    min-height: 120px;
-    background-color: black;
-    color: white;
-    font-family: 'Courier New', Courier, monospace;
-    padding: 30px 10px;
-    border-radius: 30px;
-}
-.imgContainer {
-    position: relative;
+    --border-radius: 20px;
     display: inline-block;
-    margin: 20px;
-}
-.deleteImage {
-    position: absolute;
-    top: -10px;
-    right: -10px;
+    border-radius: var(--border-radius);
     padding: 10px;
-    border-radius: 50%;
-    background-color: black;
-    color: aliceblue;
-    font-size: 30px;
-    cursor: pointer;
-}
-.image {
-    width: 150px;
-    height: auto;
-    object-fit: contain;
-
-    /* background-image take like url in code */
-    background-size: contain;
+    background-color: grey;
     background-repeat: no-repeat;
-
-    cursor: pointer;
+    background-size: cover;
+    position: relative;
+    background-blend-mode: soft-light;
 }
 
-.text {
-    box-sizing: border-box;
-    border-radius: 6px;
-    background-color: aliceblue;
-    color: black;
-    font-family: 'Times New Roman', Times, serif;
-    outline: none;
-    border: 1px solid grey;
-    min-width: 400px;
-
-    min-height: 34px;
-    max-height: none;
-    height: auto;
-    padding: 7px 90px 7px 13px;
+.rootLoading {
+    opacity: 0.4;
+    pointer-events: none;
 }
 
-.sendButton {
-    background-color: green;
-    color: aliceblue;
-    cursor: pointer;
+.rootBG {
+    border-radius: var(--border-radius);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    left: 0;
+    top: 0;
+    background-position: center;
+    mix-blend-mode: overlay;
+    z-index: 0;
+}
+.body {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.messages {
+    flex: 1;
+    max-height: 600px;
+    overflow: auto;
+    overscroll-behavior: none;
+    z-index: 1;
+}
+/* ===== Scrollbar CSS ===== */
+/* Firefox */
+.messages {
+    scrollbar-width: auto;
+    scrollbar-color: #a6a6a6 #ffffff;
 }
 
-.addImage {
-    /* position: absolute;
-    bottom: 10px;
-    right: 10px; */
+/* Chrome, Edge, and Safari */
+.messages::-webkit-scrollbar {
+    width: 10px;
 }
 
-.attachments {
-    margin-top: 30px;
+.messages::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.messages::-webkit-scrollbar-thumb {
+    background-color: #4a4a4a8a;
+    border-radius: 10px;
 }
