@@ -26,15 +26,6 @@
     max-width: 900px;
 }
 
-.lessonDoneFlag {
-    width: 50px;
-    background-color: var(--warning-color);
-    border-radius: 20px;
-    border: 5px solid var(--fourth-color);
-    color: var(--fourth-color);
-    padding: 20px 40px;
-}
-
 .handInHomework {
     padding: 30px;
     background-color: black;

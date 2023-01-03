@@ -1,0 +1,8 @@
+.root {
+    width: 50px;
+    background-color: var(--warning-color);
+    border-radius: 20px;
+    border: 5px solid var(--fourth-color);
+    color: var(--fourth-color);
+    padding: 20px 40px;
+}

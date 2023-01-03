@@ -1,4 +1,5 @@
 import { PopulatedHomework } from '@commonTypes';
+import { createContext, useContext } from 'react';
 import { CircleLoader } from '../../components/CircleLoader/CircleLoader';
 import MainBlockWrapper from '../../components/MainBlockWrapper/MainBlockWrapper';
 import { API_URLS } from '../../utils/axios';
@@ -7,10 +8,15 @@ import { List } from './components/List/List';
 import { View } from './components/View/View';
 import s from './Homeworks.module.css';
 
+const HomeworksContext = createContext(
+    {} as { reload: ReturnType<typeof useGetArrayData>['reload'] }
+);
+export const useHomeworksContext = () => useContext(HomeworksContext);
+
+const url = `${API_URLS.HOMEWORK}?populate[lessonId]=1&populate[studentId]=1`;
+
 export const Homeworks = () => {
-    const { loading, data } = useGetArrayData<PopulatedHomework[]>(
-        `${API_URLS.HOMEWORK}?populate[lessonId]=1&populate[studentId]=1`
-    );
+    const { loading, data, reload } = useGetArrayData<PopulatedHomework[]>(url);
 
     const renderContent = () => {
         return (
@@ -26,9 +32,11 @@ export const Homeworks = () => {
     };
 
     return (
-        <MainBlockWrapper>
-            {loading && <CircleLoader inCenterOfBlock />}
-            {!loading && renderContent()}
-        </MainBlockWrapper>
+        <HomeworksContext.Provider value={{ reload: () => reload(url) }}>
+            <MainBlockWrapper>
+                {loading && <CircleLoader inCenterOfBlock />}
+                {!loading && renderContent()}
+            </MainBlockWrapper>
+        </HomeworksContext.Provider>
     );
 };

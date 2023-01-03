@@ -73,7 +73,7 @@ router.post("/user/signin", async (req, res) => {
   }
 });
 
-router.get("/user/me", auth, (req, res) => {
+router.get("/user/me", auth, async (req, res) => {
   return res.status(200).send(req.user);
 });
 

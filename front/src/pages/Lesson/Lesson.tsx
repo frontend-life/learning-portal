@@ -11,6 +11,7 @@ import { CircleLoader } from '../../components/CircleLoader/CircleLoader';
 import { useLessonsContext } from '../../store/LessonsContext';
 import { Chat } from '../../components/Chat/Chat';
 import { getLang } from '../../utils/langs';
+import { DoneSign } from '../../components/DoneSign/DoneSign';
 
 interface Params {
     lessonId: string;
@@ -112,7 +113,7 @@ function Lesson() {
     return (
         <MainBlockWrapper title="Lesson" alignSecond="flex-start">
             <div className={s.root}>
-                {lessonDone && <div className={s.lessonDoneFlag}>DONE</div>}
+                {lessonDone && <DoneSign />}
                 <h1 {...headerProps}>{lesson.title}</h1>
                 <h3>Description</h3>
                 <div
