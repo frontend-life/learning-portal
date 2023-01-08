@@ -1,5 +1,5 @@
+import { CourseCommon } from "@commonTypes";
 import mongoose from "mongoose";
-import ICourse from "../interfaces/course";
 
 const courseSchema = new mongoose.Schema(
   {
@@ -14,8 +14,12 @@ const courseSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    order: {
+      type: Number,
+      required: true,
+    },
   },
   { timestamps: true }
 );
 
-export const Course = mongoose.model<ICourse>("Course", courseSchema);
+export const Course = mongoose.model<CourseCommon>("Course", courseSchema);
