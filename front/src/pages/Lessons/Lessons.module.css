@@ -26,6 +26,7 @@
 
 .lessonsBlock {
     display: flex;
+    flex-wrap: wrap;
 }
 
 /* Lesson */
