@@ -10,6 +10,7 @@ type LessonsStore = {
     setLessons: any;
     setCourses: any;
     reloadLessonsAndCourses: () => Promise<void>;
+    loadingStatus: boolean;
 };
 
 const start: LessonsStore = {
@@ -17,7 +18,8 @@ const start: LessonsStore = {
     courses: [],
     setLessons: () => {},
     setCourses: () => {},
-    reloadLessonsAndCourses: () => Promise.resolve()
+    reloadLessonsAndCourses: () => Promise.resolve(),
+    loadingStatus: false
 };
 const LessonsContext = createContext<LessonsStore>(start);
 
@@ -30,15 +32,21 @@ const LessonsProvider = (props) => {
     } = useUserContext();
     const [lessons, setLessons] = useState<ILesson[]>([]);
     const [courses, setCourses] = useState<ICourse[]>([]);
+    const [loadingStatus, setLoadingStatus] = useState<boolean>(false);
 
     const reloadLessonsAndCourses = () => {
+        setLoadingStatus(true);
         return Promise.all([
             myRequest.get<any, ILesson[]>(API_URLS.LESSONS),
             myRequest.get<any, ICourse[]>(API_URLS.COURSES)
-        ]).then(([lessons, courses]) => {
-            setLessons(lessons);
-            setCourses(courses);
-        });
+        ])
+            .then(([lessons, courses]) => {
+                setLessons(lessons);
+                setCourses(courses);
+            })
+            .finally(() => {
+                setLoadingStatus(false);
+            });
     };
 
     useEffect(() => {
@@ -54,7 +62,8 @@ const LessonsProvider = (props) => {
                 courses,
                 setLessons,
                 setCourses,
-                reloadLessonsAndCourses
+                reloadLessonsAndCourses,
+                loadingStatus
             }}
         >
             {props.children}
