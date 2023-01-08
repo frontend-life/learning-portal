@@ -1,4 +1,8 @@
-import { HomeworkCommon, MessageCommon } from '../../../shared/commonParts';
+import {
+    HomeworkCommon,
+    MessageCommon,
+    CourseCommon
+} from '../../../shared/commonParts';
 
 export interface ILesson {
     description: string;
@@ -9,12 +13,7 @@ export interface ILesson {
     _id: string;
 }
 
-export interface ICourse {
-    _id: string;
-    title: string;
-    course: string;
-    owner: string;
-}
+export interface ICourse extends CourseCommon {}
 
 export enum Roles {
     TEACHER = 0,

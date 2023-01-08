@@ -52,3 +52,9 @@ export type PopulatedHomework = Omit<
   studentId: any; // TODO: change type to normal
   lessonId: any; // TODO: change type to normal
 };
+
+export interface CourseCommon {
+  _id: string;
+  title: string;
+  order: number;
+}
