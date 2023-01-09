@@ -1,7 +1,14 @@
-import { useEffect, useState } from 'react';
+import { addErrorNt, addWNt } from '@utils/notification';
+import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
+import {
+    AddAttachment,
+    AddAttachProps
+} from '../../components/AddAttachment/AddAttachment';
 import { Button } from '../../components/Button/Button';
+import { Attachments } from '../../components/Chat/components/Attachments/Attachments';
+import { ImgData } from '../../components/Chat/components/NewMessage/NewMessage';
 import { Editor } from '../../components/Editor/Editor';
 import { Input } from '../../components/Input/Input';
 import MainBlockWrapper from '../../components/MainBlockWrapper/MainBlockWrapper';
@@ -18,6 +25,7 @@ export const AddLesson = () => {
     const { state: lessonToEdit }: { state: ILesson } = useLocation();
     const { setLessons } = useLessonsContext();
     const navigate = useNavigate();
+    const [imgsToPreview, setImgsToPreview] = useState<Array<ImgData>>([]);
 
     const { isSuccess, turnOn, SuccessAdd } = useSuccessAdd();
     const [courses, setCourses] = useState<ICourse[]>([]);
@@ -26,42 +34,113 @@ export const AddLesson = () => {
         setValue,
         handleSubmit,
         control,
-        formState: { errors }
+        formState: { errors },
+        watch
     } = useForm({
         defaultValues: lessonToEdit || {}
     });
 
-    const onSubmit = (data: ILesson) => {
-        if (lessonToEdit) {
-            const editData = {
-                title: data.title,
-                course: data.course,
-                description: data.description,
-                homework: data.homework,
-                link: data.link
-            };
-            myRequest
-                .put(`/lesson?lessonId=${lessonToEdit._id}`, editData)
-                .then(turnOn)
-                .then(() => {
-                    setLessons((prev) => {
-                        return prev.map((l) => {
-                            if (l._id === lessonToEdit._id) {
-                                return {
-                                    ...l,
-                                    ...editData
-                                };
-                            }
-                            return l;
-                        });
-                    });
-                })
-                .then(() => {
-                    navigate(PATHS.lessons);
-                });
+    const sendImagesToServer = useCallback<() => Promise<any>>(() => {
+        const imgsToSend = imgsToPreview.map(({ formData }) => formData);
+        return Promise.allSettled(
+            imgsToSend.map((formData) =>
+                myRequest.post('/attachment', formData)
+            )
+        ).catch((e) => {
+            addErrorNt('Some error with saving attachments');
+            throw e;
+        });
+    }, [imgsToPreview]);
+
+    const handleAddImage: AddAttachProps['onAdd'] = (files) => {
+        if (imgsToPreview.length + files.length > 5) {
+            addWNt("You can't add more then 5 images");
             return;
         }
-        myRequest.post('/lesson/create', data).then(turnOn);
+
+        setImgsToPreview((prev) => [...prev, ...files]);
+    };
+
+    const removeImage = (uid: ImgData['_id']) => {
+        setImgsToPreview((prev) => prev.filter(({ _id: id }) => id !== uid));
+    };
+
+    const onSubmit = (data: ILesson) => {
+        if (lessonToEdit) {
+            if (imgsToPreview.length === 0) {
+                const editData = {
+                    title: data.title,
+                    course: data.course,
+                    description: data.description,
+                    homework: data.homework,
+                    link: data.link
+                };
+                myRequest
+                    .put(`/lesson?lessonId=${lessonToEdit._id}`, editData)
+                    .then(turnOn)
+                    .then(() => {
+                        setLessons((prev) => {
+                            return prev.map((l) => {
+                                if (l._id === lessonToEdit._id) {
+                                    return {
+                                        ...l,
+                                        ...editData
+                                    };
+                                }
+                                return l;
+                            });
+                        });
+                    })
+                    .then(() => {
+                        navigate(PATHS.lessons);
+                    });
+            } else {
+                sendImagesToServer().then((responseWithAttaches) => {
+                    const attachesIds = responseWithAttaches.map(
+                        ({ status, value }) => value.attach._id
+                    );
+                    const editData: Partial<ILesson> = {
+                        title: data.title,
+                        course: data.course,
+                        description: data.description,
+                        homework: data.homework,
+                        link: data.link,
+                        homeworkAttachments: attachesIds
+                    };
+                    myRequest
+                        .put(`/lesson?lessonId=${lessonToEdit._id}`, editData)
+                        .then(turnOn)
+                        .then(() => {
+                            setLessons((prev) => {
+                                return prev.map((l) => {
+                                    if (l._id === lessonToEdit._id) {
+                                        return {
+                                            ...l,
+                                            ...editData
+                                        };
+                                    }
+                                    return l;
+                                });
+                            });
+                        })
+                        .then(() => {
+                            navigate(PATHS.lessons);
+                        });
+                });
+            }
+        }
+
+        if (imgsToPreview.length === 0) {
+            myRequest.post('/lesson/create', data).then(turnOn);
+        } else {
+            sendImagesToServer().then((responseWithAttaches) => {
+                const attachesIds = responseWithAttaches.map(
+                    ({ status, value }) => value.attach._id
+                );
+                data.homeworkAttachments = attachesIds;
+                myRequest.post('/lesson/create', data).then(turnOn);
+            });
+        }
     };
 
     useEffect(() => {
@@ -125,12 +204,17 @@ export const AddLesson = () => {
                         labelClassName={s.editorLabel}
                         errorClassName={s.errorError}
                     />
+                    <AddAttachment onAdd={handleAddImage} />
+                    <Attachments
+                        removeImage={removeImage}
+                        attachments={imgsToPreview}
+                    />
                     <Input
                         labelAlign="left"
                         inputProps={{ label: 'Lesson youtube ID' }}
                         rhfProps={{
                             ...register('link', {
-                                required: true
+                                required: false
                             })
                         }}
                         error={errors.link?.message as string}

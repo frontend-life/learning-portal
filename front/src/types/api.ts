@@ -1,17 +1,11 @@
 import {
     HomeworkCommon,
     MessageCommon,
-    CourseCommon
+    CourseCommon,
+    LessonCommon
 } from '../../../shared/commonParts';
 
-export interface ILesson {
-    description: string;
-    homework: string;
-    link: string;
-    title: string;
-    course: string;
-    _id: string;
-}
+export interface ILesson extends LessonCommon {}
 
 export interface ICourse extends CourseCommon {}
 

@@ -1,6 +1,9 @@
+import { LessonCommon } from "@commonTypes";
+import { Attachment } from "./attachment";
 import mongoose from "mongoose";
-import ILesson from "../interfaces/lesson";
 import { Course } from "./course";
+
+interface ILesson extends LessonCommon {}
 
 const lessonSchema = new mongoose.Schema(
   {
@@ -27,13 +30,22 @@ const lessonSchema = new mongoose.Schema(
     },
     link: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     },
     course: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: Course,
+    },
+    homeworkAttachments: {
+      type: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: Attachment,
+        },
+      ],
+      default: [],
     },
   },
   { timestamps: true }

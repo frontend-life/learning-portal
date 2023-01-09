@@ -12,6 +12,7 @@ import { useLessonsContext } from '../../store/LessonsContext';
 import { Chat } from '../../components/Chat/Chat';
 import { getLang } from '../../utils/langs';
 import { DoneSign } from '../../components/DoneSign/DoneSign';
+import { Attachments } from '../../components/Chat/components/Attachments/Attachments';
 
 interface Params {
     lessonId: string;
@@ -122,14 +123,16 @@ function Lesson() {
                         __html: lesson.description
                     }}
                 ></div>
-                <iframe
-                    title="lesson_from_youtube"
-                    width="820"
-                    height="515"
-                    src={`https://www.youtube.com/embed/${lesson.link}?autoplay=0`}
-                    frameBorder="0"
-                    allowFullScreen
-                />
+                {lesson.link && (
+                    <iframe
+                        title="lesson_from_youtube"
+                        width="820"
+                        height="515"
+                        src={`https://www.youtube.com/embed/${lesson.link}?autoplay=0`}
+                        frameBorder="0"
+                        allowFullScreen
+                    />
+                )}
                 <div className={s.homework}>
                     <h3>Homework</h3>
                     <div
@@ -138,6 +141,7 @@ function Lesson() {
                             __html: lesson.homework
                         }}
                     ></div>
+                    <Attachments attachments={[]} />
                     {!homework?.chatId && (
                         <div
                             className={s.handInHomework}

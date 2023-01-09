@@ -30,7 +30,12 @@ export interface ChatCommon {
 
 export interface LessonCommon {
   _id: string;
-  messages: string[];
+  title: string;
+  description: string;
+  homework: string;
+  link?: string;
+  course: string;
+  homeworkAttachments: string[];
 }
 
 export interface UserCommon {
@@ -45,6 +50,16 @@ export interface UserCommon {
   telegramChatId: number;
 }
 
+export interface CourseCommon {
+  _id: string;
+  title: string;
+  order: number;
+}
+
+/**
+ * Populated types
+ * */
+
 export type PopulatedHomework = Omit<
   HomeworkCommon,
   "studentId" | "lessonId"
@@ -53,8 +68,6 @@ export type PopulatedHomework = Omit<
   lessonId: any; // TODO: change type to normal
 };
 
-export interface CourseCommon {
-  _id: string;
-  title: string;
-  order: number;
-}
+export type PopulatedLessonWithCourse = Omit<LessonCommon, "course"> & {
+  course: CourseCommon;
+};
