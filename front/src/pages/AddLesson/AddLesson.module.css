@@ -11,6 +11,7 @@
     background: var(--secondary-color);
     color: var(--input-color);
     min-width: 655px;
+    max-width: 655px;
 
     min-height: 161px;
     height: auto;

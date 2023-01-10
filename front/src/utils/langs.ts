@@ -8,7 +8,8 @@ type Keys =
     | 'link_to_telegram_bot'
     | 'my_salary'
     | 'show_approved'
-    | 'check_video_link';
+    | 'check_video_link'
+    | 'check_description_iframe';
 type LangsStrings = {
     [key in Keys]: {
         [key in ReturnType<typeof lang>]: string;
@@ -47,6 +48,10 @@ const strings: LangsStrings = {
     check_video_link: {
         ru: 'Проверить ссылку',
         eng: 'Check link'
+    },
+    check_description_iframe: {
+        ru: 'Проверить документ',
+        eng: 'Check doc'
     }
 };
 

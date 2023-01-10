@@ -68,9 +68,11 @@ export const API_URLS = {
     SIGN_IN: `/user/signin`,
     SIGN_UP: `/user/signup`,
     LESSONS: `/lesson/lessons`,
+    LESSON: `/lesson`,
     COURSES: `/course/courses`,
     ME: '/user/me',
     HOMEWORK: '/homework',
     CHAT: '/chat',
-    MESSAGE: '/message'
+    MESSAGE: '/message',
+    LESSON_CREATE: '/lesson/create'
 };

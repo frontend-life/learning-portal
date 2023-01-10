@@ -47,6 +47,11 @@ const lessonSchema = new mongoose.Schema(
       ],
       default: [],
     },
+    // try to use docs to perform lessons descripion and homework
+    iframeGoogleDocs: {
+      type: String,
+      required: false,
+    },
   },
   { timestamps: true }
 );

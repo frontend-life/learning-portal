@@ -31,11 +31,12 @@ export interface ChatCommon {
 export interface LessonCommon {
   _id: string;
   title: string;
-  description: string;
-  homework: string;
+  description?: string;
+  homework?: string;
   link?: string;
   course: string;
-  homeworkAttachments: string[];
+  homeworkAttachments?: string[];
+  iframeGoogleDocs?: string;
 }
 
 export interface UserCommon {

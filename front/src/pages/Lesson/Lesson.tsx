@@ -13,6 +13,7 @@ import { Chat } from '../../components/Chat/Chat';
 import { getLang } from '../../utils/langs';
 import { DoneSign } from '../../components/DoneSign/DoneSign';
 import { Attachments } from '../../components/Chat/components/Attachments/Attachments';
+import { IframGoogleDocsViewer } from '../AddLesson/components/DecriptionChecker/DecriptionChecker';
 
 interface Params {
     lessonId: string;
@@ -116,13 +117,23 @@ function Lesson() {
             <div className={s.root}>
                 {lessonDone && <DoneSign />}
                 <h1 {...headerProps}>{lesson.title}</h1>
-                <h3>Description</h3>
-                <div
-                    className={s.description}
-                    dangerouslySetInnerHTML={{
-                        __html: lesson.description
-                    }}
-                ></div>
+                {lesson.description && (
+                    <>
+                        <h3>Description</h3>
+
+                        <div
+                            className={s.description}
+                            dangerouslySetInnerHTML={{
+                                __html: lesson.description
+                            }}
+                        ></div>
+                    </>
+                )}
+                {lesson.iframeGoogleDocs && (
+                    <IframGoogleDocsViewer
+                        iframeHtml={lesson.iframeGoogleDocs}
+                    />
+                )}
                 {lesson.link && (
                     <iframe
                         title="lesson_from_youtube"
@@ -134,14 +145,17 @@ function Lesson() {
                     />
                 )}
                 <div className={s.homework}>
-                    <h3>Homework</h3>
-                    <div
-                        className={s.homeworkContent}
-                        dangerouslySetInnerHTML={{
-                            __html: lesson.homework
-                        }}
-                    ></div>
-                    <Attachments attachments={[]} />
+                    {lesson.homework && (
+                        <>
+                            <h3>Homework</h3>
+                            <div
+                                className={s.homeworkContent}
+                                dangerouslySetInnerHTML={{
+                                    __html: lesson.homework
+                                }}
+                            ></div>
+                        </>
+                    )}
                     {!homework?.chatId && (
                         <div
                             className={s.handInHomework}
