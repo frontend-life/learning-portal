@@ -1,3 +1,4 @@
+import { getLang } from '@utils/langs';
 import { addErrorNt, addWNt } from '@utils/notification';
 import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -150,6 +151,7 @@ export const AddLesson = () => {
     }, []);
 
     const action = lessonToEdit ? 'Изменить' : 'Добавить';
+    const link = watch('link');
 
     return (
         <MainBlockWrapper alignMain="left" alignSecond="flex-start">
@@ -219,14 +221,7 @@ export const AddLesson = () => {
                         }}
                         error={errors.link?.message as string}
                     />
-                    {/* in future <iframe
-                        title="lesson_from_youtube"
-                        width="420"
-                        height="315"
-                        src={'https://www.youtube.com/embed/' + watch('link')}
-                        frameBorder="0"
-                        allowFullScreen
-                    /> */}
+                    {link && <VideoChecker link={link} />}
                     <div style={{ marginTop: '40px' }}>
                         <Button type="submit">{action} урок</Button>
                     </div>
@@ -236,3 +231,32 @@ export const AddLesson = () => {
         </MainBlockWrapper>
     );
 };
+
+function VideoChecker({ link }: { link: string }) {
+    const [check, setCheck] = useState(false);
+
+    if (!check) {
+        return (
+            <Button onClick={() => setCheck(true)}>
+                {getLang('check_video_link')}
+            </Button>
+        );
+    }
+
+    return (
+        <>
+            <h1>Iframe to check is video ID correct</h1>
+            <h3>(if you can play it - it is correct)</h3>
+            {link && check && (
+                <iframe
+                    title="lesson_from_youtube"
+                    width="420"
+                    height="315"
+                    src={'https://www.youtube.com/embed/' + link}
+                    frameBorder="0"
+                    allowFullScreen
+                />
+            )}
+        </>
+    );
+}

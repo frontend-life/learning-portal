@@ -7,7 +7,8 @@ type Keys =
     | 'you_are_connected_to_telegram'
     | 'link_to_telegram_bot'
     | 'my_salary'
-    | 'show_approved';
+    | 'show_approved'
+    | 'check_video_link';
 type LangsStrings = {
     [key in Keys]: {
         [key in ReturnType<typeof lang>]: string;
@@ -42,6 +43,10 @@ const strings: LangsStrings = {
     show_approved: {
         ru: 'Показать выполненные',
         eng: 'Show approved'
+    },
+    check_video_link: {
+        ru: 'Проверить ссылку',
+        eng: 'Check link'
     }
 };
 
