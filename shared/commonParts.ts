@@ -40,7 +40,7 @@ export interface LessonCommon {
 }
 
 export interface UserCommon {
-  id: string;
+  _id: string;
   name: string;
   email: string;
   password: string;
@@ -65,8 +65,8 @@ export type PopulatedHomework = Omit<
   HomeworkCommon,
   "studentId" | "lessonId"
 > & {
-  studentId: any; // TODO: change type to normal
-  lessonId: any; // TODO: change type to normal
+  studentId: Partial<UserCommon>;
+  lessonId: Partial<LessonCommon>;
 };
 
 export type PopulatedLessonWithCourse = Omit<LessonCommon, "course"> & {

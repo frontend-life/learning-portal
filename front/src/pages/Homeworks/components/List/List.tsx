@@ -59,23 +59,27 @@ export function List({ loading, data }: Props) {
         return (
             <>
                 {homeworks.map((homework) => {
-                    const { id, lesson, user, approved } = homework;
+                    if (!homework) {
+                        return null;
+                    }
+                    const { _id, lessonId, studentId, approved } = homework;
                     return (
                         <div
-                            key={id}
+                            key={_id}
                             className={cls(s.homeworkItem, {
                                 [s.homeworkItemApproved]: approved,
                                 [s.homeworkChosen]:
-                                    homeworkId === id && userName === user
+                                    homeworkId === _id &&
+                                    userName === studentId?.name
                             })}
                             onClick={() => {
                                 navigate(
-                                    `/homeworks?homeworkId=${id}&userName=${user}`
+                                    `/homeworks?homeworkId=${_id}&userName=${studentId?.name}`
                                 );
                             }}
                         >
-                            <h3>{user}</h3>
-                            <p>{lesson}</p>
+                            <h3>{studentId?.name}</h3>
+                            <p>{lessonId?.title}</p>
                         </div>
                     );
                 })}

@@ -22,8 +22,8 @@ export function ChatView({ homework }: { homework: PopulatedHomework }) {
             {chatId && <Chat chatId={chatId} />}
             <HWDoneButton
                 onAfterAprove={reload}
-                lessonId={lessonId._id}
-                studentId={studentId._id}
+                lessonId={lessonId?._id}
+                studentId={studentId?._id}
                 type={actionType}
             />
         </>

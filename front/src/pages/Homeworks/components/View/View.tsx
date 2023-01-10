@@ -1,8 +1,9 @@
 import { PopulatedHomework } from '@commonTypes';
 import { useLocation } from 'react-router-dom';
+import { ILesson } from '../../../../types/api';
 import { qp } from '../../../../utils/paths';
+import { LessonView } from '../../../Lesson/LessonView';
 import { ChatView } from './components/ChatView/ChatView';
-import { LessonView } from './components/LessonView/LessonView';
 import { useParams } from './hooks/useParams';
 
 import s from './View.module.css';
@@ -29,7 +30,9 @@ export function View({ data }: Props) {
     return (
         <>
             <div className={s.lessonColumn}>
-                <LessonView lesson={currentHomework.lessonId} />
+                <LessonView
+                    lesson={currentHomework.lessonId as unknown as ILesson}
+                />
             </div>
             <div className={s.chatColumn}>
                 <ChatView homework={currentHomework} />
