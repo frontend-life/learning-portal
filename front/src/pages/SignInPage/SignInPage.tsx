@@ -23,20 +23,15 @@ export const SignInPage = () => {
     } = useForm();
 
     const onSubmit = (data) => {
-        myRequest
-            .post(API_URLS.SIGN_IN, data)
-            .then((res: any) => {
-                setUserDetails((prev) => ({
-                    ...prev,
-                    ...res.user,
-                    isSignedIn: true
-                }));
-                setToken(res.authToken);
-                nav(PATHS.profile);
-            })
-            .catch((e) => {
-                // console.log(e.data.message);
-            });
+        myRequest.post(API_URLS.SIGN_IN, data).then((res: any) => {
+            setUserDetails((prev) => ({
+                ...prev,
+                ...res.user,
+                isSignedIn: true
+            }));
+            setToken(res.authToken);
+            nav(PATHS.profile);
+        });
     };
     return (
         <MainBlockWrapper title="Авторизация">

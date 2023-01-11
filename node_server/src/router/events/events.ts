@@ -11,14 +11,9 @@ export function eventsHandler(request, response) {
   };
 
   response.writeHead(200, headers);
-  // console.log("Events connection writeHead", headers);
-  // const data = ` data: ${JSON.stringify(facts)}\n\n`;
-
   response.write("data: events connected\n\n");
-  // console.log("Events connection response.write");
 
   clients[user_id] = response;
-  // console.log("Events connection clients.push(newClient);");
 
   request.on("close", () => {
     console.log("Events connection closed");

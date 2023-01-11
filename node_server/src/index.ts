@@ -25,12 +25,13 @@ app.use(express.static("public"));
 
 app.use("/api", apiRouter);
 
-app.get("*", (res, req) => {
+app.get("*", (req, res) => {
   if (!isProd()) {
-    return req.status(404).send();
+    return res.status(404).send();
   }
-  const url = "/var/www/html/learning-portal/node_server/public";
-  req.sendFile(url);
+  const indexHTML =
+    "/var/www/html/learning-portal/node_server/public/index.html";
+  res.sendFile(indexHTML);
 });
 
 const port = process.env.PORT || (isProd() ? 3000 : 3001);
