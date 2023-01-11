@@ -4,7 +4,7 @@ import { CircleLoader } from '../../components/CircleLoader/CircleLoader';
 import MainBlockWrapper from '../../components/MainBlockWrapper/MainBlockWrapper';
 import { useLessonsContext } from '../../store/LessonsContext';
 import { useUserContext } from '../../store/UserDetails';
-import { ILesson } from '../../types/api';
+import { ILesson, Roles } from '../../types/api';
 import { cls } from '../../utils/css';
 import { PATHS } from '../../utils/paths';
 import { DoneSvg } from './doneSvg';
@@ -13,7 +13,7 @@ import { LockSvg } from './lockSvg';
 
 export function Lessons() {
     const {
-        userDetails: { lessonsDone, lessonsOpen, _id }
+        userDetails: { lessonsDone, lessonsOpen, _id, roles }
     } = useUserContext();
     const navigate = useNavigate();
     const { lessons, courses, loadingStatus } = useLessonsContext();
@@ -30,6 +30,8 @@ export function Lessons() {
         });
     }, [courses]);
 
+    const isTeacher = roles.includes(Roles.TEACHER);
+
     return (
         <MainBlockWrapper title="Lessons">
             <div className={s.root}>
@@ -40,7 +42,7 @@ export function Lessons() {
                         <nav className={s.lessonsNav}>
                             {coursesSorted.map((c) => {
                                 return (
-                                    <div>
+                                    <div key={c._id}>
                                         <a href={`#${c._id}`}>{c.title}</a>
                                     </div>
                                 );
@@ -84,7 +86,7 @@ export function Lessons() {
                                                     const isOpen =
                                                         lessonsOpen.includes(
                                                             _id
-                                                        );
+                                                        ) || isTeacher;
                                                     const selectors: string[] =
                                                         [s.square];
                                                     if (isDone) {
