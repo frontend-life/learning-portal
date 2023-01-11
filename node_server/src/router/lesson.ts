@@ -21,7 +21,6 @@ router.post("/lesson/create", auth, async (req, res) => {
 
 router.put("/lesson", auth, async (req, res) => {
   const { lessonId } = req.query;
-  console.log("lessonId", lessonId);
   const dto = req.body as ILesson;
 
   const doc = await Lesson.findById(lessonId);
@@ -29,7 +28,6 @@ router.put("/lesson", auth, async (req, res) => {
     return res.status(404).send();
   }
   Object.assign(doc, dto);
-  console.log(doc, dto);
   try {
     await doc.save();
     return res.status(201).send({ updatedLesson: doc });

@@ -33,24 +33,6 @@ router.post("/homework", auth, async (req, res) => {
   } catch {
     return res.status(500).send();
   }
-  /*
-  Send to tlg about homework
-    if (isProd()) {
-      try {
-        const messageToMe = `
-      _New homework from ${req.user.name}_ 
-      
-      ${createMarkdown.homeworkLink(hw._id.toString(), req.user.name)}
-      `;
-        tlgSendMessage({
-          chat_id: 794272343,
-          text: messageToMe,
-        });
-      } catch {
-        console.log("Telegram send to me hw is lost");
-      }
-    }
-  */
 });
 
 router.get("/homework", async (req, res) => {
