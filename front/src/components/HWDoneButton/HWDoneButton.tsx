@@ -1,3 +1,4 @@
+import { addWNt } from '@utils/notification';
 import { useState } from 'react';
 import { myRequest } from '../../utils/axios';
 import s from './HWDoneButton.module.css';
@@ -28,6 +29,7 @@ export const HWDoneButton = ({
         setCounter(timerMax);
         const handleApproveHomework = () => {
             if (!lessonId || !studentId) {
+                addWNt('no lesson or student');
                 return;
             }
             const url = isApproving ? '/user/done' : '/user/notdone';
