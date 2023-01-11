@@ -37,6 +37,6 @@
     "build:front": "cd ../front && yarn && yarn build && cd ../",
     "build:back": "yarn && npx tsc",
     "build": "yarn build:front && yarn build:back",
-    "start": "NODE_ENV=production node ./dist/index.js"
+    "start": "NODE_ENV=production node ./dist/node_server/src/index.js"
   }
 }

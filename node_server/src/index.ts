@@ -29,8 +29,8 @@ app.get("*", (res, req) => {
   if (!isProd()) {
     return req.status(404).send();
   }
-  const url = "../public/index.html";
-  req.sendFile(path.join(__dirname, url));
+  const url = "/var/www/html/learning-portal/node_server/public";
+  req.sendFile(url);
 });
 
 const port = process.env.PORT || (isProd() ? 3000 : 3001);
