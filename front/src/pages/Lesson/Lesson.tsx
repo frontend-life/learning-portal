@@ -72,8 +72,8 @@ function Lesson() {
         myRequest
             .get(API_URLS.HOMEWORK, {
                 params: {
-                    lessonId: params.lessonId,
-                    studentId: params.studentId
+                    lessonId: params.lessonId || 'null',
+                    studentId: params.studentId || 'null'
                 }
             })
             // @ts-ignore
