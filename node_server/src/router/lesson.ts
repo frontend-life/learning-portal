@@ -1,14 +1,13 @@
 import express from "express";
 
-import { Lesson } from "./../models/lesson";
+import { Lesson, ILesson } from "./../models/lesson";
 import { auth } from "../middleware/auth";
-import { createLessonDTO } from "../dto/createLessonDTO";
 import { ObjectId } from "mongodb";
 
 const router = express.Router();
 
 router.post("/lesson/create", auth, async (req, res) => {
-  const dto = req.body as createLessonDTO;
+  const dto = req.body as ILesson;
   const lesson = new Lesson({
     ...dto,
   });
@@ -22,13 +21,14 @@ router.post("/lesson/create", auth, async (req, res) => {
 
 router.put("/lesson", auth, async (req, res) => {
   const { lessonId } = req.query;
-  const dto = req.body as createLessonDTO;
+  const dto = req.body as ILesson;
 
   const doc = await Lesson.findById(lessonId);
   if (!doc) {
     return res.status(404).send();
   }
   Object.assign(doc, dto);
+  console.log(doc, dto);
   try {
     await doc.save();
     return res.status(201).send({ updatedLesson: doc });

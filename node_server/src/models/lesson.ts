@@ -3,7 +3,7 @@ import { Attachment } from "./attachment";
 import mongoose from "mongoose";
 import { Course } from "./course";
 
-interface ILesson extends LessonCommon {}
+export interface ILesson extends LessonCommon {}
 
 const lessonSchema = new mongoose.Schema(
   {
