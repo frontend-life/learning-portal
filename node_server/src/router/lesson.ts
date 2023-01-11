@@ -21,6 +21,7 @@ router.post("/lesson/create", auth, async (req, res) => {
 
 router.put("/lesson", auth, async (req, res) => {
   const { lessonId } = req.query;
+  console.log("lessonId", lessonId);
   const dto = req.body as ILesson;
 
   const doc = await Lesson.findById(lessonId);
