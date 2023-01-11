@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CircleLoader } from '../../components/CircleLoader/CircleLoader';
 import MainBlockWrapper from '../../components/MainBlockWrapper/MainBlockWrapper';
 import { useLessonsContext } from '../../store/LessonsContext';
 import { useUserContext } from '../../store/UserDetails';
-import { ILesson } from '../../types/api';
+import { ILesson, Roles } from '../../types/api';
 import { cls } from '../../utils/css';
 import { PATHS } from '../../utils/paths';
 import { DoneSvg } from './doneSvg';
@@ -13,7 +13,7 @@ import { LockSvg } from './lockSvg';
 
 export function Lessons() {
     const {
-        userDetails: { lessonsDone, lessonsOpen, _id }
+        userDetails: { lessonsDone, lessonsOpen, _id, roles }
     } = useUserContext();
     const navigate = useNavigate();
     const { lessons, courses, loadingStatus } = useLessonsContext();
@@ -24,6 +24,14 @@ export function Lessons() {
         });
     };
 
+    const coursesSorted = useMemo(() => {
+        return courses.sort((a, b) => {
+            return a.order - b.order;
+        });
+    }, [courses]);
+
+    const isTeacher = roles.includes(Roles.TEACHER);
+
     return (
         <MainBlockWrapper title="Lessons">
             <div className={s.root}>
@@ -31,14 +39,23 @@ export function Lessons() {
                     <CircleLoader inCenterOfBlock />
                 ) : (
                     <>
-                        {courses
-                            .sort((a, b) => {
-                                return a.order - b.order;
-                            })
-                            .map((c) => {
+                        <nav className={s.lessonsNav}>
+                            {coursesSorted.map((c) => {
+                                return (
+                                    <div key={c._id}>
+                                        <a href={`#${c._id}`}>{c.title}</a>
+                                    </div>
+                                );
+                            })}
+                        </nav>
+                        <div className={s.lessonsScroll}>
+                            {coursesSorted.map((c) => {
                                 return (
                                     <React.Fragment key={c._id}>
-                                        <div className={s.courseTitle}>
+                                        <div
+                                            className={s.courseTitle}
+                                            id={c._id}
+                                        >
                                             <div
                                                 className={cls(
                                                     s.courseTitleLine,
@@ -69,7 +86,7 @@ export function Lessons() {
                                                     const isOpen =
                                                         lessonsOpen.includes(
                                                             _id
-                                                        );
+                                                        ) || isTeacher;
                                                     const selectors: string[] =
                                                         [s.square];
                                                     if (isDone) {
@@ -133,6 +150,7 @@ export function Lessons() {
                                     </React.Fragment>
                                 );
                             })}
+                        </div>
                     </>
                 )}
             </div>

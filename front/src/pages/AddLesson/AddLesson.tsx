@@ -66,6 +66,7 @@ export const AddLesson = () => {
                 .then(() => {
                     navigate(PATHS.lessons);
                 });
+            return;
         }
 
         myRequest.post(API_URLS.LESSON_CREATE, data).then(turnOn);
