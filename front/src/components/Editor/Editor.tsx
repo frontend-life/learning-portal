@@ -11,6 +11,7 @@ export const Editor = (props: {
         name: string;
         register: any;
         setValue?: any;
+        required?: boolean;
     };
     labelAlign?: Align;
     error?: string;
@@ -38,7 +39,10 @@ export const Editor = (props: {
 
     useEffect(() => {
         if (rhfProps) {
-            rhfProps.register(rhfProps.name);
+            const { register, required = false } = rhfProps;
+            register(rhfProps.name, {
+                required
+            });
         }
     }, [rhfProps]);
 

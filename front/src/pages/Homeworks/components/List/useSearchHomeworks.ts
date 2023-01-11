@@ -1,19 +1,15 @@
+import { HomeworkCommon } from './../../../../../../shared/commonParts';
 import { PopulatedHomework } from '@commonTypes';
 import { useMemo } from 'react';
 
-type HomeworkItem = {
-    id: string;
-    user: string;
-    lesson: string;
-    approved: boolean;
-};
+type ReturnData = (HomeworkCommon | undefined)[];
 
 export const useHomeworksSearch = (
     data: PopulatedHomework[],
     userSearch: string,
     lessonSearch: string,
     approvedSearch: boolean
-): Array<HomeworkItem> => {
+): PopulatedHomework[] => {
     return useMemo(() => {
         if (!data) return [];
 
@@ -21,10 +17,10 @@ export const useHomeworksSearch = (
 
         if (lessonSearch && userSearch) {
             temp = temp.filter(({ lessonId, studentId }) => {
-                const lOk = lessonId.title
+                const lOk = (lessonId?.title || '')
                     .toLowerCase()
                     .includes(lessonSearch.toLowerCase());
-                const sOk = studentId.name
+                const sOk = (studentId.name || '')
                     .toLowerCase()
                     .includes(userSearch.toLowerCase());
                 if (lOk && sOk) {
@@ -34,7 +30,7 @@ export const useHomeworksSearch = (
             });
         } else if (lessonSearch) {
             temp = temp.filter(({ lessonId }) => {
-                const lOk = lessonId.title
+                const lOk = (lessonId.title || '')
                     .toLowerCase()
                     .includes(lessonSearch.toLowerCase());
                 if (lOk) {
@@ -44,7 +40,7 @@ export const useHomeworksSearch = (
             });
         } else if (userSearch) {
             temp = temp.filter(({ studentId }) => {
-                const sOk = studentId.name
+                const sOk = (studentId.name || '')
                     .toLowerCase()
                     .includes(userSearch.toLowerCase());
                 if (sOk) {
@@ -64,16 +60,7 @@ export const useHomeworksSearch = (
             });
         }
 
-        const result: HomeworkItem[] = temp.map(
-            ({ _id, lessonId, studentId, approved }) => {
-                return {
-                    id: _id,
-                    user: studentId.name,
-                    lesson: lessonId.title,
-                    approved
-                };
-            }
-        );
+        const result: PopulatedHomework[] = temp;
 
         return result;
     }, [data, userSearch, lessonSearch, approvedSearch]);

@@ -9,6 +9,10 @@
     padding: 20px;
 }
 
+.lessonColumn {
+    min-width: 800px;
+}
+
 .chatColumn {
     display: flex;
     flex-direction: column;

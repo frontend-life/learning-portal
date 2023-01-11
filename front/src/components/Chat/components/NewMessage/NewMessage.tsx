@@ -10,6 +10,10 @@ import { API_URLS, myRequest } from '../../../../utils/axios';
 import { cls } from '../../../../utils/css';
 import { addWNt, addErrorNt } from '../../../../utils/notification';
 import { generateUid } from '../../../../utils/uid';
+import {
+    AddAttachment,
+    AddAttachProps
+} from '../../../AddAttachment/AddAttachment';
 import { CircleLoader } from '../../../CircleLoader/CircleLoader';
 import { Editor } from '../../../Editor/Editor';
 import { Attachments } from '../Attachments/Attachments';
@@ -31,7 +35,6 @@ export const NewMessage = ({ chatId, onSend }: NewMessageProps) => {
     const user = useUserContext();
     const refEditable = useRef<HTMLDivElement>(null);
     const [imgsToPreview, setImgsToPreview] = useState<Array<ImgData>>([]);
-    const imageInputRef = useRef<HTMLInputElement>(null);
     const { register, setValue, getValues } = useForm();
     const [editorDefaultValue, setEditorDefaultValue] = useState<string>();
 
@@ -112,36 +115,6 @@ export const NewMessage = ({ chatId, onSend }: NewMessageProps) => {
         });
     }, [imgsToPreview]);
 
-    const addImage = () => {
-        imageInputRef.current?.click();
-    };
-    const catchImage = (e) => {
-        const { files } = e.target;
-        if (imgsToPreview.length + files.length > 5) {
-            addWNt("You can't add more then 5 images");
-            return;
-        }
-        for (let file of files) {
-            const reader = new FileReader();
-            reader.addEventListener('load', (e) => {
-                const uploaded_image = reader.result;
-                const path = String(uploaded_image);
-                const _id = generateUid();
-                const formData = new FormData();
-                formData.append('file', file);
-
-                setImgsToPreview((prev) => [
-                    ...prev,
-                    {
-                        path,
-                        _id,
-                        formData
-                    }
-                ]);
-            });
-            reader.readAsDataURL(file);
-        }
-    };
     const removeImage = (uid: ImgData['_id']) => {
         setImgsToPreview((prev) => prev.filter(({ _id: id }) => id !== uid));
     };
@@ -152,6 +125,15 @@ export const NewMessage = ({ chatId, onSend }: NewMessageProps) => {
         if (e.keyCode === ENTER_KEY && e.ctrlKey) {
             handleSend();
         }
+    };
+
+    const handleAddImage: AddAttachProps['onAdd'] = (files) => {
+        if (imgsToPreview.length + files.length > 5) {
+            addWNt("You can't add more then 5 images");
+            return;
+        }
+
+        setImgsToPreview((prev) => [...prev, ...files]);
     };
 
     return (
@@ -175,22 +157,10 @@ export const NewMessage = ({ chatId, onSend }: NewMessageProps) => {
                     placeholder="New message"
                 />
                 <div className={s.buttons}>
-                    <button
-                        className={s.addImage}
-                        onClick={addImage}
+                    <AddAttachment
+                        onAdd={handleAddImage}
                         disabled={isLoading}
-                    >
-                        <i className="fa-solid fa-paperclip"></i>
-                    </button>
-                    <input
-                        style={{ display: 'none' }}
-                        onChange={catchImage}
-                        ref={imageInputRef}
-                        type="file"
-                        id="image-input"
-                        multiple
-                        accept="image/jpeg, image/png, image/jpg"
-                    ></input>
+                    />
                     <button
                         onClick={handleSend}
                         className={s.sendButton}

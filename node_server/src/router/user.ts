@@ -1,4 +1,3 @@
-import { ICourse } from "./../../../front/src/types/api";
 import { Lesson } from "./../models/lesson";
 import { tlgSendMessage } from "./../service/axios";
 import express from "express";
@@ -19,7 +18,7 @@ import {
 } from "./events/events";
 import { createMarkdown } from "../service/telegram";
 import { Homework } from "../models/homework";
-import { Roles } from "../../../shared/commonParts";
+import { Roles, PopulatedLessonWithCourse } from "../../../shared/commonParts";
 
 const router = express.Router();
 
@@ -225,12 +224,12 @@ async function notificateThroughTlg(
     const lesson = await Lesson.findById(lessonId).populate("course");
     if (!lesson) return;
 
-    const { title, course } = lesson;
+    const { title, course } = lesson as unknown as PopulatedLessonWithCourse;
     let text = `
 _Your homework was mark ${type}_ 
 
 Lesson\\: ${title}
-Course\\: ${(course as ICourse).title}
+Course\\: ${course.title}
 
 Your salary now: ${user.salary}
 

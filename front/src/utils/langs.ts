@@ -7,7 +7,9 @@ type Keys =
     | 'you_are_connected_to_telegram'
     | 'link_to_telegram_bot'
     | 'my_salary'
-    | 'show_approved';
+    | 'show_approved'
+    | 'check_video_link'
+    | 'check_description_iframe';
 type LangsStrings = {
     [key in Keys]: {
         [key in ReturnType<typeof lang>]: string;
@@ -42,6 +44,14 @@ const strings: LangsStrings = {
     show_approved: {
         ru: 'Показать выполненные',
         eng: 'Show approved'
+    },
+    check_video_link: {
+        ru: 'Проверить ссылку',
+        eng: 'Check link'
+    },
+    check_description_iframe: {
+        ru: 'Проверить документ',
+        eng: 'Check doc'
     }
 };
 

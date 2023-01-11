@@ -9,10 +9,12 @@ import { Select } from '../../components/Select/Select';
 import { useSuccessAdd } from '../../components/SuccessAdd/SuccessAdd';
 import { useLessonsContext } from '../../store/LessonsContext';
 import { ICourse, ILesson } from '../../types/api';
-import { myRequest } from '../../utils/axios';
+import { API_URLS, myRequest } from '../../utils/axios';
 import { PATHS } from '../../utils/paths';
 
 import s from './AddLesson.module.css';
+import DecriptionChecker from './components/DecriptionChecker/DecriptionChecker';
+import { VideoChecker } from './components/VideoChecker/VideoChecker';
 
 export const AddLesson = () => {
     const { state: lessonToEdit }: { state: ILesson } = useLocation();
@@ -26,22 +28,27 @@ export const AddLesson = () => {
         setValue,
         handleSubmit,
         control,
-        formState: { errors }
+        formState: { errors },
+        watch
     } = useForm({
         defaultValues: lessonToEdit || {}
     });
 
     const onSubmit = (data: ILesson) => {
         if (lessonToEdit) {
-            const editData = {
+            const editData: Omit<ILesson, '_id'> = {
                 title: data.title,
                 course: data.course,
-                description: data.description,
-                homework: data.homework,
+                // description: data.description,
+                // homework: data.homework,
+                iframeGoogleDocs: data.iframeGoogleDocs,
                 link: data.link
             };
             myRequest
-                .put(`/lesson?lessonId=${lessonToEdit._id}`, editData)
+                .put(
+                    `${API_URLS.LESSON}?lessonId=${lessonToEdit._id}`,
+                    editData
+                )
                 .then(turnOn)
                 .then(() => {
                     setLessons((prev) => {
@@ -59,18 +66,22 @@ export const AddLesson = () => {
                 .then(() => {
                     navigate(PATHS.lessons);
                 });
-            return;
         }
-        myRequest.post('/lesson/create', data).then(turnOn);
+
+        myRequest.post(API_URLS.LESSON_CREATE, data).then(turnOn);
     };
 
     useEffect(() => {
-        myRequest.get('/course/courses').then((tracks) => {
+        myRequest.get(API_URLS.COURSES).then((tracks) => {
             setCourses(tracks as unknown as ICourse[]);
         });
     }, []);
 
     const action = lessonToEdit ? 'Изменить' : 'Добавить';
+    const link = watch('link');
+    const iframeGoogleDocs = watch('iframeGoogleDocs');
+
+    console.log(errors);
 
     return (
         <MainBlockWrapper alignMain="left" alignSecond="flex-start">
@@ -98,51 +109,49 @@ export const AddLesson = () => {
                         error={errors.title?.message as string}
                     />
                     <Editor
-                        defaultValue={lessonToEdit?.description}
+                        defaultValue={lessonToEdit?.iframeGoogleDocs}
                         labelAlign="left"
-                        inputProps={{ label: 'Lesson description' }}
-                        rhfProps={{
-                            name: 'description',
-                            register,
-                            setValue
+                        inputProps={{
+                            label: 'Lesson <iframe> from docs'
                         }}
-                        error={errors.description?.message as string}
+                        rhfProps={{
+                            name: 'iframeGoogleDocs',
+                            register,
+                            setValue,
+                            required: true
+                        }}
+                        error={errors.iframeGoogleDocs?.type as string}
                         editorClassName={s.editorInput}
                         labelClassName={s.editorLabel}
                         errorClassName={s.errorError}
+                        showHowItLooks={false}
                     />
-                    <Editor
-                        defaultValue={lessonToEdit?.homework}
-                        labelAlign="left"
-                        inputProps={{ label: 'Lesson homework' }}
-                        rhfProps={{
-                            name: 'homework',
-                            register,
-                            setValue
-                        }}
-                        error={errors.description?.message as string}
-                        editorClassName={s.editorInput}
-                        labelClassName={s.editorLabel}
-                        errorClassName={s.errorError}
-                    />
+                    <p>It sould looks like</p>
+                    <pre>
+                        <code>
+                            &lt;iframe
+                            src="https://docs.google.com/document/d/e/2PACX-1vQPv8z...long
+                            <br />
+                            line of letters...78kiV/pub?embedded=true"&gt;
+                            &lt;/iframe&gt;
+                        </code>
+                    </pre>
+
+                    {iframeGoogleDocs && (
+                        <DecriptionChecker iframeHtml={iframeGoogleDocs} />
+                    )}
+
                     <Input
                         labelAlign="left"
                         inputProps={{ label: 'Lesson youtube ID' }}
                         rhfProps={{
                             ...register('link', {
-                                required: true
+                                required: false
                             })
                         }}
                         error={errors.link?.message as string}
                     />
-                    {/* in future <iframe
-                        title="lesson_from_youtube"
-                        width="420"
-                        height="315"
-                        src={'https://www.youtube.com/embed/' + watch('link')}
-                        frameBorder="0"
-                        allowFullScreen
-                    /> */}
+                    {link && <VideoChecker link={link} />}
                     <div style={{ marginTop: '40px' }}>
                         <Button type="submit">{action} урок</Button>
                     </div>

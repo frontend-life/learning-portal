@@ -1,17 +1,16 @@
 import { useEffect, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import MainBlockWrapper from '../../components/MainBlockWrapper/MainBlockWrapper';
-import { IHomework, ILesson, Roles } from '../../types/api';
+import { IHomework, ILesson } from '../../types/api';
 import { API_URLS, myRequest } from '../../utils/axios';
 import { PATHS } from '../../utils/paths';
 import s from './Lesson.module.css';
 import { qp } from '../../utils/paths';
-import { useUserContext } from '../../store/UserDetails';
 import { CircleLoader } from '../../components/CircleLoader/CircleLoader';
 import { useLessonsContext } from '../../store/LessonsContext';
 import { Chat } from '../../components/Chat/Chat';
 import { getLang } from '../../utils/langs';
-import { DoneSign } from '../../components/DoneSign/DoneSign';
+import { LessonView } from './LessonView';
 
 interface Params {
     lessonId: string;
@@ -26,13 +25,8 @@ function Lesson() {
     const params = qp(location.search) as Partial<Params>;
 
     const { lessons } = useLessonsContext();
-    const {
-        userDetails: { roles, lessonsDone }
-    } = useUserContext();
 
     const [lesson, setLesson] = useState<ILesson>();
-
-    const navigate = useNavigate();
 
     const nothingToDoHere = !params || !params?.lessonId || !params?.studentId;
 
@@ -96,48 +90,22 @@ function Lesson() {
         return <CircleLoader inCenterOfBlock />;
     }
 
-    const lessonDone = lessonsDone.includes(params?.lessonId as string);
-    const isTeacher = roles.includes(Roles.TEACHER);
-
-    const headerProps = isTeacher
-        ? {
-              style: { cursor: 'pointer' },
-              onClick: () => {
-                  navigate(PATHS.add_lesson, {
-                      state: lesson
-                  });
-              }
-          }
-        : {};
-
     return (
         <MainBlockWrapper title="Lesson" alignSecond="flex-start">
             <div className={s.root}>
-                {lessonDone && <DoneSign />}
-                <h1 {...headerProps}>{lesson.title}</h1>
-                <h3>Description</h3>
-                <div
-                    className={s.description}
-                    dangerouslySetInnerHTML={{
-                        __html: lesson.description
-                    }}
-                ></div>
-                <iframe
-                    title="lesson_from_youtube"
-                    width="820"
-                    height="515"
-                    src={`https://www.youtube.com/embed/${lesson.link}?autoplay=0`}
-                    frameBorder="0"
-                    allowFullScreen
-                />
+                <LessonView lesson={lesson} />
                 <div className={s.homework}>
-                    <h3>Homework</h3>
-                    <div
-                        className={s.homeworkContent}
-                        dangerouslySetInnerHTML={{
-                            __html: lesson.homework
-                        }}
-                    ></div>
+                    {lesson.homework && (
+                        <>
+                            <h3>Homework</h3>
+                            <div
+                                className={s.homeworkContent}
+                                dangerouslySetInnerHTML={{
+                                    __html: lesson.homework
+                                }}
+                            ></div>
+                        </>
+                    )}
                     {!homework?.chatId && (
                         <div
                             className={s.handInHomework}
