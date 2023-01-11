@@ -36,5 +36,5 @@ app.get("*", (res, req) => {
 const port = process.env.PORT || (isProd() ? 3000 : 3001);
 
 app.listen(port, () => {
-  console.log(`Server is up on ${port}`);
+  console.log(`Server is up and works on ${port}`);
 });
