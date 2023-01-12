@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import MainBlockWrapper from '../../components/MainBlockWrapper/MainBlockWrapper';
 import { IHomework, ILesson } from '../../types/api';
-import { API_URLS, myRequest } from '../../utils/axios';
-import { PATHS } from '../../utils/paths';
+import { API_ROUTES, myRequest } from '@utils/axios';
+import { PATHS } from '@utils/paths';
 import s from './Lesson.module.css';
-import { qp } from '../../utils/paths';
+import { qp } from '@utils/paths';
 import { CircleLoader } from '../../components/CircleLoader/CircleLoader';
 import { useLessonsContext } from '../../store/LessonsContext';
 import { Chat } from '../../components/Chat/Chat';
-import { getLang } from '../../utils/langs';
+import { getLang } from '@utils/langs';
 import { LessonView } from './LessonView';
 
 interface Params {
@@ -58,7 +58,7 @@ function Lesson() {
 
     const handInHomework = () => {
         myRequest
-            .post(API_URLS.HOMEWORK, {
+            .post(API_ROUTES.HOMEWORK, {
                 studentId: params.studentId,
                 lessonId: params.lessonId
             } as IHomework)
@@ -70,7 +70,7 @@ function Lesson() {
 
     const getHomework = () => {
         myRequest
-            .get(API_URLS.HOMEWORK, {
+            .get(API_ROUTES.HOMEWORK, {
                 params: {
                     lessonId: params.lessonId || 'null',
                     studentId: params.studentId || 'null'

@@ -28,11 +28,7 @@ router.get("/chatevents", (req, res) => {
   };
 
   res.writeHead(200, headers);
-  // console.log("Events connection writeHead", headers);
-  // const data = ` data: ${JSON.stringify(facts)}\n\n`;
-
   res.write("data: chat events connected\n\n");
-  // console.log("Events connection response.write");
 
   const newParticipant = {
     user_id,
@@ -51,7 +47,6 @@ router.get("/chatevents", (req, res) => {
       participants: [newParticipant],
     };
   }
-  // console.log(chats, chats[chat_id].participants.length);
 
   req.on("close", () => {
     console.log("Chat events connection closed");

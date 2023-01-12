@@ -1,7 +1,5 @@
 import { PopulatedHomework } from '@commonTypes';
-import { useLocation } from 'react-router-dom';
 import { ILesson } from '../../../../types/api';
-import { qp } from '../../../../utils/paths';
 import { LessonView } from '../../../Lesson/LessonView';
 import { ChatView } from './components/ChatView/ChatView';
 import { useParams } from './hooks/useParams';

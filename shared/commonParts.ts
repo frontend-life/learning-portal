@@ -1,3 +1,18 @@
+// Prefix for frontend /api added in interceptor of axios
+export interface API_URLS {
+  SIGN_IN: `/user/signin`;
+  SIGN_UP: `/user/signup`;
+  LESSONS: `/lesson/lessons`;
+  LESSON: `/lesson`;
+  COURSE: `/course`;
+  ME: "/user/me";
+  HOMEWORK: "/homework";
+  CHAT: "/chat";
+  MESSAGE: "/message";
+  LESSON_CREATE: "/lesson/create";
+  ATTACHMENT: "/attachment";
+}
+
 export enum Roles {
   TEACHER = 0,
   STUDENT = 1,
@@ -7,6 +22,7 @@ export interface AttachmentCommon {
   _id: string;
   path: string;
 }
+
 export interface MessageCommon<AttachType = AttachmentCommon> {
   _id: string;
   senderId: string;
@@ -55,6 +71,7 @@ export interface CourseCommon {
   _id: string;
   title: string;
   order: number;
+  lessonsOrder: string[];
 }
 
 /**

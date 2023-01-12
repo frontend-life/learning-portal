@@ -44,14 +44,20 @@
 }
 
 .lessonsBlock {
+    position: relative;
     display: flex;
     flex-wrap: wrap;
+}
+.lessonsBlockLoading {
+    opacity: 0.3;
+    pointer-events: none;
 }
 
 /* Lesson */
 .lessonRoot {
     margin: 20px 20px 20px 0;
     width: 290px;
+    cursor: pointer;
 }
 .square {
     width: 290px;
@@ -60,6 +66,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    pointer-events: none;
 }
 .done {
     background-color: var(--third-color);
@@ -84,4 +91,5 @@
 .lessonTitle {
     font-size: 24px;
     text-align: center;
+    pointer-events: none;
 }

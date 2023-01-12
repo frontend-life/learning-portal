@@ -14,9 +14,6 @@ export class ErrorBoundary extends React.Component<any, { hasError: boolean }> {
     componentDidCatch(error, errorInfo) {
         // You can also log the error to an error reporting service
         console.log(error, errorInfo);
-        // setTimeout(() => {
-        //   window.location.assign('/');
-        // }, 5000)
     }
 
     render() {

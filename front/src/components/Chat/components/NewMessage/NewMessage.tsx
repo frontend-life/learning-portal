@@ -1,20 +1,16 @@
 import { useCallback, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import {
-    AttachmentCommon,
-    MessageCommon
-} from '../../../../../../shared/commonParts';
+import { AttachmentCommon, MessageCommon } from '@commonTypes';
 import { useUserContext } from '../../../../store/UserDetails';
 import { IMessage } from '../../../../types/api';
-import { API_URLS, myRequest } from '../../../../utils/axios';
-import { cls } from '../../../../utils/css';
-import { addWNt, addErrorNt } from '../../../../utils/notification';
-import { generateUid } from '../../../../utils/uid';
+import { API_ROUTES, myRequest } from '@utils/axios';
+import { cls } from '@utils/css';
+import { addWNt, addErrorNt } from '@utils/notification';
+
 import {
     AddAttachment,
     AddAttachProps
 } from '../../../AddAttachment/AddAttachment';
-import { CircleLoader } from '../../../CircleLoader/CircleLoader';
 import { Editor } from '../../../Editor/Editor';
 import { Attachments } from '../Attachments/Attachments';
 
@@ -55,7 +51,7 @@ export const NewMessage = ({ chatId, onSend }: NewMessageProps) => {
         setIsLoading(true);
 
         const saveMessage = (data: IMessage) => {
-            const url = `${API_URLS.MESSAGE}`;
+            const url = `${API_ROUTES.MESSAGE}`;
             return myRequest
                 .post(url, data)
                 .then((message) => {

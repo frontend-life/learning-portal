@@ -89,11 +89,6 @@ router.get("/user/users", auth, async (req, res) => {
     users = await User.find({});
   }
 
-  // const secureUsers: Omit<IUser, "password">[] = users.map((u) => {
-  //   const { password, ...newU } = u;
-  //   console.log(newU);
-  //   return newU;
-  // });
   return res.status(200).send(users);
 });
 

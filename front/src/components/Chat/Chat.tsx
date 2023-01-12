@@ -5,10 +5,10 @@ import chatBG from './chatBG.png';
 import chatBG2 from './chatBG2.png';
 import { useUserContext } from '../../store/UserDetails';
 import { useEffect, useState } from 'react';
-import { MessageCommon } from '../../../../shared/commonParts';
-import { API_URLS, myRequest } from '../../utils/axios';
+import { MessageCommon } from '@commonTypes';
+import { API_ROUTES, myRequest } from '@utils/axios';
 import { useChatEvents } from './hooks/useChatEvents';
-import { cls } from '../../utils/css';
+import { cls } from '@utils/css';
 import { CircleLoader } from '../CircleLoader/CircleLoader';
 
 const GreenYellowBG = () => (
@@ -29,7 +29,7 @@ export const Chat = ({ width = 500, minHeight = 300, chatId }: Props) => {
     useEffect(() => {
         setIsReady(false);
         myRequest
-            .get(API_URLS.CHAT, {
+            .get(API_ROUTES.CHAT, {
                 params: {
                     chatId,
                     populate: {

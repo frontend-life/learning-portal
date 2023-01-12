@@ -1,5 +1,8 @@
+import { Lesson } from "./lesson";
 import { CourseCommon } from "@commonTypes";
 import mongoose from "mongoose";
+
+export interface ICourse extends CourseCommon {}
 
 const courseSchema = new mongoose.Schema(
   {
@@ -18,8 +21,19 @@ const courseSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    lessonsOrder: {
+      type: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          required: true,
+          ref: Lesson,
+        },
+      ],
+      require: false,
+      default: [],
+    },
   },
   { timestamps: true }
 );
 
-export const Course = mongoose.model<CourseCommon>("Course", courseSchema);
+export const Course = mongoose.model<ICourse>("Course", courseSchema);

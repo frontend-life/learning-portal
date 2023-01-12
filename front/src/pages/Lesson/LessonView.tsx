@@ -22,15 +22,12 @@ export const LessonView = ({ lesson }: Props) => {
         ? {
               style: { cursor: 'pointer' },
               onClick: () => {
-                  console.log('navigate', lesson, isTeacher);
                   navigate(PATHS.add_lesson, {
                       state: lesson
                   });
               }
           }
         : {};
-
-    console.log('LessonView', lesson, isTeacher);
 
     if (!lesson?._id) {
         return <p>No lesson</p>;

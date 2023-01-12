@@ -1,6 +1,7 @@
 import { getToken } from './auth';
 import axios from 'axios';
 import { addErrorNt } from './notification';
+import { API_URLS } from '@commonTypes';
 
 const NO_TOKEN_ERROR = 'No token';
 const API_PREFIX = 'api';
@@ -25,7 +26,8 @@ myRequest.interceptors.request.use(
         const token = getToken();
         if (
             !token &&
-            ![API_URLS.SIGN_IN, API_URLS.SIGN_UP].includes(config.url as string)
+            // @ts-ignore
+            ![API_ROUTES.SIGN_IN, API_ROUTES.SIGN_UP].includes(config.url)
         ) {
             throw new Error(NO_TOKEN_ERROR);
         }
@@ -63,16 +65,16 @@ myRequest.interceptors.response.use(
     }
 );
 
-// Prefix /api added in interceptor
-export const API_URLS = {
-    SIGN_IN: `/user/signin`,
-    SIGN_UP: `/user/signup`,
-    LESSONS: `/lesson/lessons`,
-    LESSON: `/lesson`,
-    COURSES: `/course/courses`,
+export const API_ROUTES: API_URLS = {
+    SIGN_IN: '/user/signin',
+    SIGN_UP: '/user/signup',
+    LESSONS: '/lesson/lessons',
+    LESSON: '/lesson',
     ME: '/user/me',
     HOMEWORK: '/homework',
     CHAT: '/chat',
     MESSAGE: '/message',
-    LESSON_CREATE: '/lesson/create'
+    LESSON_CREATE: '/lesson/create',
+    ATTACHMENT: '/attachment',
+    COURSE: '/course'
 };
