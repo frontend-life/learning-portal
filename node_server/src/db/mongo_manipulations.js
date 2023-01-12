@@ -1,7 +1,7 @@
 const { ObjectId } = require("mongodb");
 const mongoose = require("mongoose");
 
-const isProd = true;
+const isProd = false;
 
 const url = isProd
   ? `mongodb+srv://sprilepko:UeXLaYQtLqPN4b1F@cluster0.c5musei.mongodb.net/?retryWrites=true&w=majority`
