@@ -1,10 +1,12 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { ICourse, ILesson } from '../types/api';
 import { API_ROUTES, myRequest } from '@utils/axios';
 import { useUserContext } from './UserDetails';
+import { normilize } from '@utils/normilize';
 
 type LessonsStore = {
     lessons: ILesson[];
+    normilizedLessons: Record<string, ILesson>;
     courses: ICourse[];
     setLessons: any;
     setCourses: any;
@@ -14,6 +16,7 @@ type LessonsStore = {
 
 const start: LessonsStore = {
     lessons: [],
+    normilizedLessons: {},
     courses: [],
     setLessons: () => {},
     setCourses: () => {},
@@ -54,10 +57,15 @@ const LessonsProvider = (props) => {
         }
     }, [isSignedIn]);
 
+    const normilizedLessons = useMemo(() => {
+        return normilize(lessons, '_id');
+    }, [lessons]);
+
     return (
         <LessonsContext.Provider
             value={{
                 lessons,
+                normilizedLessons,
                 courses,
                 setLessons,
                 setCourses,

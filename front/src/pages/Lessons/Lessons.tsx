@@ -15,12 +15,7 @@ import s from './Lessons.module.css';
 import { LockSvg } from './lockSvg';
 
 export function Lessons() {
-    const { lessons, courses, loadingStatus } = useLessonsContext();
-
-    const normilizedLessons = useMemo(
-        () => normilize(lessons, '_id'),
-        [lessons]
-    );
+    const { courses, loadingStatus } = useLessonsContext();
 
     const coursesSorted = useMemo(() => {
         return courses.sort((a, b) => {
@@ -50,7 +45,6 @@ export function Lessons() {
                                     <CourseBlock
                                         key={course._id}
                                         course={course}
-                                        normilizedLessons={normilizedLessons}
                                     />
                                 );
                             })}
@@ -62,13 +56,7 @@ export function Lessons() {
     );
 }
 
-function CourseBlock({
-    course,
-    normilizedLessons
-}: {
-    course: ICourse;
-    normilizedLessons: Record<string, ILesson>;
-}) {
+function CourseBlock({ course }: { course: ICourse }) {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
 
@@ -78,7 +66,7 @@ function CourseBlock({
     const {
         userDetails: { lessonsDone, _id, lessonsOpen, isTeacher }
     } = useUserContext();
-    const { courses, setCourses } = useLessonsContext();
+    const { courses, setCourses, normilizedLessons } = useLessonsContext();
 
     const { lessonsOrder } = course;
 
@@ -201,8 +189,10 @@ function CourseBlock({
                         onDragOver={dragOverHandler}
                         onDragLeave={dragLeaveHandler}
                         key={lesson._id}
-                        className={s.lessonRoot}
-                        onClick={handleClickLesson}
+                        className={cls(s.lessonRoot, {
+                            [s.lessonRootClickable]: isOpen
+                        })}
+                        onClick={isOpen ? handleClickLesson : () => {}}
                     >
                         <div className={cls(...selectors)}>
                             {isDone && <DoneIcon />}

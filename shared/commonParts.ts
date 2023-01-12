@@ -5,6 +5,8 @@ export interface API_URLS {
   LESSONS: `/lesson/lessons`;
   LESSON: `/lesson`;
   COURSE: `/course`;
+  OPEN_COURSE: `/course/open_all_lessons`;
+  CLOSE_COURSE: `/course/close_all_lessons`;
   ME: "/user/me";
   HOMEWORK: "/homework";
   CHAT: "/chat";

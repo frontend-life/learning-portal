@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { CircleLoader } from '../../components/CircleLoader/CircleLoader';
 import { wrap } from '../../components/MainBlockWrapper/MainBlockWrapper';
 import { Switch } from '../../components/Switch/Switch';
-import { ILesson, IUser } from '../../types/api';
-import { myRequest } from '../../utils/axios';
+import { ICourse, ILesson, IUser } from '../../types/api';
+import { API_ROUTES, myRequest } from '../../utils/axios';
 import { cls } from '../../utils/css';
 import { useDebounceUsersSearch, useGetArrayData } from '../../utils/hooks';
 
@@ -13,14 +13,20 @@ import { checkSvg as CheckSVG } from './check';
 import { uncheckSvg as UncheckSVG } from './uncheck';
 
 import s from './Students.module.css';
+import { useLessonsContext } from '../../store/LessonsContext';
 
 export const Students = wrap(() => {
     const [chosenUser, setChosenUser] = useState<IUser>();
+    const [chosenCourse, setChosenCourse] = useState<ICourse>();
     const [search, setSearch] = useState<string>('');
     const { data, setData, loading, loadingBySearch } =
         useDebounceUsersSearch(search);
-    const { data: lessons, loading: loadingLessons } =
-        useGetArrayData<ILesson[]>('/lesson/lessons');
+    const {
+        courses,
+        lessons,
+        normilizedLessons,
+        loadingStatus: loadingLessons
+    } = useLessonsContext();
 
     const handleOpen = (lesson: ILesson) => {
         if (!chosenUser) {
@@ -165,6 +171,54 @@ export const Students = wrap(() => {
             });
     };
 
+    const openAllCourse = () => {
+        // setLoadingAllCourseUpdate true
+        myRequest
+            .post<any, IUser>(API_ROUTES.OPEN_COURSE, {
+                courseId: chosenCourse?._id,
+                userId: chosenUser?._id
+            })
+            .then((user) => {
+                console.log(user);
+                setChosenUser(user);
+            })
+            .finally(() => {
+                // setLoadingAllCourseUpdate false
+            });
+    };
+
+    const closeAllCourse = () => {
+        // setLoadingAllCourseUpdate true
+        myRequest
+            .post<any, IUser>(API_ROUTES.CLOSE_COURSE, {
+                courseId: chosenCourse?._id,
+                userId: chosenUser?._id
+            })
+            .then((user) => {
+                console.log(user);
+                setChosenUser(user);
+            })
+            .finally(() => {
+                // setLoadingAllCourseUpdate false
+            });
+    };
+
+    const isCourseAllOpened = useMemo(() => {
+        if (!chosenCourse?.lessonsOrder.length) {
+            return;
+        }
+        if (!chosenUser?.lessonsOpen.length) {
+            return;
+        }
+        for (let i = 0; i < chosenCourse.lessonsOrder.length; i++) {
+            const lessonId = chosenCourse.lessonsOrder[i];
+            if (!chosenUser.lessonsOpen.includes(lessonId)) {
+                return false;
+            }
+        }
+        return true;
+    }, [chosenCourse, chosenUser]);
+
     if (loading || loadingLessons) {
         return <CircleLoader />;
     }
@@ -218,9 +272,45 @@ export const Students = wrap(() => {
                 </div>
             </div>
             <div className={s.lessons}>
-                <div className={s.rows}>
-                    {chosenUser &&
-                        lessons?.map((l) => {
+                {chosenUser && (
+                    <div className={s.coursePanel}>
+                        {courses.map((course) => {
+                            const { title, _id } = course;
+                            const onClick = () => setChosenCourse(course);
+                            const isActive = chosenCourse?._id === _id;
+                            return (
+                                <div
+                                    key={_id}
+                                    className={cls(s.coursePanelItem, {
+                                        [s.coursePanelItemActive]: isActive
+                                    })}
+                                    onClick={onClick}
+                                >
+                                    {title}
+                                </div>
+                            );
+                        })}
+                    </div>
+                )}
+                {chosenCourse && (
+                    <div
+                        className={s.openAllCourse}
+                        onClick={
+                            isCourseAllOpened ? closeAllCourse : openAllCourse
+                        }
+                    >
+                        <h4>
+                            Открыть весь курс "{chosenCourse.title}" студенту
+                        </h4>
+                        <div className={s.switch}>
+                            <Switch defaultCheck={isCourseAllOpened} />
+                        </div>
+                    </div>
+                )}
+                <div className={s.lessonCards}>
+                    {chosenCourse &&
+                        chosenCourse.lessonsOrder.map((lessonId) => {
+                            const l = normilizedLessons[lessonId];
                             const isDone =
                                 chosenUser?.lessonsDone.includes(l._id) ||
                                 false;
@@ -228,8 +318,13 @@ export const Students = wrap(() => {
                                 chosenUser?.lessonsOpen.includes(l._id) ||
                                 false;
                             return (
-                                <div className={s.row} key={l._id}>
-                                    <h1>{l.title}</h1>
+                                <div className={s.lessonCard} key={l._id}>
+                                    <h4
+                                        className={s.lessonTitle}
+                                        title={l.title}
+                                    >
+                                        {l.title}
+                                    </h4>
 
                                     <div className={s.statuses}>
                                         <div

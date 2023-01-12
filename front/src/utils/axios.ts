@@ -76,5 +76,7 @@ export const API_ROUTES: API_URLS = {
     MESSAGE: '/message',
     LESSON_CREATE: '/lesson/create',
     ATTACHMENT: '/attachment',
-    COURSE: '/course'
+    COURSE: '/course',
+    OPEN_COURSE: '/course/open_all_lessons',
+    CLOSE_COURSE: '/course/close_all_lessons'
 };

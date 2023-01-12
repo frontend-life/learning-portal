@@ -24,8 +24,10 @@ export function eventsHandler(request, response) {
 export function sendLessonsDoneToUser(user_id, newLessonsDone) {
   clients[user_id]?.write(createEventMessage({ lessonsDone: newLessonsDone }));
 }
-export function sendLessonsOpenToUser(user_id, newLessonsDone) {
-  clients[user_id]?.write(createEventMessage({ lessonsOpen: newLessonsDone }));
+export function sendLessonsOpenToUser(user_id, newLessonsOpened) {
+  clients[user_id]?.write(
+    createEventMessage({ lessonsOpen: newLessonsOpened })
+  );
 }
 export function sendNewUserDataToUser(user_id, userData) {
   clients[user_id]?.write(createEventMessage({ userData }));
