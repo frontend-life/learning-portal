@@ -1,11 +1,13 @@
 const { ObjectId } = require("mongodb");
 const mongoose = require("mongoose");
+require("dotenv").config({ path: "../../.env" });
 
+// console.log(process.env.mongodb_cluster_password);
+// console.log(process.env.mongodb_cluster_user);
 const isProd = false;
+const prod_uri = `mongodb+srv://${process.env.mongodb_cluster_user}:${process.env.mongodb_cluster_password}@cluster0.c5musei.mongodb.net/?retryWrites=true&w=majority`;
 
-const url = isProd
-  ? `mongodb+srv://sprilepko:UeXLaYQtLqPN4b1F@cluster0.c5musei.mongodb.net/?retryWrites=true&w=majority`
-  : "mongodb://localhost:27017/frontend-portal";
+const url = isProd ? prod_uri : "mongodb://localhost:27017/frontend-portal";
 
 const lessonSchema = new mongoose.Schema(
   {
@@ -109,12 +111,6 @@ async function run() {
           .map((l) => l._id),
       }
     );
-    // console.log(
-    //   c,
-    //   lessons
-    //     .filter(({ course }) => course.toString() === c._id.toString())
-    //     .map((l) => l._id)
-    // );
   });
 
   console.log("End");
