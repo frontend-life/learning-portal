@@ -2,6 +2,8 @@ import { Lesson } from "./lesson";
 import { CourseCommon } from "@commonTypes";
 import mongoose from "mongoose";
 
+export interface ICourse extends CourseCommon {}
+
 const courseSchema = new mongoose.Schema(
   {
     // _id: {
@@ -34,4 +36,4 @@ const courseSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export const Course = mongoose.model<CourseCommon>("Course", courseSchema);
+export const Course = mongoose.model<ICourse>("Course", courseSchema);

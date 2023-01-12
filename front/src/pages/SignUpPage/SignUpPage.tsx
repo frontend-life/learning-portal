@@ -3,13 +3,13 @@ import { BlackBox } from '../../components/BlackBox/BlackBox';
 import { Button } from '../../components/Button/Button';
 import { Input } from '../../components/Input/Input';
 import MainBlockWrapper from '../../components/MainBlockWrapper/MainBlockWrapper';
-import { API_URLS, myRequest } from '../../utils/axios';
+import { API_ROUTES, myRequest } from '@utils/axios';
 import { isEmail } from 'validator';
 
 import s from './SignUpPage.module.css';
 import { Link, useNavigate } from 'react-router-dom';
-import { PATHS } from '../../utils/paths';
-import addNt from '../../utils/notification';
+import { PATHS } from '@utils/paths';
+import addNt from '@utils/notification';
 
 export function SignUpPage() {
     const nav = useNavigate();
@@ -21,7 +21,7 @@ export function SignUpPage() {
     } = useForm();
     const onSubmit = (data) => {
         myRequest
-            .post(API_URLS.SIGN_UP, data)
+            .post(API_ROUTES.SIGN_UP, data)
             .then((res /* user */) => {
                 alert('Теперь авторизуйтесь');
                 nav(PATHS.signin);

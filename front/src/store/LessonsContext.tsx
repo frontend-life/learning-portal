@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { LoadingAnimation } from '../components/LoadingAnimation/LoadingAnimation';
-import { ICourse, ILesson, IUser } from '../types/api';
-import { API_URLS, myRequest } from '../utils/axios';
+import { ICourse, ILesson } from '../types/api';
+import { API_ROUTES, myRequest } from '@utils/axios';
 import { useUserContext } from './UserDetails';
 
 type LessonsStore = {
@@ -37,8 +36,8 @@ const LessonsProvider = (props) => {
     const reloadLessonsAndCourses = () => {
         setLoadingStatus(true);
         return Promise.all([
-            myRequest.get<any, ILesson[]>(API_URLS.LESSONS),
-            myRequest.get<any, ICourse[]>(API_URLS.COURSES)
+            myRequest.get<any, ILesson[]>(API_ROUTES.LESSONS),
+            myRequest.get<any, ICourse[]>(API_ROUTES.COURSE)
         ])
             .then(([lessons, courses]) => {
                 setLessons(lessons);

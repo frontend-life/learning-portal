@@ -1,12 +1,12 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { LoadingAnimation } from '../components/LoadingAnimation/LoadingAnimation';
 import { IUser, Roles } from '../types/api';
-import { getToken } from '../utils/auth';
-import { API_URLS, myRequest } from '../utils/axios';
-import { useServerEvents } from '../utils/hooks';
+import { getToken } from '@utils/auth';
+import { API_ROUTES, myRequest } from '@utils/axios';
 
 type UserData = {
     isSignedIn: boolean;
+    isTeacher: boolean;
 } & IUser;
 type StartStore = {
     userDetails: UserData;
@@ -16,7 +16,8 @@ type StartStore = {
 const start: StartStore = {
     userDetails: {
         isSignedIn: false,
-        roles: [] as Roles[]
+        roles: [] as Roles[],
+        isTeacher: false
     } as UserData,
     setUserDetails: () => {}
 };
@@ -31,13 +32,14 @@ const UserDetailsProvider = (props) => {
 
     useEffect(() => {
         myRequest
-            .get(API_URLS.ME)
-            .then((data) => {
+            .get<any, IUser>(API_ROUTES.ME)
+            .then((data: IUser) => {
                 if (!userDetails.isSignedIn && getToken()) {
                     setUserDetails((prev) => ({
                         ...prev,
                         ...data,
-                        isSignedIn: true
+                        isSignedIn: true,
+                        isTeacher: data.roles.includes(Roles.TEACHER)
                     }));
                     return null;
                 }

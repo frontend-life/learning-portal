@@ -9,8 +9,8 @@ import { Select } from '../../components/Select/Select';
 import { useSuccessAdd } from '../../components/SuccessAdd/SuccessAdd';
 import { useLessonsContext } from '../../store/LessonsContext';
 import { ICourse, ILesson } from '../../types/api';
-import { API_URLS, myRequest } from '../../utils/axios';
-import { PATHS } from '../../utils/paths';
+import { API_ROUTES, myRequest } from '@utils/axios';
+import { PATHS } from '@utils/paths';
 
 import s from './AddLesson.module.css';
 import DecriptionChecker from './components/DecriptionChecker/DecriptionChecker';
@@ -46,7 +46,7 @@ export const AddLesson = () => {
             };
             myRequest
                 .put(
-                    `${API_URLS.LESSON}?lessonId=${lessonToEdit._id}`,
+                    `${API_ROUTES.LESSON}?lessonId=${lessonToEdit._id}`,
                     editData
                 )
                 .then(turnOn)
@@ -69,11 +69,11 @@ export const AddLesson = () => {
             return;
         }
 
-        myRequest.post(API_URLS.LESSON_CREATE, data).then(turnOn);
+        myRequest.post(API_ROUTES.LESSON_CREATE, data).then(turnOn);
     };
 
     useEffect(() => {
-        myRequest.get(API_URLS.COURSES).then((tracks) => {
+        myRequest.get(API_ROUTES.COURSE).then((tracks) => {
             setCourses(tracks as unknown as ICourse[]);
         });
     }, []);
