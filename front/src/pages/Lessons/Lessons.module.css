@@ -16,8 +16,11 @@
 }
 .lessonsNav > div {
     padding: 10px;
+    font-family: var(--readable-font);
 }
-
+.lessonsNav > div > a {
+    text-decoration: none;
+}
 .lessonsScroll {
 }
 
@@ -92,4 +95,5 @@
     font-size: 24px;
     text-align: center;
     pointer-events: none;
+    font-family: var(--readable-font);
 }
