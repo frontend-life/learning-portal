@@ -55,6 +55,7 @@ export interface CourseCommon {
   _id: string;
   title: string;
   order: number;
+  lessonsOrder: string[];
 }
 
 /**

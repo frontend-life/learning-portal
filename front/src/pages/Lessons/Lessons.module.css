@@ -60,6 +60,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    pointer-events: none;
 }
 .done {
     background-color: var(--third-color);
@@ -84,4 +85,5 @@
 .lessonTitle {
     font-size: 24px;
     text-align: center;
+    pointer-events: none;
 }

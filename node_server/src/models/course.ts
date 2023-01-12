@@ -1,3 +1,4 @@
+import { Lesson } from "./lesson";
 import { CourseCommon } from "@commonTypes";
 import mongoose from "mongoose";
 
@@ -17,6 +18,17 @@ const courseSchema = new mongoose.Schema(
     order: {
       type: Number,
       required: true,
+    },
+    lessonsOrder: {
+      type: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          required: true,
+          ref: Lesson,
+        },
+      ],
+      require: false,
+      default: [],
     },
   },
   { timestamps: true }
