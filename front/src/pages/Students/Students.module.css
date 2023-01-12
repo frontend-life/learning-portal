@@ -60,6 +60,7 @@
 .userActive:hover {
     background-color: #2a5c00;
 }
+
 .lessons {
     flex: 1;
     margin-left: 10px;
@@ -67,21 +68,72 @@
     border-radius: 10px;
     background-color: var(--third-color);
 }
+
+.coursePanel {
+    padding: 10px;
+}
+
+.coursePanelItem {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 20px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    background-color: antiquewhite;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.coursePanelItem:hover {
+    opacity: 0.8;
+}
+
+.coursePanelItemActive {
+    background-color: rgb(253, 201, 133);
+}
+
+.lessonTitle {
+    font-family: var(--readable-font);
+    overflow: hidden;
+    display: -webkit-box;
+    max-width: 100%;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
 .userName {
     color: rgb(31, 31, 31);
 }
 
-.rows {
+.openAllCourse {
+    display: inline-flex;
+    background: antiquewhite;
+    color: black;
+    padding: 10px 20px;
+    border-radius: 10px;
+    align-items: center;
+    cursor: pointer;
 }
-.row {
+.openAllCourse h4 {
+    margin: 0;
+}
+
+.lessonCards {
+    margin-top: 20px;
+}
+
+.lessonCard {
     position: relative;
     padding: 20px;
     border-radius: 13px;
     background-color: #1f2833;
-    margin-bottom: 60px;
     box-shadow: 2px 2px 2px black;
-    display: flex;
-    justify-content: space-between;
+    display: inline-block;
+    width: 300px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    vertical-align: top;
 }
 .statuses {
     display: flex;

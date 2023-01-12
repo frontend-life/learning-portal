@@ -68,4 +68,5 @@
     white-space: nowrap;
     margin-top: 20px;
     display: inline-block;
+    font-family: var(--readable-font);
 }

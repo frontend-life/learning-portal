@@ -46,6 +46,8 @@ export const useServerEvents = () => {
                  *  Here will be switcher of events
                  *
                  */
+
+                console.log(parsedData);
                 if (parsedData.lessonsDone) {
                     setUserDetails((prev) => ({
                         ...prev,

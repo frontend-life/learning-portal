@@ -1,17 +1,11 @@
 import { Lesson } from "./lesson";
-import { CourseCommon } from "@commonTypes";
+import { CourseCommon } from "../../../shared/commonParts";
 import mongoose from "mongoose";
 
 export interface ICourse extends CourseCommon {}
 
 const courseSchema = new mongoose.Schema(
   {
-    // _id: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   index: true,
-    //   required: true,
-    //   auto: true,
-    // },
     title: {
       type: String,
       required: true,
@@ -26,7 +20,7 @@ const courseSchema = new mongoose.Schema(
         {
           type: mongoose.Schema.Types.ObjectId,
           required: true,
-          ref: Lesson,
+          ref: () => Lesson,
         },
       ],
       require: false,

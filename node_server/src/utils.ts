@@ -15,4 +15,6 @@ export const ROUTES: API_URLS = {
   LESSON_CREATE: "/lesson/create",
   ATTACHMENT: "/attachment",
   COURSE: "/course",
+  OPEN_COURSE: "/course/open_all_lessons",
+  CLOSE_COURSE: "/course/close_all_lessons",
 };
