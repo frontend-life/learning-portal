@@ -31,6 +31,7 @@ export const SignInPage = () => {
             }));
             setToken(res.authToken);
             nav(PATHS.profile);
+            window.location.reload();
         });
     };
     return (

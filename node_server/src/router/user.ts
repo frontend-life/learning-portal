@@ -1,3 +1,4 @@
+import { Course } from "./../models/course";
 import { Lesson } from "./../models/lesson";
 import { tlgSendMessage } from "./../service/axios";
 import express from "express";
@@ -34,11 +35,20 @@ router.post("/user/signup", async (req, res) => {
   }
   try {
     const password = await generatePassword(dto.password);
-    const user = {
+    const user: Partial<IUser> = {
       ...dto,
       roles: [Roles.STUDENT],
       password,
     };
+
+    let htmlLessons: string[] = [];
+    try {
+      const htmlCourse = await Course.findOne({ title: "HTML" });
+      htmlLessons = htmlCourse?.lessonsOrder || [];
+    } catch {}
+
+    user.lessonsOpen = htmlLessons;
+
     const createdUser = new User(user);
     await createdUser.save();
     return res.status(201).send({ user: createdUser });

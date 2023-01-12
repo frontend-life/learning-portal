@@ -1,4 +1,4 @@
-import { LessonCommon } from "@commonTypes";
+import { LessonCommon } from "../../../shared/commonParts";
 import { Attachment } from "./attachment";
 import mongoose from "mongoose";
 import { Course } from "./course";
@@ -36,13 +36,13 @@ const lessonSchema = new mongoose.Schema(
     course: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: Course,
+      ref: () => Course,
     },
     homeworkAttachments: {
       type: [
         {
           type: mongoose.Schema.Types.ObjectId,
-          ref: Attachment,
+          ref: () => Attachment,
         },
       ],
       default: [],
