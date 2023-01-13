@@ -87,6 +87,10 @@ function CourseBlock({ course }: { course: ICourse }) {
         const { courseId, lessonId: dropedLessonId } = e.target.dataset;
         e.target.style.opacity = 1;
 
+        if (dropedLessonId === dragingLessonID.current) {
+            return;
+        }
+
         if (courseId !== dragingCourseID.current) {
             addWNt('You cant change lessons between courses');
             return;
