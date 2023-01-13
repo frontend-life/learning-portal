@@ -13,6 +13,7 @@ export interface API_URLS {
   MESSAGE: "/message";
   LESSON_CREATE: "/lesson/create";
   ATTACHMENT: "/attachment";
+  SPACE: "/space";
 }
 
 export enum Roles {
@@ -91,3 +92,8 @@ export type PopulatedHomework = Omit<
 export type PopulatedLessonWithCourse = Omit<LessonCommon, "course"> & {
   course: CourseCommon;
 };
+
+export interface ReqBodySpacePut {
+  file_name: string;
+  file_type: string;
+}

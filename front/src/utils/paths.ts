@@ -11,7 +11,8 @@ export const PATHS = {
     tracks: '/tracks',
     rating: '/rating',
     students: '/students',
-    homeworks: '/homeworks'
+    homeworks: '/homeworks',
+    screen_recorder: '/screen_recorder'
 };
 
 // url

@@ -1,78 +1,17 @@
 import { getLang } from '@utils/langs';
-import { useRef } from 'react';
 import MainBlockWrapper from '../../components/MainBlockWrapper/MainBlockWrapper';
 import { SalaryCounter } from '../../components/SalaryCounter/SalaryCounter';
 import { SalaryProgressBar } from '../../components/SalaryProgressBar/SalaryProgressBar';
 import { useUserContext } from '../../store/UserDetails';
-import { stopTestCapture, testCapture } from './capture';
 import s from './ProfilePage.module.css';
-import { uploadObject } from './storage';
 
 export const ProfilePage = () => {
     const {
         userDetails: { salary, name, telegramChatId, _id }
     } = useUserContext();
 
-    const video = useRef<HTMLVideoElement>(null);
-
-    const captureScreen = () => {
-        if (video.current) {
-            testCapture(video.current);
-        }
-    };
-    const stopCaptureScreen = () => {
-        if (video.current) {
-            stopTestCapture(video.current);
-        }
-    };
-
     return (
         <MainBlockWrapper title={getLang('my_profile')}>
-            <button
-                style={{
-                    padding: '20px',
-                    position: 'absolute',
-                    left: '0px',
-                    bottom: 200
-                }}
-                onClick={uploadObject}
-            >
-                Upload to spaces
-            </button>
-            <button
-                style={{
-                    padding: '20px',
-                    position: 'absolute',
-                    left: '0px',
-                    bottom: 0
-                }}
-                onClick={captureScreen}
-            >
-                Capture video
-            </button>
-            <button
-                style={{
-                    padding: '20px',
-                    position: 'absolute',
-                    left: '0px',
-                    bottom: 100
-                }}
-                onClick={stopCaptureScreen}
-            >
-                Stop video
-            </button>
-            <video
-                autoPlay
-                ref={video}
-                style={{
-                    padding: '20px',
-                    position: 'absolute',
-                    right: '0px',
-                    bottom: 0
-                }}
-            >
-                Video stream not available.
-            </video>
             <div className={s.root}>
                 <div className={s.info}>
                     <div className={s.avatarSkeleton}>

@@ -18,7 +18,7 @@ export const getBaseUrl = () => {
 
 export const myRequest = axios.create({
     baseURL: getBaseApiUrl(),
-    timeout: 10000
+    timeout: 1000 * 60
 });
 
 myRequest.interceptors.request.use(
@@ -78,5 +78,6 @@ export const API_ROUTES: API_URLS = {
     ATTACHMENT: '/attachment',
     COURSE: '/course',
     OPEN_COURSE: '/course/open_all_lessons',
-    CLOSE_COURSE: '/course/close_all_lessons'
+    CLOSE_COURSE: '/course/close_all_lessons',
+    SPACE: '/space'
 };

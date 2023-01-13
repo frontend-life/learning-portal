@@ -36,6 +36,10 @@ const items = [
         forTeacher: true
     },
     {
+        text: 'screen recorder',
+        link: PATHS.screen_recorder
+    },
+    {
         text: 'Log Out'
     }
 ];
@@ -53,6 +57,8 @@ export const TopRightMenu = () => {
             <MenuSvg />
             <div className={s.menu}>
                 {items.map(({ link, forTeacher, text }) => {
+                    const props: any = {};
+
                     if (
                         forTeacher &&
                         !user.userDetails.roles.includes(Roles.TEACHER)
@@ -70,8 +76,16 @@ export const TopRightMenu = () => {
                             </span>
                         );
                     }
+                    if (link === PATHS.screen_recorder) {
+                        props.target = '_blank';
+                    }
                     return (
-                        <Link key={link} className={s.item} to={link}>
+                        <Link
+                            key={link}
+                            className={s.item}
+                            to={link}
+                            {...props}
+                        >
                             {text}
                         </Link>
                     );
