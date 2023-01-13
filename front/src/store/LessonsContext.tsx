@@ -8,8 +8,8 @@ type LessonsStore = {
     lessons: ILesson[];
     normilizedLessons: Record<string, ILesson>;
     courses: ICourse[];
-    setLessons: any;
-    setCourses: any;
+    setLessons: React.Dispatch<React.SetStateAction<ILesson[]>>;
+    setCourses: React.Dispatch<React.SetStateAction<ICourse[]>>;
     reloadLessonsAndCourses: () => Promise<void>;
     loadingStatus: boolean;
 };

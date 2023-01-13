@@ -3,14 +3,14 @@ import { Control, Controller } from 'react-hook-form';
 import s from './Select.module.css';
 import { useEffect } from 'react';
 
-type Option = {
+export type SelectOption = {
     id: string;
     text: string;
 };
 
 type Props = {
     defaultId?: string;
-    options: Option[];
+    options: SelectOption[];
     htmlProps?: React.HTMLProps<HTMLSelectElement>;
     labelAlign?: Align;
     control: Control<any>;
@@ -59,6 +59,7 @@ function SelectInside({ defaultId, getLabel, onChange, options, value }) {
     const noOptions = options.length === 0;
 
     useEffect(() => {
+        console.log('Select Inside');
         if (defaultId) {
             onChange(defaultId);
         } else {

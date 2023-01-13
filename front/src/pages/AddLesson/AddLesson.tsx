@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '../../components/Button/Button';
 import { Editor } from '../../components/Editor/Editor';
 import { Input } from '../../components/Input/Input';
 import MainBlockWrapper from '../../components/MainBlockWrapper/MainBlockWrapper';
-import { Select } from '../../components/Select/Select';
+import { Select, SelectOption } from '../../components/Select/Select';
 import { useSuccessAdd } from '../../components/SuccessAdd/SuccessAdd';
 import { useLessonsContext } from '../../store/LessonsContext';
 import { ICourse, ILesson } from '../../types/api';
@@ -18,7 +18,7 @@ import { VideoChecker } from './components/VideoChecker/VideoChecker';
 
 export const AddLesson = () => {
     const { state: lessonToEdit }: { state: ILesson } = useLocation();
-    const { setLessons } = useLessonsContext();
+    const { setLessons, setCourses: setGlobalCourses } = useLessonsContext();
     const navigate = useNavigate();
 
     const { isSuccess, turnOn, SuccessAdd } = useSuccessAdd();
@@ -69,18 +69,52 @@ export const AddLesson = () => {
             return;
         }
 
-        myRequest.post(API_ROUTES.LESSON_CREATE, data).then(turnOn);
+        myRequest
+            .post<any, ILesson>(API_ROUTES.LESSON_CREATE, data)
+            .then((lesson) => {
+                setLessons((prev) => {
+                    return [...prev, lesson];
+                });
+                updateGlobalCourses(lesson);
+                turnOn();
+                navigate(PATHS.lessons);
+            });
+
+        function updateGlobalCourses(lesson: ILesson) {
+            setGlobalCourses((prev) => {
+                return prev.map((course) => {
+                    if (course._id === lesson.course) {
+                        return {
+                            ...course,
+                            lessonsOrder: [...course.lessonsOrder, lesson._id]
+                        };
+                    }
+                    return course;
+                });
+            });
+        }
     };
 
     useEffect(() => {
-        myRequest.get(API_ROUTES.COURSE).then((tracks) => {
-            setCourses(tracks as unknown as ICourse[]);
-        });
-    }, []);
+        if (!lessonToEdit?.course) {
+            myRequest.get(API_ROUTES.COURSE).then((tracks) => {
+                setCourses(tracks as unknown as ICourse[]);
+            });
+        }
+    }, [lessonToEdit?.course]);
 
     const action = lessonToEdit ? 'Изменить' : 'Добавить';
     const link = watch('link');
     const iframeGoogleDocs = watch('iframeGoogleDocs');
+
+    const coursesFroSelect: SelectOption[] = useMemo(
+        () =>
+            courses.map((t) => ({
+                id: t._id,
+                text: t.title
+            })),
+        [courses]
+    );
 
     console.log(errors);
 
@@ -89,16 +123,19 @@ export const AddLesson = () => {
             <div className={s.root}>
                 <h1 className={s.headerText}>{action + ' урок'}</h1>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <Select
-                        defaultId={lessonToEdit?.course}
-                        labelAlign="left"
-                        htmlProps={{ label: 'Track' }}
-                        control={control}
-                        options={courses.map((t) => ({
-                            id: t._id,
-                            text: t.title
-                        }))}
-                    />
+                    {!lessonToEdit?.course ? (
+                        <Select
+                            defaultId={lessonToEdit?.course}
+                            labelAlign="left"
+                            htmlProps={{ label: 'Track' }}
+                            control={control}
+                            options={coursesFroSelect}
+                        />
+                    ) : (
+                        <p style={{ color: 'orange' }}>
+                            To change course ask Sergey
+                        </p>
+                    )}
                     <Input
                         labelAlign="left"
                         inputProps={{ label: 'Lesson title' }}
@@ -109,6 +146,42 @@ export const AddLesson = () => {
                         }}
                         error={errors.title?.message as string}
                     />
+                    {lessonToEdit?.homework && (
+                        <Editor
+                            defaultValue={lessonToEdit?.description}
+                            labelAlign="left"
+                            inputProps={{
+                                label: 'Lesson description (better to add this info to iframe)'
+                            }}
+                            rhfProps={{
+                                name: 'description',
+                                register,
+                                setValue
+                            }}
+                            error={errors.description?.message as string}
+                            editorClassName={s.editorInput}
+                            labelClassName={s.editorLabel}
+                            showHowItLooks={false}
+                        />
+                    )}
+                    {lessonToEdit?.homework && (
+                        <Editor
+                            defaultValue={lessonToEdit?.homework}
+                            labelAlign="left"
+                            inputProps={{
+                                label: 'Lesson homework (better to add this info to iframe)'
+                            }}
+                            rhfProps={{
+                                name: 'homework',
+                                register,
+                                setValue
+                            }}
+                            error={errors.description?.message as string}
+                            editorClassName={s.editorInput}
+                            labelClassName={s.editorLabel}
+                            showHowItLooks={false}
+                        />
+                    )}
                     <Editor
                         defaultValue={lessonToEdit?.iframeGoogleDocs}
                         labelAlign="left"
@@ -118,8 +191,7 @@ export const AddLesson = () => {
                         rhfProps={{
                             name: 'iframeGoogleDocs',
                             register,
-                            setValue,
-                            required: true
+                            setValue
                         }}
                         error={errors.iframeGoogleDocs?.type as string}
                         editorClassName={s.editorInput}
