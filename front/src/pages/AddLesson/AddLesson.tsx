@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '../../components/Button/Button';
 import { Editor } from '../../components/Editor/Editor';
 import { Input } from '../../components/Input/Input';
 import MainBlockWrapper from '../../components/MainBlockWrapper/MainBlockWrapper';
-import { Select } from '../../components/Select/Select';
+import { Select, SelectOption } from '../../components/Select/Select';
 import { useSuccessAdd } from '../../components/SuccessAdd/SuccessAdd';
 import { useLessonsContext } from '../../store/LessonsContext';
 import { ICourse, ILesson } from '../../types/api';
@@ -82,6 +82,15 @@ export const AddLesson = () => {
     const link = watch('link');
     const iframeGoogleDocs = watch('iframeGoogleDocs');
 
+    const coursesFroSelect: SelectOption[] = useMemo(
+        () =>
+            courses.map((t) => ({
+                id: t._id,
+                text: t.title
+            })),
+        [courses]
+    );
+
     console.log(errors);
 
     return (
@@ -94,10 +103,7 @@ export const AddLesson = () => {
                         labelAlign="left"
                         htmlProps={{ label: 'Track' }}
                         control={control}
-                        options={courses.map((t) => ({
-                            id: t._id,
-                            text: t.title
-                        }))}
+                        options={coursesFroSelect}
                     />
                     <Input
                         labelAlign="left"
@@ -109,6 +115,42 @@ export const AddLesson = () => {
                         }}
                         error={errors.title?.message as string}
                     />
+                    {lessonToEdit?.homework && (
+                        <Editor
+                            defaultValue={lessonToEdit?.description}
+                            labelAlign="left"
+                            inputProps={{
+                                label: 'Lesson description (better to add this info to iframe)'
+                            }}
+                            rhfProps={{
+                                name: 'description',
+                                register,
+                                setValue
+                            }}
+                            error={errors.description?.message as string}
+                            editorClassName={s.editorInput}
+                            labelClassName={s.editorLabel}
+                            showHowItLooks={false}
+                        />
+                    )}
+                    {lessonToEdit?.homework && (
+                        <Editor
+                            defaultValue={lessonToEdit?.homework}
+                            labelAlign="left"
+                            inputProps={{
+                                label: 'Lesson homework (better to add this info to iframe)'
+                            }}
+                            rhfProps={{
+                                name: 'homework',
+                                register,
+                                setValue
+                            }}
+                            error={errors.description?.message as string}
+                            editorClassName={s.editorInput}
+                            labelClassName={s.editorLabel}
+                            showHowItLooks={false}
+                        />
+                    )}
                     <Editor
                         defaultValue={lessonToEdit?.iframeGoogleDocs}
                         labelAlign="left"
@@ -118,8 +160,7 @@ export const AddLesson = () => {
                         rhfProps={{
                             name: 'iframeGoogleDocs',
                             register,
-                            setValue,
-                            required: true
+                            setValue
                         }}
                         error={errors.iframeGoogleDocs?.type as string}
                         editorClassName={s.editorInput}

@@ -1,8 +1,11 @@
+import { Course } from "./../models/course";
 import express from "express";
 
 import { Lesson, ILesson } from "./../models/lesson";
 import { auth } from "../middleware/auth";
 import { ObjectId } from "mongodb";
+import { tlgSendMessage } from "../service/axios";
+import { SERGEY_CHAT_ID } from "../service/telegram";
 
 const router = express.Router();
 
@@ -12,7 +15,20 @@ router.post("/lesson/create", auth, async (req, res) => {
     ...dto,
   });
   try {
-    lesson.save();
+    await lesson.save();
+    try {
+      await Course.findByIdAndUpdate(dto.course, {
+        $push: {
+          lessonsOrder: lesson._id,
+        },
+      });
+    } catch {
+      tlgSendMessage({
+        chat_id: SERGEY_CHAT_ID,
+        text: "Add lesson to course order error",
+      });
+    }
+
     return res.status(201).send({ lesson });
   } catch (error) {
     return res.status(400).send();

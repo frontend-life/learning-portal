@@ -26,6 +26,7 @@
     text-align: center;
     color: white;
     margin-bottom: 20px;
+    font-family: var(--readable-font);
 }
 .errorError {
     color: red;
