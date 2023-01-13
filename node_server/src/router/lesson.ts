@@ -1,3 +1,4 @@
+import { ROUTES } from "./../utils";
 import { Course } from "./../models/course";
 import express from "express";
 
@@ -9,7 +10,7 @@ import { SERGEY_CHAT_ID } from "../service/telegram";
 
 const router = express.Router();
 
-router.post("/lesson/create", auth, async (req, res) => {
+router.post(ROUTES.LESSON_CREATE, auth, async (req, res) => {
   const dto = req.body as ILesson;
   const lesson = new Lesson({
     ...dto,
@@ -29,7 +30,7 @@ router.post("/lesson/create", auth, async (req, res) => {
       });
     }
 
-    return res.status(201).send({ lesson });
+    return res.status(201).send(lesson);
   } catch (error) {
     return res.status(400).send();
   }
@@ -43,6 +44,18 @@ router.put("/lesson", auth, async (req, res) => {
   if (!doc) {
     return res.status(404).send();
   }
+
+  // Update courses lessonsOrder, because we need to do it if we change course in lesson
+  if (dto.course.toString() !== doc.course.toString()) {
+    const previousCourse = await Course.findById(dto.course.toString());
+    const newCourse = await Course.findById(doc.course.toString());
+    console.log(previousCourse, newCourse);
+    tlgSendMessage({
+      chat_id: SERGEY_CHAT_ID,
+      text: `Somebody changed lesson ${lessonId} course from ${previousCourse?.title} to ${newCourse?.title}`,
+    });
+  }
+
   Object.assign(doc, dto);
   try {
     await doc.save();

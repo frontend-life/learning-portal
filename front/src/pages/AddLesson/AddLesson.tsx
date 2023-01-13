@@ -18,7 +18,7 @@ import { VideoChecker } from './components/VideoChecker/VideoChecker';
 
 export const AddLesson = () => {
     const { state: lessonToEdit }: { state: ILesson } = useLocation();
-    const { setLessons } = useLessonsContext();
+    const { setLessons, setCourses: setGlobalCourses } = useLessonsContext();
     const navigate = useNavigate();
 
     const { isSuccess, turnOn, SuccessAdd } = useSuccessAdd();
@@ -69,14 +69,39 @@ export const AddLesson = () => {
             return;
         }
 
-        myRequest.post(API_ROUTES.LESSON_CREATE, data).then(turnOn);
+        myRequest
+            .post<any, ILesson>(API_ROUTES.LESSON_CREATE, data)
+            .then((lesson) => {
+                setLessons((prev) => {
+                    return [...prev, lesson];
+                });
+                updateGlobalCourses(lesson);
+                turnOn();
+                navigate(PATHS.lessons);
+            });
+
+        function updateGlobalCourses(lesson: ILesson) {
+            setGlobalCourses((prev) => {
+                return prev.map((course) => {
+                    if (course._id === lesson.course) {
+                        return {
+                            ...course,
+                            lessonsOrder: [...course.lessonsOrder, lesson._id]
+                        };
+                    }
+                    return course;
+                });
+            });
+        }
     };
 
     useEffect(() => {
-        myRequest.get(API_ROUTES.COURSE).then((tracks) => {
-            setCourses(tracks as unknown as ICourse[]);
-        });
-    }, []);
+        if (!lessonToEdit?.course) {
+            myRequest.get(API_ROUTES.COURSE).then((tracks) => {
+                setCourses(tracks as unknown as ICourse[]);
+            });
+        }
+    }, [lessonToEdit?.course]);
 
     const action = lessonToEdit ? 'Изменить' : 'Добавить';
     const link = watch('link');
@@ -98,13 +123,19 @@ export const AddLesson = () => {
             <div className={s.root}>
                 <h1 className={s.headerText}>{action + ' урок'}</h1>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <Select
-                        defaultId={lessonToEdit?.course}
-                        labelAlign="left"
-                        htmlProps={{ label: 'Track' }}
-                        control={control}
-                        options={coursesFroSelect}
-                    />
+                    {!lessonToEdit?.course ? (
+                        <Select
+                            defaultId={lessonToEdit?.course}
+                            labelAlign="left"
+                            htmlProps={{ label: 'Track' }}
+                            control={control}
+                            options={coursesFroSelect}
+                        />
+                    ) : (
+                        <p style={{ color: 'orange' }}>
+                            To change course ask Sergey
+                        </p>
+                    )}
                     <Input
                         labelAlign="left"
                         inputProps={{ label: 'Lesson title' }}
