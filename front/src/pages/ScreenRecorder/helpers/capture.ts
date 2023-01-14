@@ -54,7 +54,10 @@ export class VideoCapturer {
         audio?.getTracks().forEach((track) => track.stop());
     };
 
-    public startRecording = () => {
+    public startRecording = (
+        savingType: 'no' | 'aws' | 'local',
+        onUpload?: (url: string) => void
+    ) => {
         const { stream, audio } = this;
         const mixedStream = new MediaStream([
             ...stream.getTracks(),
@@ -71,9 +74,24 @@ export class VideoCapturer {
             const blob = new Blob(this.chunks, { type });
             this.chunks = [];
 
-            let filename = window.prompt('Enter file name');
+            let filename = window.prompt('Enter file name') || 'video_screen';
 
-            this.downloadBlob(blob, filename || 'video_screen');
+            switch (savingType) {
+                case 'no':
+                    console.log('Will not save this record');
+                    break;
+                case 'local':
+                    this.downloadBlob(blob, filename);
+                    break;
+                case 'aws':
+                    this.uploadBlobToAWS(blob, filename).then((url) => {
+                        if (url && onUpload) {
+                            onUpload(url);
+                        }
+                    });
+                    break;
+                default:
+            }
 
             console.log('Recording stopped');
         };
@@ -108,12 +126,23 @@ export class VideoCapturer {
         document.body.removeChild(downloadLink);
     }
 
-    public uploadBlobToAWS(blob: Blob, filename: string) {
-        getSignedUrl(filename, blob.type).then((url) => {
-            uploadFile(url, blob).then(() => {
-                alert('File upload succeed');
-            });
-        });
+    public async uploadBlobToAWS(
+        blob: Blob,
+        filename: string
+    ): Promise<string | void> {
+        try {
+            let url = await getSignedUrl(filename, blob.type);
+            if (!url) {
+                return undefined;
+            }
+
+            await uploadFile(url, blob);
+
+            // delete all query params from link to return to open it
+            url = url.split(filename)[0] + filename;
+
+            return url;
+        } catch {}
     }
 
     // public async startCapturing() {
@@ -128,7 +157,7 @@ export class VideoCapturer {
 }
 
 const getSignedUrl = async (file_name, file_type) => {
-    const body: ReqBodySpacePut = {
+    const body: Omit<ReqBodySpacePut, 'user_id'> = {
         file_name,
         file_type
     };

@@ -1,14 +1,20 @@
+import { AttachmentCommon } from "@commonTypes";
+import { User } from "./user";
 import mongoose from "mongoose";
-import IAttachment from "../interfaces/attachment";
+
+interface IAttachment extends AttachmentCommon {}
 
 const attachmentSchema = new mongoose.Schema(
   {
-    // _id: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   index: true,
-    //   required: true,
-    //   auto: true,
-    // },
+    name: {
+      type: String,
+      require: false,
+    },
+    user_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: () => User,
+      require: false,
+    },
     path: {
       type: String,
       required: true,

@@ -31,7 +31,6 @@ export function getSignedUrl(file_name: string, file_type: string) {
     ContentType: file_type,
     ACL: "public-read", // Remove this to make the file private
   };
-  console.log(params);
 
   return spaces.getSignedUrl("putObject", params);
 }
