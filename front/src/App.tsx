@@ -104,7 +104,7 @@ function AuthenticatedRoutes() {
             <Route path="/">
                 <Route
                     index
-                    element={<Navigate to={PATHS.signin} replace={true} />}
+                    element={<Navigate to={PATHS.profile} replace={true} />}
                 />
                 {urls.map(({ path, Element, isPublic }) => {
                     if (isPublic) {
