@@ -1,0 +1,43 @@
+.root {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    flex-direction: column;
+    height: 100vh;
+}
+.buttons {
+    width: 560px;
+    padding: 20px;
+    background-color: rgb(65, 50, 80);
+}
+.button {
+    background-color: aliceblue;
+    border: 3px solid rgb(199, 250, 199);
+    border-radius: 20px;
+    padding: 10px 30px;
+    color: black;
+    cursor: pointer;
+}
+.button:first-of-type {
+    margin-right: 30px;
+}
+.videoWindow {
+    width: 600px;
+}
+
+.titleLoading {
+    position: relative;
+    top: -100px;
+}
+
+.videoLinkWrapper {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.videoLink {
+    width: 600px;
+    font-family: var(--readable-font);
+}

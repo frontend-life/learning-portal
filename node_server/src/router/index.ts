@@ -8,6 +8,7 @@ import attachRouter from "./attachments";
 import telegramRouter from "./telegram";
 import messageRouter from "./message";
 import chatRouter from "./chat";
+import awsRouter from "./aws";
 import chatEventsRouter from "./events/chatEvents";
 
 import { eventsHandler } from "./events/events";
@@ -23,6 +24,7 @@ router.use(telegramRouter);
 router.use(messageRouter);
 router.use(chatRouter);
 router.use(chatEventsRouter);
+router.use(awsRouter);
 
 router.get("/events", eventsHandler);
 

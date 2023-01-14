@@ -15,6 +15,7 @@ import { useServerEvents } from './utils/hooks';
 import { Rating } from './pages/Rating/Rating';
 import { AddLesson } from './pages/AddLesson/AddLesson';
 import { Homeworks } from './pages/Homeworks/Homeworks';
+import { ScreenRecorder } from './pages/ScreenRecorder/ScreenRecorder';
 
 const urls = [
     {
@@ -54,6 +55,10 @@ const urls = [
     {
         path: PATHS.homeworks,
         Element: Homeworks
+    },
+    {
+        path: PATHS.screen_recorder,
+        Element: ScreenRecorder
     }
 ];
 

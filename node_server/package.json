@@ -5,6 +5,7 @@
   "license": "MIT",
   "dependencies": {
     "@types/cors": "^2.8.12",
+    "aws-sdk": "^2.1294.0",
     "axios": "^1.2.0",
     "bcryptjs": "^2.4.3",
     "concurrently": "^7.5.0",

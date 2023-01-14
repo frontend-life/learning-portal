@@ -13,6 +13,7 @@ export interface API_URLS {
   MESSAGE: "/message";
   LESSON_CREATE: "/lesson/create";
   ATTACHMENT: "/attachment";
+  SPACE: "/space";
 }
 
 export enum Roles {
@@ -22,6 +23,8 @@ export enum Roles {
 
 export interface AttachmentCommon {
   _id: string;
+  name?: string;
+  user_id?: string;
   path: string;
 }
 
@@ -76,14 +79,11 @@ export interface CourseCommon {
   lessonsOrder: string[];
 }
 
-/**
+export /**
  * Populated types
  * */
 
-export type PopulatedHomework = Omit<
-  HomeworkCommon,
-  "studentId" | "lessonId"
-> & {
+type PopulatedHomework = Omit<HomeworkCommon, "studentId" | "lessonId"> & {
   studentId: Partial<UserCommon>;
   lessonId: Partial<LessonCommon>;
 };
@@ -91,3 +91,11 @@ export type PopulatedHomework = Omit<
 export type PopulatedLessonWithCourse = Omit<LessonCommon, "course"> & {
   course: CourseCommon;
 };
+
+// Request Response
+
+export interface ReqBodySpacePut {
+  user_id: string;
+  file_name: string;
+  file_type: string;
+}

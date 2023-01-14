@@ -1,3 +1,5 @@
+// CODE FROM DIGITAL OCEAN TUTORIAL
+
 // Step 1: Import the S3Client object and all necessary SDK commands.
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 
@@ -7,8 +9,8 @@ const s3Client = new S3Client({
     forcePathStyle: false, // Configures to use subdomain/virtual calling format.
     region: 'ams3', // Must be "us-east-1" when creating new Spaces. Otherwise, use the region in your endpoint (e.g. nyc3).
     credentials: {
-        accessKeyId: 'DO009B683GZ4WXN6U33D', // Access key pair. You can create access key pairs using the control panel or API.
-        secretAccessKey: 'wLY/fhPcY2xneBgc0K59DfhkEKjmK0uHk8iyW+Im7sc' // Secret access key defined through an environment variable.
+        accessKeyId: '', // Access key pair. You can create access key pairs using the control panel or API.
+        secretAccessKey: '' // Secret access key defined through an environment variable.
     }
 });
 

@@ -49,8 +49,8 @@ const userSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    lessonsDone: { type: [mongoose.Schema.Types.ObjectId], ref: Lesson },
-    lessonsOpen: { type: [mongoose.Schema.Types.ObjectId], ref: Lesson },
+    lessonsDone: { type: [mongoose.Schema.Types.ObjectId], ref: () => Lesson },
+    lessonsOpen: { type: [mongoose.Schema.Types.ObjectId], ref: () => Lesson },
     roles: {
       type: [Number],
     },

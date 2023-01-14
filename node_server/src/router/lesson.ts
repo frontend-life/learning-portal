@@ -36,7 +36,7 @@ router.post(ROUTES.LESSON_CREATE, auth, async (req, res) => {
   }
 });
 
-router.put("/lesson", auth, async (req, res) => {
+router.put(ROUTES.LESSON, auth, async (req, res) => {
   const { lessonId } = req.query;
   const dto = req.body as ILesson;
 
@@ -74,7 +74,7 @@ router.get("/lesson/lessons", auth, async (req, res) => {
   }
 });
 
-router.get("/lesson", auth, async (req, res) => {
+router.get(ROUTES.LESSON, auth, async (req, res) => {
   const { lessonId } = req.query;
   if (!ObjectId.isValid(lessonId as string)) {
     return res.status(404).send();
@@ -86,6 +86,14 @@ router.get("/lesson", auth, async (req, res) => {
     console.log(error);
     return res.status(500).send();
   }
+});
+
+router.delete(ROUTES.LESSON, (req, res) => {
+  // delete in Lesson
+  // delete in Course.lessonsOrder
+  // may not delete in users lessonsDone, lessonsOpen
+
+  res.send("Delete not ready yet");
 });
 
 export default router;
