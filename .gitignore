@@ -29,4 +29,5 @@ yarn-error.log*
 
 # something else
 /cplusplus
+/openai
 /.vscode/

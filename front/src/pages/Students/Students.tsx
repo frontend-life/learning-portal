@@ -274,22 +274,24 @@ export const Students = wrap(() => {
             <div className={s.lessons}>
                 {chosenUser && (
                     <div className={s.coursePanel}>
-                        {courses.map((course) => {
-                            const { title, _id } = course;
-                            const onClick = () => setChosenCourse(course);
-                            const isActive = chosenCourse?._id === _id;
-                            return (
-                                <div
-                                    key={_id}
-                                    className={cls(s.coursePanelItem, {
-                                        [s.coursePanelItemActive]: isActive
-                                    })}
-                                    onClick={onClick}
-                                >
-                                    {title}
-                                </div>
-                            );
-                        })}
+                        {courses
+                            .sort((a, b) => a.order - b.order)
+                            .map((course) => {
+                                const { title, _id } = course;
+                                const onClick = () => setChosenCourse(course);
+                                const isActive = chosenCourse?._id === _id;
+                                return (
+                                    <div
+                                        key={_id}
+                                        className={cls(s.coursePanelItem, {
+                                            [s.coursePanelItemActive]: isActive
+                                        })}
+                                        onClick={onClick}
+                                    >
+                                        {title}
+                                    </div>
+                                );
+                            })}
                     </div>
                 )}
                 {chosenCourse && (
