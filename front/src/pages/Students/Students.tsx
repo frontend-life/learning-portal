@@ -5,15 +5,12 @@ import { Switch } from '../../components/Switch/Switch';
 import { ICourse, ILesson, IUser } from '../../types/api';
 import { API_ROUTES, myRequest } from '../../utils/axios';
 import { cls } from '../../utils/css';
-import { useDebounceUsersSearch, useGetArrayData } from '../../utils/hooks';
-
-import { lockSvg as LockSVG } from './lock';
-import { unlockSvg as UnlockSVG } from './unlock';
-import { checkSvg as CheckSVG } from './check';
-import { uncheckSvg as UncheckSVG } from './uncheck';
+import { useDebounceUsersSearch } from '../../utils/hooks';
+import { useLessonsContext } from '../../store/LessonsContext';
 
 import s from './Students.module.css';
-import { useLessonsContext } from '../../store/LessonsContext';
+import { openLessonToUser } from '../../domain_actions/user';
+import { OpenCloseLessonCard } from './components/OpenCloseLessonCard/OpenCloseLessonCard';
 
 export const Students = wrap(() => {
     const [chosenUser, setChosenUser] = useState<IUser>();
@@ -21,54 +18,46 @@ export const Students = wrap(() => {
     const [search, setSearch] = useState<string>('');
     const { data, setData, loading, loadingBySearch } =
         useDebounceUsersSearch(search);
+    const [loadingAllCourseUpdate, setLoadingAllCourseUpdate] = useState(false);
     const {
         courses,
-        lessons,
         normilizedLessons,
         loadingStatus: loadingLessons
     } = useLessonsContext();
 
     const handleOpen = (lesson: ILesson) => {
         if (!chosenUser) {
-            return;
+            return Promise.resolve();
         }
-        myRequest
-            .post('/user/open', {
-                userId: chosenUser._id,
-                lessonId: lesson._id
-            })
-            .then(() => {
-                setChosenUser((prev) => {
-                    if (!prev) {
-                        return;
+        return openLessonToUser(chosenUser._id, lesson._id).then(() => {
+            setChosenUser((prev) => {
+                if (!prev) {
+                    return;
+                }
+                return {
+                    ...prev,
+                    lessonsOpen: [...prev.lessonsOpen, lesson._id]
+                } as IUser;
+            });
+            setData((prev) => {
+                return prev.map((u) => {
+                    if (u._id === chosenUser._id) {
+                        return {
+                            ...u,
+                            lessonsOpen: [...chosenUser.lessonsOpen, lesson._id]
+                        } as IUser;
+                    } else {
+                        return u;
                     }
-                    return {
-                        ...prev,
-                        lessonsOpen: [...prev.lessonsOpen, lesson._id]
-                    } as IUser;
-                });
-                setData((prev) => {
-                    return prev.map((u) => {
-                        if (u._id === chosenUser._id) {
-                            return {
-                                ...u,
-                                lessonsOpen: [
-                                    ...chosenUser.lessonsOpen,
-                                    lesson._id
-                                ]
-                            } as IUser;
-                        } else {
-                            return u;
-                        }
-                    });
                 });
             });
+        });
     };
     const handleClose = (lesson: ILesson) => {
         if (!chosenUser) {
-            return;
+            return Promise.resolve();
         }
-        myRequest
+        return myRequest
             .post('/user/close', {
                 userId: chosenUser._id,
                 lessonId: lesson._id
@@ -101,9 +90,9 @@ export const Students = wrap(() => {
     };
     const handleDone = (lesson: ILesson) => {
         if (!chosenUser) {
-            return;
+            return Promise.resolve();
         }
-        myRequest
+        return myRequest
             .post('/user/done', {
                 userId: chosenUser._id,
                 lessonId: lesson._id
@@ -137,9 +126,9 @@ export const Students = wrap(() => {
     };
     const handleNotDone = (lesson: ILesson) => {
         if (!chosenUser) {
-            return;
+            return Promise.resolve();
         }
-        myRequest
+        return myRequest
             .post('/user/notdone', {
                 userId: chosenUser._id,
                 lessonId: lesson._id
@@ -172,8 +161,11 @@ export const Students = wrap(() => {
     };
 
     const openAllCourse = () => {
-        // setLoadingAllCourseUpdate true
-        myRequest
+        if (loadingAllCourseUpdate) {
+            return;
+        }
+        setLoadingAllCourseUpdate(true);
+        return myRequest
             .post<any, IUser>(API_ROUTES.OPEN_COURSE, {
                 courseId: chosenCourse?._id,
                 userId: chosenUser?._id
@@ -183,12 +175,15 @@ export const Students = wrap(() => {
                 setChosenUser(user);
             })
             .finally(() => {
-                // setLoadingAllCourseUpdate false
+                setLoadingAllCourseUpdate(false);
             });
     };
 
     const closeAllCourse = () => {
-        // setLoadingAllCourseUpdate true
+        if (loadingAllCourseUpdate) {
+            return;
+        }
+        setLoadingAllCourseUpdate(true);
         myRequest
             .post<any, IUser>(API_ROUTES.CLOSE_COURSE, {
                 courseId: chosenCourse?._id,
@@ -199,7 +194,7 @@ export const Students = wrap(() => {
                 setChosenUser(user);
             })
             .finally(() => {
-                // setLoadingAllCourseUpdate false
+                setLoadingAllCourseUpdate(false);
             });
     };
 
@@ -305,79 +300,34 @@ export const Students = wrap(() => {
                             Открыть весь курс "{chosenCourse.title}" студенту
                         </h4>
                         <div className={s.switch}>
-                            <Switch defaultCheck={isCourseAllOpened} />
+                            <Switch
+                                defaultCheck={isCourseAllOpened}
+                                disabled={loadingAllCourseUpdate}
+                            />
                         </div>
                     </div>
                 )}
                 <div className={s.lessonCards}>
                     {chosenCourse &&
                         chosenCourse.lessonsOrder.map((lessonId) => {
-                            const l = normilizedLessons[lessonId];
+                            const lesson = normilizedLessons[lessonId];
                             const isDone =
-                                chosenUser?.lessonsDone.includes(l._id) ||
+                                chosenUser?.lessonsDone.includes(lesson._id) ||
                                 false;
                             const isOpen =
-                                chosenUser?.lessonsOpen.includes(l._id) ||
+                                chosenUser?.lessonsOpen.includes(lesson._id) ||
                                 false;
+
                             return (
-                                <div className={s.lessonCard} key={l._id}>
-                                    <h4
-                                        className={s.lessonTitle}
-                                        title={l.title}
-                                    >
-                                        {l.title}
-                                    </h4>
-
-                                    <div className={s.statuses}>
-                                        <div
-                                            className={cls(s.status, {
-                                                [s.isOpen]: isOpen,
-                                                [s.isClosed]: !isOpen
-                                            })}
-                                            onClick={() =>
-                                                isOpen
-                                                    ? handleClose(l)
-                                                    : handleOpen(l)
-                                            }
-                                        >
-                                            <span className={s.switchText}>
-                                                Closed
-                                                <LockSVG />
-                                            </span>
-                                            <div className={s.switch}>
-                                                <Switch defaultCheck={isOpen} />
-                                            </div>
-                                            <span className={s.switchText}>
-                                                Open
-                                                <UnlockSVG />
-                                            </span>
-                                        </div>
-
-                                        <div
-                                            className={cls(s.status, {
-                                                [s.isDone]: isDone,
-                                                [s.isNotDone]: !isDone
-                                            })}
-                                            onClick={() => {
-                                                isDone
-                                                    ? handleNotDone(l)
-                                                    : handleDone(l);
-                                            }}
-                                        >
-                                            <span className={s.switchText}>
-                                                Not done
-                                                <UncheckSVG />
-                                            </span>
-                                            <div className={s.switch}>
-                                                <Switch defaultCheck={isDone} />
-                                            </div>
-                                            <span className={s.switchText}>
-                                                Done
-                                                <CheckSVG />
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
+                                <OpenCloseLessonCard
+                                    lesson={lesson}
+                                    isOpen={isOpen}
+                                    isDone={isDone}
+                                    onClose={handleClose}
+                                    onOpen={handleOpen}
+                                    onDone={handleDone}
+                                    onNotDone={handleNotDone}
+                                />
                             );
                         })}
                 </div>

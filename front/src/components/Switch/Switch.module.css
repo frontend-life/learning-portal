@@ -5,6 +5,10 @@
     height: 34px;
     pointer-events: none;
 }
+.switchDisabled {
+    opacity: 0.5;
+    cursor: wait;
+}
 
 .switch .input {
     opacity: 0;

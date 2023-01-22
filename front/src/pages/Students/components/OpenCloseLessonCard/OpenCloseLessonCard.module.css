@@ -1,0 +1,52 @@
+.root {
+    position: relative;
+    padding: 20px;
+    border-radius: 13px;
+    background-color: #1f2833;
+    box-shadow: 2px 2px 2px black;
+    display: inline-block;
+    width: 300px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    vertical-align: top;
+}
+
+.lessonTitle {
+    font-family: var(--readable-font);
+    overflow: hidden;
+    display: -webkit-box;
+    max-width: 100%;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+.statuses {
+    display: flex;
+    flex-direction: column;
+}
+.status {
+    /* background-color: var(--secondary-color); */
+    color: white;
+    border-radius: 10px;
+    box-shadow: 2px 2px 2px black;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 10px;
+    width: 250px;
+}
+.status:nth-child(2) {
+    cursor: default;
+    pointer-events: none;
+    filter: grayscale(1);
+}
+
+.isOpen .switchText:first-of-type,
+.isDone .switchText:first-of-type {
+    visibility: hidden;
+}
+.isClosed .switchText:last-of-type,
+.isNotDone .switchText:last-of-type {
+    visibility: hidden;
+}
