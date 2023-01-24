@@ -1,7 +1,10 @@
+import { notifyMeInTelegram } from "./../service/telegram";
 import express from "express";
 import { Chat } from "../models/chat";
 import { IMessage, Message } from "../models/message";
 import { sendMessageToChat } from "./events/chatEvents";
+import { User } from "../models/user";
+
 const router = express.Router();
 
 router
@@ -33,6 +36,15 @@ router
       await chat.save();
 
       sendMessageToChat(chatId, senderId, saved_new_message);
+
+      try {
+        const user = await User.findById(senderId);
+        if (user) {
+          notifyMeInTelegram(
+            `${user.name} send you message: ${text || "only attachments"}`
+          );
+        }
+      } catch {}
 
       res.status(201).send(saved_new_message);
     } catch (err) {
