@@ -17,7 +17,7 @@ import {
   sendLessonsOpenToUser,
   sendNewUserDataToUser,
 } from "./events/events";
-import { createMarkdown } from "../service/telegram";
+import { createMarkdown, telegramTextFormatter } from "../service/telegram";
 import { Homework } from "../models/homework";
 import { Roles, PopulatedLessonWithCourse } from "../../../shared/commonParts";
 
@@ -241,16 +241,12 @@ Your salary now: ${user.salary}
 ${createMarkdown.lessonLink(lessonId, user._id)}
 `;
 
-    text = tgTextFormatter(text);
+    text = telegramTextFormatter(text);
     tlgSendMessage({
       chat_id: user?.telegramChatId,
       text,
     });
   }
-}
-
-function tgTextFormatter(text: string): string {
-  return text.replace(/\./, "\\.");
 }
 
 function salaryHelper(salary: number, type: "+" | "-"): number {
