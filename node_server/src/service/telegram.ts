@@ -12,7 +12,7 @@ export const createMarkdown = {
 
 export const notifyMeInTelegram = (message: string) => {
   const ready_message = telegramTextFormatter(message);
-  console.log(ready_message);
+
   return tlgSendMessage({
     chat_id: SERGEY_CHAT_ID,
     text: ready_message,
@@ -20,7 +20,37 @@ export const notifyMeInTelegram = (message: string) => {
 };
 
 export function telegramTextFormatter(text: string): string {
-  text = text.replace(/</g, "\\<");
-  text = text.replace(/>/g, "\\>");
-  return text.replace(/\./g, "\\.");
+  const symbols = [
+    "_",
+    "*",
+    "[",
+    "]",
+    "(",
+    ")",
+    "~",
+    "`",
+    ">",
+    "#",
+    "+",
+    "-",
+    "=",
+    "|",
+    "{",
+    "}",
+    ".",
+    "!",
+  ];
+
+  const chars = text.split("");
+  for (let index in chars) {
+    const char = chars[index];
+    let symbol = symbols.find((i) => i === char);
+    if (symbol) {
+      chars[index] = `\\${symbol}`;
+    }
+  }
+
+  const cleanText = chars.join("");
+
+  return cleanText;
 }

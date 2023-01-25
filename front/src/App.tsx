@@ -55,11 +55,12 @@ const urls = [
     {
         path: PATHS.homeworks,
         Element: Homeworks
-    },
-    {
-        path: PATHS.screen_recorder,
-        Element: ScreenRecorder
     }
+    // To prevent ploading big videos
+    // {
+    //     path: PATHS.screen_recorder,
+    //     Element: ScreenRecorder
+    // }
 ];
 
 const showNav = process.env.NODE_ENV === 'development' && true;

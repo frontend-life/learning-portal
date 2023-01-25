@@ -35,10 +35,11 @@ const items = [
         link: PATHS.homeworks,
         forTeacher: true
     },
-    {
-        text: 'screen recorder',
-        link: PATHS.screen_recorder
-    },
+    // temporary comenting not to show till checking size
+    // {
+    //     text: 'screen recorder',
+    //     link: PATHS.screen_recorder
+    // },
     {
         text: 'Log Out'
     }
