@@ -320,6 +320,7 @@ export const Students = wrap(() => {
 
                             return (
                                 <OpenCloseLessonCard
+                                    key={lessonId}
                                     lesson={lesson}
                                     isOpen={isOpen}
                                     isDone={isDone}

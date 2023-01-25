@@ -148,6 +148,25 @@ router.post("/user/done", auth, async (req, res) => {
     res.send(404).send();
   }
 
+  let userLessonsOpen = [...user.lessonsOpen];
+  try {
+    const lesson = await Lesson.findById(lessonId);
+    if (lesson) {
+      const { course } = await lesson.populate("course");
+      if (course) {
+        // @ts-ignore
+        const lessonIndexInCourseOrder = course.lessonsOrder.findIndex(
+          (id) => id.toString() === lessonId
+        );
+        // @ts-ignore
+        const nextLessonId = course.lessonsOrder[lessonIndexInCourseOrder + 1];
+        if (nextLessonId) {
+          userLessonsOpen.push(nextLessonId);
+        }
+      }
+    }
+  } catch {}
+
   let newLessonsList = [...user.lessonsDone.map((id) => id.toString())];
   newLessonsList.push(lessonId);
   newLessonsList = Array.from(new Set(newLessonsList));
@@ -156,7 +175,11 @@ router.post("/user/done", auth, async (req, res) => {
 
   const result = await User.findOneAndUpdate(
     { _id: userId },
-    { lessonsDone: newLessonsList, salary: newSalary },
+    {
+      lessonsDone: newLessonsList,
+      lessonsOpen: userLessonsOpen,
+      salary: newSalary,
+    },
     {
       new: true,
     }
