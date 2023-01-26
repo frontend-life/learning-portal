@@ -6,10 +6,10 @@ import chatBG2 from './chatBG2.png';
 import { useUserContext } from '../../store/UserDetails';
 import { useEffect, useState } from 'react';
 import { MessageCommon } from '@commonTypes';
-import { API_ROUTES, myRequest } from '@utils/axios';
 import { useChatEvents } from './hooks/useChatEvents';
 import { cls } from '@utils/css';
 import { CircleLoader } from '../CircleLoader/CircleLoader';
+import { Backend } from '@shared/Backend';
 
 const GreenYellowBG = () => (
     <div className={s.rootBG} style={{ backgroundImage: `url(${chatBG2})` }} />
@@ -28,15 +28,14 @@ export const Chat = ({ width = 500, minHeight = 300, chatId }: Props) => {
 
     useEffect(() => {
         setIsReady(false);
-        myRequest
-            .get(API_ROUTES.CHAT, {
-                params: {
-                    chatId,
-                    populate: {
-                        messages: 1
-                    }
+        Backend.getChat({
+            params: {
+                chatId,
+                populate: {
+                    messages: 1
                 }
-            })
+            }
+        })
             .then((chat: any) => {
                 if (chat?.messages as MessageCommon[]) {
                     const sorted = chat.messages.sort((a, b) => {

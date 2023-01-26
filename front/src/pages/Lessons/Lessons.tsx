@@ -1,15 +1,14 @@
-import { API_ROUTES, myRequest } from '@utils/axios';
-import { normilize } from '@utils/normilize';
+import { Backend } from '@shared/Backend';
 import { addWNt } from '@utils/notification';
-import React, { useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CircleLoader } from '../../components/CircleLoader/CircleLoader';
-import MainBlockWrapper from '../../components/MainBlockWrapper/MainBlockWrapper';
-import { useLessonsContext } from '../../store/LessonsContext';
-import { useUserContext } from '../../store/UserDetails';
-import { ICourse, ILesson } from '../../types/api';
-import { cls } from '../../utils/css';
-import { PATHS } from '../../utils/paths';
+import { CircleLoader } from '@components/CircleLoader/CircleLoader';
+import MainBlockWrapper from '@components/MainBlockWrapper/MainBlockWrapper';
+import { useLessonsContext } from '@store/LessonsContext';
+import { useUserContext } from '@store/UserDetails';
+import { ICourse, ILesson } from '@type/api';
+import { cls } from '@utils/css';
+import { PATHS } from '@utils/paths';
 import { DoneSvg } from './doneSvg';
 import s from './Lessons.module.css';
 import { LockSvg } from './lockSvg';
@@ -120,8 +119,7 @@ function CourseBlock({ course }: { course: ICourse }) {
         };
 
         setLoading(true);
-        myRequest
-            .put<any, ICourse>(API_ROUTES.COURSE, newLessonsOrderPayload)
+        Backend.updateCourse(newLessonsOrderPayload)
             .then((newCourse) => {
                 updateCourses(newCourse);
             })

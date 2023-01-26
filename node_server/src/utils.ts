@@ -18,4 +18,9 @@ export const ROUTES: API_URLS = {
   OPEN_COURSE: "/course/open_all_lessons",
   CLOSE_COURSE: "/course/close_all_lessons",
   SPACE: "/space",
+  USER_LESSON_DONE: "/user/done",
+  USER_LESSON_NOT_DONE: "/user/notdone",
+  USER_LESSON_OPEN: "/user/open",
+  USER_LESSON_CLOSE: "/user/close",
+  USERS: "/user/users",
 };

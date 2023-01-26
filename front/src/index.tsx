@@ -1,9 +1,10 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
+
 import UserDetailsProvider from './store/UserDetails';
 import LessonsProvider from './store/LessonsContext';
+import App from '@app/App';
+
+import './index.css';
 
 declare global {
     interface Window {

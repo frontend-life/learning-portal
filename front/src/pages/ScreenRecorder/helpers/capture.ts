@@ -1,5 +1,5 @@
+import { Backend } from '@shared/Backend';
 import { ReqBodySpacePut } from '../../../../../shared/commonParts';
-import { API_ROUTES, myRequest } from '@utils/axios';
 
 export class VideoCapturer {
     audio;
@@ -162,10 +162,7 @@ const getSignedUrl = async (file_name, file_type) => {
         file_type
     };
 
-    const { signedUrl } = await myRequest.post<any, { signedUrl: string }>(
-        API_ROUTES.SPACE,
-        body
-    );
+    const { signedUrl } = await Backend.getSignedUrlForSaveFileToSpace(body);
 
     return signedUrl;
 };

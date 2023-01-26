@@ -1,16 +1,16 @@
 import { useMemo, useState } from 'react';
-import { CircleLoader } from '../../components/CircleLoader/CircleLoader';
-import { wrap } from '../../components/MainBlockWrapper/MainBlockWrapper';
-import { Switch } from '../../components/Switch/Switch';
-import { ICourse, ILesson, IUser } from '../../types/api';
-import { API_ROUTES, myRequest } from '../../utils/axios';
-import { cls } from '../../utils/css';
-import { useDebounceUsersSearch } from '../../utils/hooks';
-import { useLessonsContext } from '../../store/LessonsContext';
+import { CircleLoader } from '@components/CircleLoader/CircleLoader';
+import { wrap } from '@components/MainBlockWrapper/MainBlockWrapper';
+import { Switch } from '@components/Switch/Switch';
+import { ICourse, ILesson, IUser } from '@type/api';
+import { cls } from '@utils/css';
+import { useDebounceUsersSearch } from '@utils/hooks';
+import { useLessonsContext } from '@store/LessonsContext';
 
 import s from './Students.module.css';
-import { openLessonToUser } from '../../domain_actions/user';
+
 import { OpenCloseLessonCard } from './components/OpenCloseLessonCard/OpenCloseLessonCard';
+import { Backend } from '@shared/Backend';
 
 export const Students = wrap(() => {
     const [chosenUser, setChosenUser] = useState<IUser>();
@@ -29,7 +29,10 @@ export const Students = wrap(() => {
         if (!chosenUser) {
             return Promise.resolve();
         }
-        return openLessonToUser(chosenUser._id, lesson._id).then(() => {
+        return Backend.userLessonOpen({
+            userId: chosenUser._id,
+            lessonId: lesson._id
+        }).then(() => {
             setChosenUser((prev) => {
                 if (!prev) {
                     return;
@@ -57,119 +60,109 @@ export const Students = wrap(() => {
         if (!chosenUser) {
             return Promise.resolve();
         }
-        return myRequest
-            .post('/user/close', {
-                userId: chosenUser._id,
-                lessonId: lesson._id
-            })
-            .then(() => {
-                setChosenUser(
-                    (prev) =>
-                        ({
-                            ...prev,
-                            lessonsOpen: chosenUser.lessonsOpen.filter(
+        return Backend.userLessonClose({
+            userId: chosenUser._id,
+            lessonId: lesson._id
+        }).then(() => {
+            setChosenUser(
+                (prev) =>
+                    ({
+                        ...prev,
+                        lessonsOpen: chosenUser.lessonsOpen.filter(
+                            (lId) => lId !== lesson._id
+                        )
+                    } as IUser)
+            );
+            setData((prev) => {
+                return prev.map((u) => {
+                    if (u._id === chosenUser._id) {
+                        return {
+                            ...u,
+                            lessonsOpen: u.lessonsOpen.filter(
                                 (lId) => lId !== lesson._id
                             )
-                        } as IUser)
-                );
-                setData((prev) => {
-                    return prev.map((u) => {
-                        if (u._id === chosenUser._id) {
-                            return {
-                                ...u,
-                                lessonsOpen: u.lessonsOpen.filter(
-                                    (lId) => lId !== lesson._id
-                                )
-                            } as IUser;
-                        } else {
-                            return u;
-                        }
-                    });
+                        } as IUser;
+                    } else {
+                        return u;
+                    }
                 });
             });
+        });
     };
     const handleDone = (lesson: ILesson) => {
         if (!chosenUser) {
             return Promise.resolve();
         }
-        return myRequest
-            .post('/user/done', {
-                userId: chosenUser._id,
-                lessonId: lesson._id
-            })
-            .then(() => {
-                setChosenUser((prev) => {
-                    if (!prev) {
-                        return;
+        return Backend.userLessonDone({
+            userId: chosenUser._id,
+            lessonId: lesson._id
+        }).then(() => {
+            setChosenUser((prev) => {
+                if (!prev) {
+                    return;
+                }
+                return {
+                    ...prev,
+                    lessonsDone: [...prev.lessonsDone, lesson._id]
+                } as IUser;
+            });
+            setData((prev) => {
+                return prev.map((u) => {
+                    if (u._id === chosenUser._id) {
+                        return {
+                            ...u,
+                            lessonsDone: [...chosenUser.lessonsDone, lesson._id]
+                        } as IUser;
+                    } else {
+                        return u;
                     }
-                    return {
-                        ...prev,
-                        lessonsDone: [...prev.lessonsDone, lesson._id]
-                    } as IUser;
-                });
-                setData((prev) => {
-                    return prev.map((u) => {
-                        if (u._id === chosenUser._id) {
-                            return {
-                                ...u,
-                                lessonsDone: [
-                                    ...chosenUser.lessonsDone,
-                                    lesson._id
-                                ]
-                            } as IUser;
-                        } else {
-                            return u;
-                        }
-                    });
                 });
             });
+        });
     };
     const handleNotDone = (lesson: ILesson) => {
         if (!chosenUser) {
             return Promise.resolve();
         }
-        return myRequest
-            .post('/user/notdone', {
-                userId: chosenUser._id,
-                lessonId: lesson._id
-            })
-            .then(() => {
-                setChosenUser(
-                    (prev) =>
-                        ({
-                            ...prev,
-                            lessonsDone: chosenUser.lessonsDone.filter(
+        return Backend.userLessonNotDone({
+            userId: chosenUser._id,
+            lessonId: lesson._id
+        }).then(() => {
+            setChosenUser(
+                (prev) =>
+                    ({
+                        ...prev,
+                        lessonsDone: chosenUser.lessonsDone.filter(
+                            (lId) => lId !== lesson._id
+                        )
+                    } as IUser)
+            );
+            setData((prev) => {
+                return prev.map((u) => {
+                    if (u._id === chosenUser._id) {
+                        return {
+                            ...u,
+                            lessonsDone: u.lessonsDone.filter(
                                 (lId) => lId !== lesson._id
                             )
-                        } as IUser)
-                );
-                setData((prev) => {
-                    return prev.map((u) => {
-                        if (u._id === chosenUser._id) {
-                            return {
-                                ...u,
-                                lessonsDone: u.lessonsDone.filter(
-                                    (lId) => lId !== lesson._id
-                                )
-                            } as IUser;
-                        } else {
-                            return u;
-                        }
-                    });
+                        } as IUser;
+                    } else {
+                        return u;
+                    }
                 });
             });
+        });
     };
 
     const openAllCourse = () => {
-        if (loadingAllCourseUpdate) {
+        if (loadingAllCourseUpdate || !chosenCourse?._id || !chosenUser?._id) {
             return;
         }
         setLoadingAllCourseUpdate(true);
-        return myRequest
-            .post<any, IUser>(API_ROUTES.OPEN_COURSE, {
-                courseId: chosenCourse?._id,
-                userId: chosenUser?._id
-            })
+        return Backend.openAllCourse({
+            courseId: chosenCourse._id,
+            userId: chosenUser._id
+        })
             .then((user) => {
                 console.log(user);
                 setChosenUser(user);
@@ -180,15 +173,14 @@ export const Students = wrap(() => {
     };
 
     const closeAllCourse = () => {
-        if (loadingAllCourseUpdate) {
+        if (loadingAllCourseUpdate || !chosenCourse?._id || !chosenUser?._id) {
             return;
         }
         setLoadingAllCourseUpdate(true);
-        myRequest
-            .post<any, IUser>(API_ROUTES.CLOSE_COURSE, {
-                courseId: chosenCourse?._id,
-                userId: chosenUser?._id
-            })
+        Backend.closeAllCourse({
+            courseId: chosenCourse?._id,
+            userId: chosenUser?._id
+        })
             .then((user) => {
                 console.log(user);
                 setChosenUser(user);

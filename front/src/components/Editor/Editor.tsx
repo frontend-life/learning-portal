@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Align } from '../../types/components';
+import { Align } from '@type/components';
 import { cls } from '../../utils/css';
 import s from './Editor.module.css';
 import { tab } from './utils';

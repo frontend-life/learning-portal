@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Align, AlignItems } from '../../types/components';
+import { Align, AlignItems } from '@type/components';
 import { TopRightMenu } from '../TopRightMenu/TopRightMenu';
 import { Logo } from './logo';
 import s from './MainBlockWrapper.module.css';

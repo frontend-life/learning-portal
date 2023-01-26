@@ -1,8 +1,8 @@
 import { PATHS } from '@utils/paths';
 import { useNavigate } from 'react-router-dom';
-import { DoneSign } from '../../components/DoneSign/DoneSign';
-import { useUserContext } from '../../store/UserDetails';
-import { ILesson, Roles } from '../../types/api';
+import { DoneSign } from '@components/DoneSign/DoneSign';
+import { useUserContext } from '@store/UserDetails';
+import { ILesson, Roles } from '@type/api';
 import { IframGoogleDocsViewer } from '../AddLesson/components/DecriptionChecker/DecriptionChecker';
 
 import s from './Lesson.module.css';

@@ -1,4 +1,4 @@
-import { Align } from '../../types/components';
+import { Align } from '@type/components';
 import { Control, Controller } from 'react-hook-form';
 import s from './Select.module.css';
 import { useEffect } from 'react';

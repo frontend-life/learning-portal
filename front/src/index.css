@@ -24,6 +24,12 @@ body {
 
     --zindex-notification-system: 100;
 
+    --main-button-background: linear-gradient(
+        315deg,
+        rgb(205, 68, 86),
+        rgb(239, 96, 71)
+    );
+
     margin: 0;
     --readable-font: 'Arial';
     --base-font: MrAmazin;

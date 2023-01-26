@@ -1,7 +1,9 @@
+import { Backend } from '@shared/Backend';
+import { API_ROUTES } from '@utils/axios';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useUserContext } from '../store/UserDetails';
-import { IUser } from '../types/api';
-import { getBaseApiUrl, myRequest } from './axios';
+import { IUser } from '@type/api';
+import { getBaseApiUrl } from './axios';
 import { debounce } from './debounce';
 
 export function useGetArrayData<DataType>(url: string) {
@@ -9,8 +11,7 @@ export function useGetArrayData<DataType>(url: string) {
     const [ls, setLs] = useState(true);
 
     const reload = useCallback((url) => {
-        return myRequest
-            .get(url)
+        return Backend.get(url)
             .then((data) => {
                 setD(data as unknown as DataType);
             })
@@ -76,7 +77,7 @@ export const useDebounceUsersSearch = (search: string) => {
 
     const [loadingBySearch, setLoadingBySearch] = useState(false);
 
-    const getUsersUtils = useGetArrayData<IUser[]>('/user/users');
+    const getUsersUtils = useGetArrayData<IUser[]>(API_ROUTES.USERS);
     const debouncedReloadUsers = useCallback(
         debounce((url: string) => {
             return getUsersUtils.reload(url);
@@ -89,7 +90,7 @@ export const useDebounceUsersSearch = (search: string) => {
             setLoadingBySearch(true);
             debouncedReloadUsers(
                 mountRef.current,
-                `/user/users?search=${search}`
+                `${API_ROUTES.USERS}?search=${search}`
             ).finally(() => {
                 setLoadingBySearch(false);
             });

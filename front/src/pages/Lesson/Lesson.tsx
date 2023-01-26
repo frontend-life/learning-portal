@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import MainBlockWrapper from '../../components/MainBlockWrapper/MainBlockWrapper';
-import { IHomework, ILesson } from '../../types/api';
-import { API_ROUTES, myRequest } from '@utils/axios';
+import { IHomework, ILesson } from '@type/api';
+
 import { PATHS } from '@utils/paths';
 import s from './Lesson.module.css';
 import { qp } from '@utils/paths';
@@ -11,13 +11,14 @@ import { useLessonsContext } from '../../store/LessonsContext';
 import { Chat } from '../../components/Chat/Chat';
 import { getLang } from '@utils/langs';
 import { LessonView } from './LessonView';
+import { Backend } from '@shared/Backend';
 
 interface Params {
     lessonId: string;
     studentId: string;
 }
 
-function Lesson() {
+export function Lesson() {
     const [loading, setLoading] = useState(true);
     const [homework, setHomework] = useState<IHomework>();
 
@@ -42,26 +43,23 @@ function Lesson() {
             return;
         }
         if (!curLesson) {
-            myRequest
-                .get('/lesson', {
-                    params: {
-                        lessonId: params.lessonId
-                    }
-                })
-                .then((l) => {
-                    setLesson(l as unknown as ILesson);
-                    setLoading(false);
-                    getHomework();
-                });
+            Backend.getLesson({
+                params: {
+                    lessonId: params.lessonId
+                }
+            }).then((l) => {
+                setLesson(l as unknown as ILesson);
+                setLoading(false);
+                getHomework();
+            });
         }
     }, [lessons, params?.lessonId]);
 
     const handInHomework = () => {
-        myRequest
-            .post(API_ROUTES.HOMEWORK, {
-                studentId: params.studentId,
-                lessonId: params.lessonId
-            } as IHomework)
+        Backend.addHomework({
+            studentId: params.studentId,
+            lessonId: params.lessonId
+        } as IHomework)
             // @ts-ignore
             .then(({ homework }: { homework: IHomework }) => {
                 setHomework(homework);
@@ -69,13 +67,12 @@ function Lesson() {
     };
 
     const getHomework = () => {
-        myRequest
-            .get(API_ROUTES.HOMEWORK, {
-                params: {
-                    lessonId: params.lessonId || 'null',
-                    studentId: params.studentId || 'null'
-                }
-            })
+        Backend.getHomework({
+            params: {
+                lessonId: params.lessonId || 'null',
+                studentId: params.studentId || 'null'
+            }
+        })
             // @ts-ignore
             .then((response: IHomework[]) => {
                 setHomework(response[0]);
@@ -122,5 +119,3 @@ function Lesson() {
         </MainBlockWrapper>
     );
 }
-
-export default Lesson;
