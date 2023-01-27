@@ -5,7 +5,7 @@ import { Attachment } from "../models/attachment";
 import { auth } from "../middleware/auth";
 import { upload } from "../middleware/uploadMiddleware";
 import { Resize } from "../service/resizer";
-import { ROUTES } from "../utils";
+import { isProd, ROUTES } from "../utils";
 
 const router = express.Router();
 
@@ -14,7 +14,9 @@ router.post(
   auth,
   upload.single("file"),
   async (req, res) => {
-    const imagePath = path.join(__dirname, "../../public/attachments");
+    const imagePath = isProd()
+      ? "/var/www/html/learning-portal/node_server/public/attachments"
+      : path.join(__dirname, "../../public/attachments");
     const fileUpload = new Resize(imagePath);
     // @ts-ignore
     if (!req.file) {

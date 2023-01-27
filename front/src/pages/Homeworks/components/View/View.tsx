@@ -1,5 +1,5 @@
 import { PopulatedHomework } from '@commonTypes';
-import { ILesson } from '../../../../types/api';
+import { ILesson } from '@type/api';
 import { LessonView } from '../../../Lesson/LessonView';
 import { ChatView } from './components/ChatView/ChatView';
 import { useParams } from './hooks/useParams';

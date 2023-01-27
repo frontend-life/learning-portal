@@ -2,8 +2,7 @@ import { useCallback, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AttachmentCommon, MessageCommon } from '@commonTypes';
 import { useUserContext } from '../../../../store/UserDetails';
-import { IMessage } from '../../../../types/api';
-import { API_ROUTES, myRequest } from '@utils/axios';
+import { IMessage } from '@type/api';
 import { cls } from '@utils/css';
 import { addWNt, addErrorNt } from '@utils/notification';
 
@@ -15,6 +14,7 @@ import { Editor } from '../../../Editor/Editor';
 import { Attachments } from '../Attachments/Attachments';
 
 import s from './NewMessage.module.css';
+import { Backend } from '@shared/Backend';
 
 export interface ImgData extends AttachmentCommon {
     formData: FormData;
@@ -51,9 +51,7 @@ export const NewMessage = ({ chatId, onSend }: NewMessageProps) => {
         setIsLoading(true);
 
         const saveMessage = (data: IMessage) => {
-            const url = `${API_ROUTES.MESSAGE}`;
-            return myRequest
-                .post(url, data)
+            return Backend.addMessage(data)
                 .then((message) => {
                     setImgsToPreview([]);
                     setValue('homework', '');
@@ -64,7 +62,7 @@ export const NewMessage = ({ chatId, onSend }: NewMessageProps) => {
                     if (refEditable.current) {
                         refEditable.current.innerText = '';
                     }
-                    onSend(message as unknown as MessageCommon);
+                    onSend(message);
                 })
                 .catch((e) => {
                     addErrorNt('Failed send message');
@@ -102,9 +100,7 @@ export const NewMessage = ({ chatId, onSend }: NewMessageProps) => {
     const sendImagesToServer = useCallback<() => any>(() => {
         const imgsToSend = imgsToPreview.map(({ formData }) => formData);
         return Promise.allSettled(
-            imgsToSend.map((formData) =>
-                myRequest.post('/attachment', formData)
-            )
+            imgsToSend.map((formData) => Backend.addAttachment(formData))
         ).catch((e) => {
             addErrorNt('Some error with saving attachments');
             throw e;

@@ -14,6 +14,11 @@ export interface API_URLS {
   LESSON_CREATE: "/lesson/create";
   ATTACHMENT: "/attachment";
   SPACE: "/space";
+  USER_LESSON_DONE: "/user/done";
+  USER_LESSON_NOT_DONE: "/user/notdone";
+  USER_LESSON_OPEN: "/user/open";
+  USER_LESSON_CLOSE: "/user/close";
+  USERS: "/user/users";
 }
 
 export enum Roles {

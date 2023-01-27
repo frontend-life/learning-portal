@@ -5,7 +5,7 @@ import { useUserContext } from '../../store/UserDetails';
 import { MenuSvg } from './menuSvg';
 import s from './TopRightMenu.module.css';
 import { useLogout } from '../../utils/auth';
-import { Roles } from '../../types/api';
+import { Roles } from '@type/api';
 
 const items = [
     {

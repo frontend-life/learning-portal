@@ -333,7 +333,12 @@ module.exports = function (webpackEnv) {
                     __dirname,
                     '../../shared/commonParts.ts'
                 ),
-                '@utils': path.resolve(__dirname, '../src/utils')
+                '@utils': path.resolve(__dirname, '../src/utils'),
+                '@store': path.resolve(__dirname, '../src/store'),
+                '@shared': path.resolve(__dirname, '../src/shared'),
+                '@components': path.resolve(__dirname, '../src/components'),
+                '@app': path.resolve(__dirname, '../src/app'),
+                '@type': path.resolve(__dirname, '../src/type')
             },
             plugins: [
                 // Prevents users from importing files from outside of src/ (or node_modules/).

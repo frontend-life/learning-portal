@@ -1,3 +1,4 @@
+import { ROUTES } from "./../utils";
 import { Course } from "./../models/course";
 import { Lesson } from "./../models/lesson";
 import { tlgSendMessage } from "./../service/axios";
@@ -25,7 +26,7 @@ const router = express.Router();
 
 const EACH_LESSON_PAY_UP = 7.7;
 
-router.post("/user/signup", async (req, res) => {
+router.post(ROUTES.SIGN_UP, async (req, res) => {
   const dto = req.body as signupUserDTO;
   const userExists = await User.findOne({ email: dto.email });
   if (userExists) {
@@ -57,7 +58,7 @@ router.post("/user/signup", async (req, res) => {
   }
 });
 
-router.post("/user/signin", async (req, res) => {
+router.post(ROUTES.SIGN_IN, async (req, res) => {
   const dto = req.body as signinUserDTO;
   const [user] = await User.find({ email: dto.email });
   if (!user) {
@@ -82,12 +83,12 @@ router.post("/user/signin", async (req, res) => {
   }
 });
 
-router.get("/user/me", auth, async (req, res) => {
+router.get(ROUTES.ME, auth, async (req, res) => {
   // @ts-ignore
   return res.status(200).send(req.user);
 });
 
-router.get("/user/users", auth, async (req, res) => {
+router.get("", auth, async (req, res) => {
   const { search } = req.query;
   let users: IUser[] = [];
   if (search) {
@@ -102,7 +103,7 @@ router.get("/user/users", auth, async (req, res) => {
   return res.status(200).send(users);
 });
 
-router.post("/user/open", auth, async (req, res) => {
+router.post(ROUTES.USER_LESSON_OPEN, auth, async (req, res) => {
   const { userId, lessonId } = req.body as { userId: string; lessonId: string };
   const [user] = await User.find({ _id: userId });
 
@@ -121,7 +122,7 @@ router.post("/user/open", auth, async (req, res) => {
 
   return res.status(200).send(result);
 });
-router.post("/user/close", auth, async (req, res) => {
+router.post(ROUTES.USER_LESSON_CLOSE, auth, async (req, res) => {
   const { userId, lessonId } = req.body as { userId: string; lessonId: string };
   const [user] = await User.find({ _id: userId });
 
@@ -140,7 +141,7 @@ router.post("/user/close", auth, async (req, res) => {
 
   return res.status(200).send(result);
 });
-router.post("/user/done", auth, async (req, res) => {
+router.post(ROUTES.USER_LESSON_DONE, auth, async (req, res) => {
   const { userId, lessonId } = req.body as { userId: string; lessonId: string };
 
   const [user] = await User.find({ _id: userId });

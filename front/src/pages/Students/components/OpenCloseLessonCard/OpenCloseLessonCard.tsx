@@ -1,5 +1,5 @@
 import { cls } from '@utils/css';
-import { ILesson } from '../../../../types/api';
+import { ILesson } from '@type/api';
 
 import { lockSvg as LockSVG } from '../lock';
 import { unlockSvg as UnlockSVG } from '../unlock';

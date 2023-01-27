@@ -16,9 +16,16 @@
         "noEmit": true,
         "jsx": "react-jsx",
         "noImplicitAny": false,
+        "baseUrl": ".",
         "paths": {
             "@commonTypes": ["../shared/commonParts"],
-            "@utils/*": ["./src/utils/*"]
+            "@utils/*": ["src/utils/*"],
+            "@shared/*": ["src/shared/*"],
+            "@store/*": ["src/store/*"],
+            "@type/*": ["src/type/*"],
+            "@components/*": ["src/components/*"],
+            "@pages/*": ["src/pages/*"],
+            "@app/*": ["src/app/*"]
         }
     },
     "include": ["src", "../shared/commonParts.ts"]

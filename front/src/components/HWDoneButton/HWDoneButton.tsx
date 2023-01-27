@@ -1,6 +1,6 @@
+import { Backend } from '@shared/Backend';
 import { addWNt } from '@utils/notification';
 import { useState } from 'react';
-import { myRequest } from '../../utils/axios';
 import s from './HWDoneButton.module.css';
 
 let timer;
@@ -32,15 +32,16 @@ export const HWDoneButton = ({
                 addWNt('no lesson or student');
                 return;
             }
-            const url = isApproving ? '/user/done' : '/user/notdone';
-            myRequest
-                .post(url, {
-                    lessonId,
-                    userId: studentId
-                })
-                .then((res) => {
-                    onAfterAprove && onAfterAprove(res);
-                });
+            const data = {
+                lessonId,
+                userId: studentId
+            };
+            const request = isApproving
+                ? Backend.userLessonDone
+                : Backend.userLessonNotDone;
+            request(data).then((res) => {
+                onAfterAprove && onAfterAprove(res);
+            });
         };
         const counterFunc = () => {
             timer = setTimeout(() => {

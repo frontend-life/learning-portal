@@ -1,15 +1,8 @@
-.App {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    flex-grow: 1;
-    height: 100vh;
-}
-.NavBar {
+.root {
     height: 100vh;
     background-color: black;
 }
-.NavBar__li {
+.item {
     display: block;
     padding: 20px;
     background-color: gray;
@@ -17,6 +10,6 @@
     cursor: pointer;
     transition: background-color linear 0.3s;
 }
-.NavBar__li:hover {
+.item:hover {
     background-color: black;
 }

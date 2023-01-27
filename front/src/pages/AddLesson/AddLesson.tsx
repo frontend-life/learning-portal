@@ -8,13 +8,13 @@ import MainBlockWrapper from '../../components/MainBlockWrapper/MainBlockWrapper
 import { Select, SelectOption } from '../../components/Select/Select';
 import { useSuccessAdd } from '../../components/SuccessAdd/SuccessAdd';
 import { useLessonsContext } from '../../store/LessonsContext';
-import { ICourse, ILesson } from '../../types/api';
-import { API_ROUTES, myRequest } from '@utils/axios';
+import { ICourse, ILesson } from '@type/api';
 import { PATHS } from '@utils/paths';
 
 import s from './AddLesson.module.css';
 import DecriptionChecker from './components/DecriptionChecker/DecriptionChecker';
 import { VideoChecker } from './components/VideoChecker/VideoChecker';
+import { Backend } from '@shared/Backend';
 
 export const AddLesson = () => {
     const { state: lessonToEdit }: { state: ILesson } = useLocation();
@@ -44,11 +44,7 @@ export const AddLesson = () => {
                 iframeGoogleDocs: data.iframeGoogleDocs,
                 link: data.link
             };
-            myRequest
-                .put(
-                    `${API_ROUTES.LESSON}?lessonId=${lessonToEdit._id}`,
-                    editData
-                )
+            Backend.updateLesson(lessonToEdit._id, editData)
                 .then(turnOn)
                 .then(() => {
                     setLessons((prev) => {
@@ -69,16 +65,14 @@ export const AddLesson = () => {
             return;
         }
 
-        myRequest
-            .post<any, ILesson>(API_ROUTES.LESSON_CREATE, data)
-            .then((lesson) => {
-                setLessons((prev) => {
-                    return [...prev, lesson];
-                });
-                updateGlobalCourses(lesson);
-                turnOn();
-                navigate(PATHS.lessons);
+        Backend.createLesson(data).then((lesson) => {
+            setLessons((prev) => {
+                return [...prev, lesson];
             });
+            updateGlobalCourses(lesson);
+            turnOn();
+            navigate(PATHS.lessons);
+        });
 
         function updateGlobalCourses(lesson: ILesson) {
             setGlobalCourses((prev) => {
@@ -97,7 +91,7 @@ export const AddLesson = () => {
 
     useEffect(() => {
         if (!lessonToEdit?.course) {
-            myRequest.get(API_ROUTES.COURSE).then((tracks) => {
+            Backend.getAllCourses().then((tracks) => {
                 setCourses(tracks as unknown as ICourse[]);
             });
         }

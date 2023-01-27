@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { BlackBox } from '../../components/BlackBox/BlackBox';
 import { Input } from '../../components/Input/Input';
 import MainBlockWrapper from '../../components/MainBlockWrapper/MainBlockWrapper';
-import { API_ROUTES, myRequest } from '@utils/axios';
+
 import { isEmail } from 'validator';
 import { Button } from '../../components/Button/Button';
 
@@ -11,6 +11,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useUserContext } from '../../store/UserDetails';
 import { PATHS } from '@utils/paths';
 import { setToken } from '@utils/auth';
+import { Backend } from '@shared/Backend';
 
 export const SignInPage = () => {
     const nav = useNavigate();
@@ -23,7 +24,7 @@ export const SignInPage = () => {
     } = useForm();
 
     const onSubmit = (data) => {
-        myRequest.post(API_ROUTES.SIGN_IN, data).then((res: any) => {
+        Backend.signInUser(data).then((res: any) => {
             setUserDetails((prev) => ({
                 ...prev,
                 ...res.user,

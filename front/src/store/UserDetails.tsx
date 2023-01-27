@@ -1,8 +1,8 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { LoadingAnimation } from '../components/LoadingAnimation/LoadingAnimation';
-import { IUser, Roles } from '../types/api';
+import { LoadingAnimation } from '@components/LoadingAnimation/LoadingAnimation';
+import { IUser, Roles } from '@type/api';
 import { getToken } from '@utils/auth';
-import { API_ROUTES, myRequest } from '@utils/axios';
+import { Backend } from '@shared/Backend';
 
 type UserData = {
     isSignedIn: boolean;
@@ -31,8 +31,7 @@ const UserDetailsProvider = (props) => {
     const [startAnimation, setStartAnimation] = useState(true);
 
     useEffect(() => {
-        myRequest
-            .get<any, IUser>(API_ROUTES.ME)
+        Backend.getMe()
             .then((data: IUser) => {
                 if (!userDetails.isSignedIn && getToken()) {
                     setUserDetails((prev) => ({

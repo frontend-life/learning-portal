@@ -1,5 +1,5 @@
 import React from 'react';
-import { Align } from '../../types/components';
+import { Align } from '@type/components';
 import s from './Input.module.css';
 
 export const Input = (props: {
