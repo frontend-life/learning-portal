@@ -12,6 +12,7 @@ import { Chat } from '../../components/Chat/Chat';
 import { getLang } from '@utils/langs';
 import { LessonView } from './LessonView';
 import { Backend } from '@shared/Backend';
+import { cls } from '@utils/css';
 
 interface Params {
     lessonId: string;
@@ -20,6 +21,7 @@ interface Params {
 
 export function Lesson() {
     const [loading, setLoading] = useState(true);
+    const [lsNEwHWButton, setLsNEwHWButton] = useState(true);
     const [homework, setHomework] = useState<IHomework>();
 
     const location = useLocation();
@@ -56,6 +58,7 @@ export function Lesson() {
     }, [lessons, params?.lessonId]);
 
     const handInHomework = () => {
+        setLsNEwHWButton(true);
         Backend.addHomework({
             studentId: params.studentId,
             lessonId: params.lessonId
@@ -63,6 +66,9 @@ export function Lesson() {
             // @ts-ignore
             .then(({ homework }: { homework: IHomework }) => {
                 setHomework(homework);
+            })
+            .finally(() => {
+                setLsNEwHWButton(false);
             });
     };
 
@@ -105,10 +111,16 @@ export function Lesson() {
                     )}
                     {!homework?.chatId && (
                         <div
-                            className={s.handInHomework}
+                            className={cls(s.handInHomework, {
+                                [s.handInHomeworkLoading]: lsNEwHWButton
+                            })}
                             onClick={handInHomework}
                         >
-                            {getLang('start_homework_chat_button')}
+                            {lsNEwHWButton ? (
+                                <CircleLoader />
+                            ) : (
+                                getLang('start_homework_chat_button')
+                            )}
                         </div>
                     )}
                     {homework?.chatId && (
