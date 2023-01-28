@@ -1,19 +1,20 @@
 import { getBaseUrl } from './axios';
 
-export const PATHS = {
-    profile: '/profile',
-    about: '/about',
-    signup: '/signup',
-    signin: '/signin',
-    lesson: '/lesson',
-    lessons: '/lessons',
-    add_lesson: '/add_lesson',
-    tracks: '/tracks',
-    rating: '/rating',
-    students: '/students',
-    homeworks: '/homeworks',
-    screen_recorder: '/screen_recorder'
-};
+export enum PATHS {
+    profile = '/profile',
+    about = '/about',
+    signup = '/signup',
+    signin = '/signin',
+    lesson = '/lesson',
+    lessons = '/lessons',
+    add_lesson = '/add_lesson',
+    tracks = '/tracks',
+    rating = '/rating',
+    students = '/students',
+    homeworks = '/homeworks',
+    screen_recorder = '/screen_recorder',
+    logout = '/logout'
+}
 
 // url
 export const qp = (queryString: string) => {

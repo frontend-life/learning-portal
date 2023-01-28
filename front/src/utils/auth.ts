@@ -1,3 +1,4 @@
+import { Roles } from '@type/api';
 import { PATHS } from './paths';
 import { useNavigate } from 'react-router-dom';
 import { useUserContext } from '../store/UserDetails';
@@ -27,3 +28,6 @@ export const useLogout = () => {
     return { logOut };
 };
 
+export const checkIsTeacher = (roles: Roles[]) => {
+    return roles.includes(Roles.TEACHER);
+};

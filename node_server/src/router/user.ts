@@ -88,7 +88,7 @@ router.get(ROUTES.ME, auth, async (req, res) => {
   return res.status(200).send(req.user);
 });
 
-router.get("", auth, async (req, res) => {
+router.get(ROUTES.USERS, auth, async (req, res) => {
   const { search } = req.query;
   let users: IUser[] = [];
   if (search) {

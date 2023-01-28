@@ -1,20 +1,23 @@
 import { Link } from 'react-router-dom';
-import { pages } from '@shared/constants';
 import styles from './NavigationBar.module.css';
-
-const showNav = process.env.NODE_ENV === 'development' && true;
+import { useNavItems } from './useNavItems';
 
 export const NavigationBar = () => {
-    if (!showNav) {
-        return null;
-    }
+    const items = useNavItems();
 
     return (
         <nav className={styles.root}>
-            {pages.map(({ path }) => {
+            {items.map(({ path, fontAwesomeIcon, isPublic }) => {
                 return (
                     <Link key={path} className={styles.item} to={path}>
-                        {path}
+                        {fontAwesomeIcon ? (
+                            <i className={fontAwesomeIcon}></i>
+                        ) : (
+                            <span>+</span>
+                        )}
+                        <div className={styles.itemDescription}>
+                            {path.slice(1)}
+                        </div>
                     </Link>
                 );
             })}

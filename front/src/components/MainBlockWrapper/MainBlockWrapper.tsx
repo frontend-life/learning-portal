@@ -1,6 +1,5 @@
 import React, { ReactNode } from 'react';
 import { Align, AlignItems } from '@type/components';
-import { TopRightMenu } from '../TopRightMenu/TopRightMenu';
 import { Logo } from './logo';
 import s from './MainBlockWrapper.module.css';
 
@@ -22,7 +21,7 @@ function MainBlockWrapper({
             <header className={s.header}>
                 <Logo />
                 <div className={s.text}>{title}</div>
-                <TopRightMenu />
+                {/* <TopRightMenu /> */}
             </header>
             <main
                 style={{ justifyContent: alignMain, alignItems: alignSecond }}
