@@ -73,26 +73,6 @@
     padding: 10px;
 }
 
-.coursePanelItem {
-    display: inline-block;
-    padding: 10px 20px;
-    border-radius: 20px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-    background-color: antiquewhite;
-    color: black;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.coursePanelItem:hover {
-    opacity: 0.8;
-}
-
-.coursePanelItemActive {
-    background-color: rgb(253, 201, 133);
-}
-
 .userName {
     color: rgb(31, 31, 31);
 }

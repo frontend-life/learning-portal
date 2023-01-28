@@ -44,7 +44,7 @@ export class Backend {
     };
 
     public static addHomework = (data) => {
-        return myRequest.post(API_ROUTES.SIGN_UP, data);
+        return myRequest.post(API_ROUTES.HOMEWORK, data);
     };
 
     public static updateLesson = (id: string, data) => {
