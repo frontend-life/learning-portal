@@ -11,6 +11,7 @@ import s from './Students.module.css';
 
 import { OpenCloseLessonCard } from './components/OpenCloseLessonCard/OpenCloseLessonCard';
 import { Backend } from '@shared/Backend';
+import { CoursePanelItem } from '@components/CoursePanelItem/CoursePanelItem';
 
 export const Students = wrap(() => {
     const [chosenUser, setChosenUser] = useState<IUser>();
@@ -268,15 +269,13 @@ export const Students = wrap(() => {
                                 const onClick = () => setChosenCourse(course);
                                 const isActive = chosenCourse?._id === _id;
                                 return (
-                                    <div
+                                    <CoursePanelItem
                                         key={_id}
-                                        className={cls(s.coursePanelItem, {
-                                            [s.coursePanelItemActive]: isActive
-                                        })}
                                         onClick={onClick}
+                                        isActive={isActive}
                                     >
                                         {title}
-                                    </div>
+                                    </CoursePanelItem>
                                 );
                             })}
                     </div>

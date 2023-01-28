@@ -12,6 +12,7 @@ import { PATHS } from '@utils/paths';
 import { DoneSvg } from './doneSvg';
 import s from './Lessons.module.css';
 import { LockSvg } from './lockSvg';
+import { CoursePanelItem } from '@components/CoursePanelItem/CoursePanelItem';
 
 export function Lessons() {
     const { courses, loadingStatus } = useLessonsContext();
@@ -31,10 +32,17 @@ export function Lessons() {
                     <>
                         <nav className={s.lessonsNav}>
                             {coursesSorted.map((c) => {
+                                const navigateToCourse = () => {
+                                    window.location.assign(`#${c._id}`);
+                                };
                                 return (
-                                    <div key={c._id}>
-                                        <a href={`#${c._id}`}>{c.title}</a>
-                                    </div>
+                                    <CoursePanelItem
+                                        key={c._id}
+                                        onClick={navigateToCourse}
+                                        isActive={false}
+                                    >
+                                        {c.title}
+                                    </CoursePanelItem>
                                 );
                             })}
                         </nav>
