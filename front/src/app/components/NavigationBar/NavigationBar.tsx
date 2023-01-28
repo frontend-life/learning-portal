@@ -1,21 +1,9 @@
-import { useUserContext } from '@store/UserDetails';
-import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { navigationItems } from './items';
 import styles from './NavigationBar.module.css';
+import { useNavItems } from './useNavItems';
 
 export const NavigationBar = () => {
-    const {
-        userDetails: { isSignedIn }
-    } = useUserContext();
-
-    const items = useMemo(() => {
-        if (isSignedIn) {
-            return navigationItems;
-        }
-
-        return navigationItems.filter(({ isPublic }) => isPublic);
-    }, [isSignedIn]);
+    const items = useNavItems();
 
     return (
         <nav className={styles.root}>

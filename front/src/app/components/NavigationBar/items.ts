@@ -4,6 +4,7 @@ export const navigationItems: {
     path: typeof PATHS[keyof typeof PATHS];
     fontAwesomeIcon: string;
     isPublic?: boolean;
+    forTeacher?: boolean;
 }[] = [
     {
         path: PATHS.profile,
@@ -25,15 +26,22 @@ export const navigationItems: {
     },
     {
         path: PATHS.add_lesson,
-        fontAwesomeIcon: 'fa-solid fa-plus'
+        fontAwesomeIcon: 'fa-solid fa-plus',
+        forTeacher: true
     },
     {
         path: PATHS.students,
-        fontAwesomeIcon: 'fa-regular fa-address-book'
+        fontAwesomeIcon: 'fa-regular fa-address-book',
+        forTeacher: true
     },
     {
         path: PATHS.rating,
         fontAwesomeIcon: 'fa-solid fa-star'
+    },
+    {
+        path: PATHS.homeworks,
+        fontAwesomeIcon: 'fa-solid fa-book-open',
+        forTeacher: true
     },
     // To prevent ploading big videos
     // {
