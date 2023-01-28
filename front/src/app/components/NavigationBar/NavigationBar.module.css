@@ -1,8 +1,10 @@
 .root {
     height: 100vh;
     background-color: black;
+    z-index: 1000;
 }
 .item {
+    position: relative;
     display: block;
     padding: 20px;
     background-color: gray;
@@ -12,4 +14,21 @@
 }
 .item:hover {
     background-color: black;
+}
+
+.item:hover .itemDescription {
+    opacity: 1;
+}
+
+.itemDescription {
+    opacity: 0;
+    position: absolute;
+    pointer-events: none;
+    left: calc(100% + 10px);
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 10px;
+    background-color: black;
+    border-radius: 10px;
+    border: 0.5px solid white;
 }

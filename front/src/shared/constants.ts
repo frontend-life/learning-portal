@@ -1,3 +1,4 @@
+import { Logout } from '@pages/Logout/Logout';
 import { PATHS } from '@utils/paths';
 import {
     AddLesson,
@@ -11,7 +12,11 @@ import {
     Students
 } from '../pages';
 
-export const pages = [
+export const pages: {
+    path: PATHS;
+    Element: React.FC;
+    isPublic?: boolean;
+}[] = [
     {
         path: PATHS.profile,
         Element: ProfilePage
@@ -40,6 +45,7 @@ export const pages = [
     },
     {
         path: PATHS.students,
+        // @ts-ignore
         Element: Students
     },
     {
@@ -49,10 +55,14 @@ export const pages = [
     {
         path: PATHS.homeworks,
         Element: Homeworks
-    }
+    },
     // To prevent ploading big videos
     // {
     //     path: PATHS.screen_recorder,
-    //     Element: ScreenRecorder
-    // }
+    //     Element: ScreenRecorder,
+    // },
+    {
+        path: PATHS.logout,
+        Element: Logout
+    }
 ];
