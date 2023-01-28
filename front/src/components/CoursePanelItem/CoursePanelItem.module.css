@@ -1,0 +1,19 @@
+.root {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 20px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    background-color: antiquewhite;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.root:hover {
+    opacity: 0.8;
+}
+
+.rootActive {
+    background-color: rgb(253, 201, 133);
+}
