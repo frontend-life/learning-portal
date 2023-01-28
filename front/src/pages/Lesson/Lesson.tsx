@@ -21,7 +21,7 @@ interface Params {
 
 export function Lesson() {
     const [loading, setLoading] = useState(true);
-    const [lsNEwHWButton, setLsNEwHWButton] = useState(true);
+    const [lsNEwHWButton, setLsNEwHWButton] = useState(false);
     const [homework, setHomework] = useState<IHomework>();
 
     const location = useLocation();
