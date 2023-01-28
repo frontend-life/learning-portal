@@ -10,8 +10,9 @@ import s from './SignInPage.module.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { useUserContext } from '../../store/UserDetails';
 import { PATHS } from '@utils/paths';
-import { setToken } from '@utils/auth';
+import { checkIsTeacher, setToken } from '@utils/auth';
 import { Backend } from '@shared/Backend';
+import { Roles } from '@commonTypes';
 
 export const SignInPage = () => {
     const nav = useNavigate();
@@ -25,14 +26,16 @@ export const SignInPage = () => {
 
     const onSubmit = (data) => {
         Backend.signInUser(data).then((res: any) => {
+            console.log(res);
             setUserDetails((prev) => ({
                 ...prev,
                 ...res.user,
+                isTeacher: checkIsTeacher(res.user.roles as Roles[]),
                 isSignedIn: true
             }));
             setToken(res.authToken);
             nav(PATHS.profile);
-            window.location.reload();
+            // window.location.reload();
         });
     };
     return (
