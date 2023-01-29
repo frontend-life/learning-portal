@@ -26,16 +26,15 @@ export const SignInPage = () => {
 
     const onSubmit = (data) => {
         Backend.signInUser(data).then((res: any) => {
-            console.log(res);
-            setUserDetails((prev) => ({
-                ...prev,
-                ...res.user,
-                isTeacher: checkIsTeacher(res.user.roles as Roles[]),
-                isSignedIn: true
-            }));
+            // setUserDetails((prev) => ({
+            //     ...prev,
+            //     ...res.user,
+            //     isTeacher: checkIsTeacher(res.user.roles as Roles[]),
+            //     isSignedIn: true
+            // }));
             setToken(res.authToken);
-            nav(PATHS.profile);
-            // window.location.reload();
+            // nav(PATHS.profile);
+            window.location.reload();
         });
     };
     return (

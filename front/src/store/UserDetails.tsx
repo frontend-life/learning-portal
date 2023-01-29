@@ -53,7 +53,7 @@ const UserDetailsProvider = (props) => {
         return <LoadingAnimation />;
     }
 
-    if (userDetails.telegramChatId) {
+    if (!userDetails.telegramChatId) {
         return <TelegramConnectionPage userId={userDetails._id} />;
     }
 
