@@ -10,9 +10,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import { PATHS } from '@utils/paths';
 import addNt from '@utils/notification';
 import { Backend } from '@shared/Backend';
+import { useState } from 'react';
+import { CircleLoader } from '@components/CircleLoader/CircleLoader';
 
 export function SignUpPage() {
     const nav = useNavigate();
+    const [buttonLS, setButtonLS] = useState(false);
     const {
         register,
         handleSubmit,
@@ -20,6 +23,7 @@ export function SignUpPage() {
         formState: { errors }
     } = useForm();
     const onSubmit = (data) => {
+        setButtonLS(true);
         Backend.signUpUser(data)
             .then((res /* user */) => {
                 alert('Теперь авторизуйтесь');
@@ -27,6 +31,9 @@ export function SignUpPage() {
             })
             .catch((e) => {
                 addNt({ type: 'err', description: e.data.message });
+            })
+            .finally(() => {
+                setButtonLS(false);
             });
     };
     return (
@@ -73,8 +80,11 @@ export function SignUpPage() {
                     inputProps={{ label: 'NickName' }}
                 />
                 <div className={s.footer}>
-                    <Button onClick={handleSubmit(onSubmit)}>
-                        Registration
+                    <Button
+                        disabled={buttonLS}
+                        onClick={handleSubmit(onSubmit)}
+                    >
+                        {buttonLS ? <CircleLoader /> : 'Registration'}
                     </Button>
                 </div>
                 <Link to="/signin" className={s.toRegLink}>
