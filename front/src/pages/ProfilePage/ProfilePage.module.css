@@ -10,6 +10,9 @@
 .textInfo {
     margin-left: 120px;
     padding-top: 60px;
+}
+
+.name {
     font-size: 48px;
 }
 
@@ -48,25 +51,4 @@
     100% {
         background-position: 0% 50%;
     }
-}
-
-.telegramConnection {
-    padding-left: 100px;
-}
-
-.checkTelegramConnection {
-    padding: 20px 40px;
-    background-color: #e73c7e;
-    color: white;
-    text-align: center;
-    cursor: pointer;
-    display: block;
-    text-decoration-line: none;
-    white-space: nowrap;
-}
-.telegramConnectionId {
-    white-space: nowrap;
-    margin-top: 20px;
-    display: inline-block;
-    font-family: var(--readable-font);
 }

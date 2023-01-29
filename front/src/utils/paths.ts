@@ -13,7 +13,8 @@ export enum PATHS {
     students = '/students',
     homeworks = '/homeworks',
     screen_recorder = '/screen_recorder',
-    logout = '/logout'
+    logout = '/logout',
+    telegramConnectionPage = '/telegramConnectionPage'
 }
 
 // url

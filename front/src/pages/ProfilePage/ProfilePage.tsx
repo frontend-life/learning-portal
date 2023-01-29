@@ -17,26 +17,21 @@ export const ProfilePage = () => {
                     <div className={s.avatarSkeleton}>
                         Profile avatar <br /> in future
                     </div>
-                    <div className={s.textInfo}>{name}</div>
-                    <div className={s.telegramConnection}>
-                        <p>
-                            <i>
-                                {telegramChatId
-                                    ? getLang('you_are_connected_to_telegram')
-                                    : getLang('no_connection_with_telegram')}
-                            </i>
-                        </p>
-                        <a
-                            className={s.checkTelegramConnection}
-                            target="_blank"
-                            rel="noreferrer"
-                            href="https://web.telegram.org/z/#5965431146"
-                        >
-                            {getLang('link_to_telegram_bot')}
-                        </a>
-                        <span className={s.telegramConnectionId}>
-                            Your id is: {_id}
-                        </span>
+                    <div className={s.textInfo}>
+                        <p className={s.name}>{name}</p>
+                        <div className={s.telegramConnection}>
+                            <p>
+                                <i>
+                                    {telegramChatId
+                                        ? getLang(
+                                              'you_are_connected_to_telegram'
+                                          )
+                                        : getLang(
+                                              'no_connection_with_telegram'
+                                          )}
+                                </i>
+                            </p>
+                        </div>
                     </div>
                 </div>
                 <div className={s.salary}>

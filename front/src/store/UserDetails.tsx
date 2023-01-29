@@ -3,6 +3,7 @@ import { LoadingAnimation } from '@components/LoadingAnimation/LoadingAnimation'
 import { IUser, Roles } from '@type/api';
 import { getToken } from '@utils/auth';
 import { Backend } from '@shared/Backend';
+import { TelegramConnectionPage } from '@app/components/TelegramConnectionPage/TelegramConnectionPage';
 
 type UserData = {
     isSignedIn: boolean;
@@ -50,6 +51,10 @@ const UserDetailsProvider = (props) => {
 
     if (startAnimation) {
         return <LoadingAnimation />;
+    }
+
+    if (userDetails.telegramChatId) {
+        return <TelegramConnectionPage userId={userDetails._id} />;
     }
 
     return (
