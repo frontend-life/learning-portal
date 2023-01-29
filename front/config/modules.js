@@ -19,7 +19,6 @@ function getAdditionalModulePaths(options = {}) {
     }
 
     const baseUrlResolved = path.resolve(paths.appPath, baseUrl);
-    console.log('PATH', paths);
 
     // We don't need to do anything if `baseUrl` is set to `node_modules`. This is
     // the default behavior.

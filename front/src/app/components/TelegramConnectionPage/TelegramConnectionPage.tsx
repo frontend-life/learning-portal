@@ -26,7 +26,7 @@ export const TelegramConnectionPage = ({ userId }: { userId: string }) => {
 https://t.me/FrontendPortalNotifications_bot"
                 target="_blank"
             >
-                getLang('link_to_telegram_bot')
+                {getLang('link_to_telegram_bot')}
             </a>
             <h2 className={s.id}>
                 Telegram bot name: frontend-portal-notifications
