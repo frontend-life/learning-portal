@@ -1,6 +1,6 @@
 import { Backend } from '@shared/Backend';
 import { addWNt } from '@utils/notification';
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CircleLoader } from '@components/CircleLoader/CircleLoader';
 import MainBlockWrapper from '@components/MainBlockWrapper/MainBlockWrapper';
@@ -22,6 +22,20 @@ export function Lessons() {
             return a.order - b.order;
         });
     }, [courses]);
+
+    useLayoutEffect(() => {
+        if (!coursesSorted.length) {
+            return;
+        }
+
+        const { hash } = window.location;
+        if (hash) {
+            setTimeout(() => {
+                const courseBlock = document.getElementById(hash.slice(1));
+                courseBlock?.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        }
+    }, [coursesSorted]);
 
     return (
         <MainBlockWrapper title="Lessons">
@@ -66,6 +80,7 @@ export function Lessons() {
 function CourseBlock({ course }: { course: ICourse }) {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
+    const courseBlockRef = useRef(null);
 
     const dragingLessonID = useRef<string>('');
     const dragingCourseID = useRef<string>('');
@@ -162,6 +177,7 @@ function CourseBlock({ course }: { course: ICourse }) {
 
     return (
         <div
+            ref={courseBlockRef}
             className={cls(s.lessonsBlock, {
                 [s.lessonsBlockLoading]: loading
             })}
