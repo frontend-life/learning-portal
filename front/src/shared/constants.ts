@@ -1,3 +1,4 @@
+import { TelegramConnectionPage } from '@app/components/TelegramConnectionPage/TelegramConnectionPage';
 import { Logout } from '@pages/Logout/Logout';
 import { PATHS } from '@utils/paths';
 import {

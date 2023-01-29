@@ -9,7 +9,6 @@ const pagesForEveryone = pages.filter(({ isPublic }) => isPublic);
 
 export function AuthenticatedRoutes() {
     const user = useUserContext();
-    // const isTeacher = user.userDetails.roles.includes(Roles.TEACHER);
 
     return (
         <Routes>
