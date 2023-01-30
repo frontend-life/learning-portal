@@ -53,7 +53,9 @@ const UserDetailsProvider = (props) => {
         return <LoadingAnimation />;
     }
 
-    if (!userDetails.telegramChatId) {
+    const { isSignedIn, telegramChatId } = userDetails;
+
+    if (isSignedIn && !telegramChatId) {
         return <TelegramConnectionPage userId={userDetails._id} />;
     }
 
