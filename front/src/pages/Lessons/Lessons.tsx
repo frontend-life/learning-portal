@@ -195,7 +195,7 @@ function CourseBlock({ course }: { course: ICourse }) {
                     handleClick(lesson);
                 };
                 const isDone = lessonsDone.includes(_id);
-                const isOpen = lessonsOpen.includes(_id) || isTeacher;
+                const isOpen = true || isTeacher;
                 const selectors: string[] = [s.square];
                 if (isDone) {
                     selectors.push(s.done);

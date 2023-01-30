@@ -8,7 +8,9 @@ const pagesUnderLogin = pages.filter(({ isPublic }) => !isPublic);
 const pagesForEveryone = pages.filter(({ isPublic }) => isPublic);
 
 export function AuthenticatedRoutes() {
-    const user = useUserContext();
+    const {
+        userDetails: { isSignedIn }
+    } = useUserContext();
 
     return (
         <Routes>
@@ -22,26 +24,25 @@ export function AuthenticatedRoutes() {
                         <Route key={path} path={path} element={<Element />} />
                     );
                 })}
-                {pagesUnderLogin.map(({ path, Element }) => {
-                    if (!user.userDetails.isSignedIn) {
+                {isSignedIn &&
+                    pagesUnderLogin.map(({ path, Element }) => {
                         return (
                             <Route
                                 key={path}
                                 path={path}
-                                element={
-                                    <Navigate
-                                        to={PATHS.signin}
-                                        replace={true}
-                                    />
-                                }
+                                element={<Element />}
                             />
                         );
+                    })}
+                <Route
+                    path="*"
+                    element={
+                        <Navigate
+                            to={isSignedIn ? PATHS.profile : PATHS.signin}
+                            replace={true}
+                        />
                     }
-                    return (
-                        <Route key={path} path={path} element={<Element />} />
-                    );
-                })}
-                <Route path="*" element={<Navigate to="/" replace={true} />} />
+                />
             </Route>
         </Routes>
     );
