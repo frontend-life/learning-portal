@@ -33,6 +33,8 @@ router
       saved_new_message = await saved_new_message.populate("attachments");
 
       chat.messages = [...chat.messages, saved_new_message._id.toString()];
+      chat.participants = Array.from(new Set([...chat.participants, senderId]));
+
       await chat.save();
 
       sendMessageToChat(chatId, senderId, saved_new_message);
