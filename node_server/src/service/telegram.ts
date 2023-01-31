@@ -1,3 +1,4 @@
+import { Message } from "./../models/message";
 import { tlgSendMessage } from "./axios";
 import { baseUrl } from "../utils";
 
@@ -16,6 +17,24 @@ export const notifyMeInTelegram = (message: string) => {
   return tlgSendMessage({
     chat_id: SERGEY_CHAT_ID,
     text: ready_message,
+  });
+};
+
+export const nofityAllParticipantsThroughTelegram = (
+  chat_ids: number[],
+  message: string
+) => {
+  const ready_message = telegramTextFormatter(message);
+
+  return Promise.allSettled(
+    chat_ids.map((chat_id) =>
+      tlgSendMessage({
+        chat_id: chat_id,
+        text: "Message from chat: " + ready_message,
+      })
+    )
+  ).catch((err) => {
+    notifyMeInTelegram("nofityAllParticipantsThroughTelegram has error");
   });
 };
 

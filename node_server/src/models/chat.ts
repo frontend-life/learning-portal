@@ -1,5 +1,5 @@
 import { ChatCommon } from "@commonTypes";
-import { User } from "@models";
+import { User } from "./user";
 import mongoose from "mongoose";
 import { Message } from "./message";
 

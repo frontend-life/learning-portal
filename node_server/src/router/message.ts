@@ -1,4 +1,7 @@
-import { notifyMeInTelegram } from "./../service/telegram";
+import {
+  nofityAllParticipantsThroughTelegram,
+  notifyMeInTelegram,
+} from "../service/telegram";
 import express from "express";
 import { Chat } from "../models/chat";
 import { IMessage, Message } from "../models/message";
@@ -37,6 +40,13 @@ router
 
       await chat.save();
 
+      const users = await chat.populate("participants");
+
+      nofityAllParticipantsThroughTelegram(
+        // @ts-ignore
+        Array.from(users).map(({ telegramChatId }) => telegramChatId),
+        text || "only attachments"
+      );
       sendMessageToChat(chatId, senderId, saved_new_message);
 
       try {
