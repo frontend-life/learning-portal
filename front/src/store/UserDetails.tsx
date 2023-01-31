@@ -4,6 +4,7 @@ import { IUser, Roles } from '@type/api';
 import { getToken } from '@utils/auth';
 import { Backend } from '@shared/Backend';
 import { TelegramConnectionPage } from '@app/components/TelegramConnectionPage/TelegramConnectionPage';
+import { isProd } from '@utils/isProd';
 
 type UserData = {
     isSignedIn: boolean;
@@ -55,7 +56,7 @@ const UserDetailsProvider = (props) => {
 
     const { isSignedIn, telegramChatId } = userDetails;
 
-    if (isSignedIn && !telegramChatId) {
+    if (isProd() && isSignedIn && !telegramChatId) {
         return <TelegramConnectionPage userId={userDetails._id} />;
     }
 
