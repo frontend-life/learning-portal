@@ -1,9 +1,12 @@
-import { notifyMeInTelegram } from "./../service/telegram";
+import {
+  nofityAllParticipantsThroughTelegram,
+  notifyMeInTelegram,
+} from "../service/telegram";
 import express from "express";
 import { Chat } from "../models/chat";
 import { IMessage, Message } from "../models/message";
 import { sendMessageToChat } from "./events/chatEvents";
-import { User } from "../models/user";
+import { IUser, User } from "../models/user";
 
 const router = express.Router();
 
@@ -33,7 +36,25 @@ router
       saved_new_message = await saved_new_message.populate("attachments");
 
       chat.messages = [...chat.messages, saved_new_message._id.toString()];
+      chat.participants = Array.from(
+        new Set([...chat.participants.map((p) => p.toString()), senderId])
+      );
+
       await chat.save();
+
+      const { participants } = await chat.populate("participants");
+      const chat_ids = (participants as unknown as IUser[])
+        .filter(({ _id }) => {
+          return _id.toString() !== senderId;
+        })
+        .map(({ telegramChatId }) => telegramChatId);
+
+      if (chat_ids.length) {
+        nofityAllParticipantsThroughTelegram(
+          chat_ids,
+          text || "only attachments"
+        );
+      }
 
       sendMessageToChat(chatId, senderId, saved_new_message);
 

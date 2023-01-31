@@ -52,6 +52,7 @@ export interface HomeworkCommon {
 export interface ChatCommon {
   _id: string;
   messages: string[];
+  participants: string[];
 }
 
 export interface LessonCommon {

@@ -33,8 +33,7 @@ export const SignInPage = () => {
             //     isSignedIn: true
             // }));
             setToken(res.authToken);
-            // nav(PATHS.profile);
-            window.location.reload();
+            window.location.assign(PATHS.profile);
         });
     };
     return (
