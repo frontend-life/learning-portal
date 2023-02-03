@@ -8,7 +8,7 @@ import { RateSvg } from './svg';
 
 export const Rating = () => {
     const [search, setSearch] = useState('');
-    const { data, loadingBySearch } = useDebounceUsersSearch(search);
+    const { data, loading } = useDebounceUsersSearch(search);
     const ref = useRef<HTMLDivElement>(null);
 
     const sortedUsers = useMemo(() => {
@@ -47,11 +47,9 @@ export const Rating = () => {
                     />
                     {/* <button onClick={findMe}>Find me</button> */}
                 </div>
-                {loadingBySearch && <CircleLoader inCenterOfBlock />}
-                {!loadingBySearch && sortedUsers.length === 0 && (
-                    <h1>No users</h1>
-                )}
-                {!loadingBySearch &&
+                {loading && <CircleLoader inCenterOfBlock />}
+                {!loading && sortedUsers.length === 0 && <h1>No users</h1>}
+                {!loading &&
                     sortedUsers.map((u, index) => {
                         return (
                             <div
