@@ -17,8 +17,7 @@ export const Students = wrap(() => {
     const [chosenUser, setChosenUser] = useState<IUser>();
     const [chosenCourse, setChosenCourse] = useState<ICourse>();
     const [search, setSearch] = useState<string>('');
-    const { data, setData, loading, loadingBySearch } =
-        useDebounceUsersSearch(search);
+    const { data, setData, loading } = useDebounceUsersSearch(search);
     const [loadingAllCourseUpdate, setLoadingAllCourseUpdate] = useState(false);
     const {
         courses,
@@ -239,9 +238,9 @@ export const Students = wrap(() => {
                             <hr />
                         </div>
                     )}
-                    {loadingBySearch && <CircleLoader inCenterOfBlock />}
-                    {!loadingBySearch && data.length === 0 && <p>No users</p>}
-                    {!loadingBySearch &&
+                    {loading && <CircleLoader inCenterOfBlock />}
+                    {!loading && data.length === 0 && <p>No users</p>}
+                    {!loading &&
                         data &&
                         data?.map((user) => {
                             const { name, _id } = user;

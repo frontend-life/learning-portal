@@ -11,6 +11,7 @@ export function useGetArrayData<DataType>(url: string) {
     const [ls, setLs] = useState(true);
 
     const reload = useCallback((url) => {
+        setLs(true);
         return Backend.get(url)
             .then((data) => {
                 setD(data as unknown as DataType);
@@ -24,7 +25,7 @@ export function useGetArrayData<DataType>(url: string) {
         reload(url);
     }, [url]);
 
-    return { loading: ls, data: d, setData: setD, reload };
+    return { loading: ls, setLoading: setLs, data: d, setData: setD, reload };
 }
 
 export const useServerEvents = () => {
@@ -75,8 +76,6 @@ export const useServerEvents = () => {
 export const useDebounceUsersSearch = (search: string) => {
     const mountRef = useRef<boolean>(true);
 
-    const [loadingBySearch, setLoadingBySearch] = useState(false);
-
     const getUsersUtils = useGetArrayData<IUser[]>(API_ROUTES.USERS);
     const debouncedReloadUsers = useCallback(
         debounce((url: string) => {
@@ -87,16 +86,16 @@ export const useDebounceUsersSearch = (search: string) => {
 
     useEffect(() => {
         if (search) {
-            setLoadingBySearch(true);
+            getUsersUtils.setLoading(true);
             debouncedReloadUsers(
                 mountRef.current,
                 `${API_ROUTES.USERS}?search=${search}`
             ).finally(() => {
-                setLoadingBySearch(false);
+                getUsersUtils.setLoading(false);
             });
             mountRef.current = false;
         }
     }, [debouncedReloadUsers, search]);
 
-    return { loadingBySearch, ...getUsersUtils };
+    return { ...getUsersUtils };
 };
