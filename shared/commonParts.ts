@@ -19,6 +19,7 @@ export interface API_URLS {
   USER_LESSON_OPEN: "/user/open";
   USER_LESSON_CLOSE: "/user/close";
   USERS: "/user/users";
+  CODE_FILE: "/codefile";
 }
 
 export enum Roles {

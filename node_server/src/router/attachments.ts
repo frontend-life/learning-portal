@@ -1,5 +1,6 @@
 import express from "express";
 import path from "path";
+import fs from "fs";
 
 import { Attachment } from "../models/attachment";
 import { auth } from "../middleware/auth";
@@ -43,6 +44,20 @@ router.get(ROUTES.ATTACHMENT, auth, async (req, res) => {
   } catch (error) {
     return res.status(500).send();
   }
+});
+
+router.post(ROUTES.CODE_FILE, upload.single("file"), async (req, res) => {
+  // @ts-ignore
+  const { file } = req;
+  const string = String(file.buffer);
+  const checingString = "<html";
+  if (string.includes(checingString)) {
+    return res.status(200).send(`Checked ${checingString}`);
+  } else {
+    return res.status(200).send("Error in " + checingString);
+  }
+
+  return res.status(500).send();
 });
 
 export default router;
