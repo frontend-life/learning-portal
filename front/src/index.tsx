@@ -14,6 +14,8 @@ declare global {
 // Later need to make mechanizm for this to change langs in UI
 window.lang = 'eng';
 
+console.log('test');
+
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );

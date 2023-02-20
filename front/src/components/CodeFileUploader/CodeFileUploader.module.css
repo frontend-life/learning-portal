@@ -1,0 +1,20 @@
+.root {
+    width: 400px;
+    height: 400px;
+    border-radius: 20px;
+    border: 2px solid white;
+    background-color: rgba(0, 0, 0, 0.377);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.root i {
+    font-size: 150px;
+}
+
+.subheader {
+    margin-top: 20px;
+}

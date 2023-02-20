@@ -1,4 +1,4 @@
-import { API_URLS } from "@commonTypes";
+import { API_URLS } from "../../shared/commonParts";
 
 export const baseUrl = "https://thelabl.academy/";
 export const isProd = () => process.env.NODE_ENV === "production";
@@ -23,4 +23,5 @@ export const ROUTES: API_URLS = {
   USER_LESSON_OPEN: "/user/open",
   USER_LESSON_CLOSE: "/user/close",
   USERS: "/user/users",
+  CODE_FILE: "/codefile",
 };

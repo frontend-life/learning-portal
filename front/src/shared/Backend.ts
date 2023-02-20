@@ -119,6 +119,10 @@ export class Backend {
     public static getChat(config?: AxiosRequestConfig) {
         return myRequest.get<any, ChatCommon>(API_ROUTES.CHAT, config);
     }
+
+    public static sendFileCodeToCheck(data) {
+        return myRequest.post<any, any>(API_ROUTES.CODE_FILE, data);
+    }
 }
 
 type UserDoneData = { lessonId: string; userId: string };

@@ -84,5 +84,6 @@ export const API_ROUTES: API_URLS = {
     USER_LESSON_NOT_DONE: '/user/notdone',
     USER_LESSON_OPEN: '/user/open',
     USER_LESSON_CLOSE: '/user/close',
-    USERS: '/user/users'
+    USERS: '/user/users',
+    CODE_FILE: '/codefile'
 };
