@@ -1,0 +1,17 @@
+.title {
+    align-self: flex-start;
+    font-family: var(--font-header);
+    font-size: 30px;
+    color: #909090;
+    margin-left: 10%;
+}
+.subtitle {
+    margin-top: 0;
+    margin-bottom: 67px;
+    margin-left: 10%;
+    font-family: var(--font-header);
+    align-self: flex-start;
+    color: #303030;
+    font-size: 30px;
+    width: 90%;
+}

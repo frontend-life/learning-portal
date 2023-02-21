@@ -7,3 +7,4 @@ export { Rating } from './Rating/Rating';
 export { SignInPage } from './SignInPage/SignInPage';
 export { SignUpPage } from './SignUpPage/SignUpPage';
 export { Students } from './Students/Students';
+export { LoginPage } from './LoginPage/LoginPage'

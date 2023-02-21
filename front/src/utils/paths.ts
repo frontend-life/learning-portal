@@ -3,6 +3,7 @@ import { getBaseUrl } from './axios';
 export enum PATHS {
     profile = '/profile',
     about = '/about',
+    login = '/login',
     signup = '/signup',
     signin = '/signin',
     lesson = '/lesson',

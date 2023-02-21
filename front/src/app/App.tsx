@@ -14,7 +14,7 @@ function App() {
     return (
         <div className={styles.root}>
             <BrowserRouter>
-                <NavigationBar />
+                {/* <NavigationBar /> */}
                 <div style={{ height: '100vh', overflow: 'auto', flex: 1 }}>
                     <ErrorBoundary>
                         <AuthenticatedRoutes />
