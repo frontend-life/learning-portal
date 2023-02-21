@@ -8,5 +8,6 @@
     background-color: #FBFBFB;
     color: black;
     padding-top: 103px;
+    max-width: 500px;
+    margin: 0 auto;
 }
-
