@@ -2,6 +2,7 @@
 @import '@fontsource/roboto/400.css';
 @import '@fontsource/roboto/500.css';
 @import '@fontsource/roboto/700.css';
+@import url('https://fonts.googleapis.com/css2?family=Merriweather&family=Nunito+Sans:wght@600&display=swap');
 
 @font-face {
     font-family: MrAmazin;
@@ -10,7 +11,7 @@
 
 body {
     /* Variables */
-    --background-color: #1f2833;
+    --background-color: #FBFBFB;
     --color: #fff;
     --primary-color: #66fcf1;
     --warning-color: #fcd266;
@@ -33,6 +34,14 @@ body {
     margin: 0;
     --readable-font: 'Arial';
     --base-font: MrAmazin;
+
+    --font-header: 'Merriweather', serif;
+    --font-text: 'Nunito Sans', sans-serif;
+
+    --header-title-color:  #909090;
+    --header-subtitle-color: #303030;
+
+    --button-background-color: #242424;
 
     font-family: var(--base-font);
     background-color: var(--background-color);
