@@ -38,6 +38,11 @@ body {
     --font-header: 'Merriweather', serif;
     --font-text: 'Nunito Sans', sans-serif;
 
+    --header-title-color:  #909090;
+    --header-subtitle-color: #303030;
+
+    --button-background-color: #242424;
+
     font-family: var(--base-font);
     background-color: var(--background-color);
     color: var(--color);
