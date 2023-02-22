@@ -5,6 +5,7 @@ import {
     Homeworks,
     Lesson,
     Lessons,
+    LoginPage,
     ProfilePage,
     Rating,
     SignInPage,
@@ -20,6 +21,11 @@ export const pages: {
     {
         path: PATHS.profile,
         Element: ProfilePage
+    },
+    {
+        path: PATHS.login,
+        Element: LoginPage,
+        isPublic: true
     },
     {
         path: PATHS.signup,

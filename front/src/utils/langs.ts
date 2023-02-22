@@ -9,7 +9,10 @@ type Keys =
     | 'my_salary'
     | 'show_approved'
     | 'check_video_link'
-    | 'check_description_iframe';
+    | 'check_description_iframe'
+    | 'login_greeting_title'
+    | 'login_greeting_subtitle'
+    | 'login_with_telegram';
 type LangsStrings = {
     [key in Keys]: {
         [key in ReturnType<typeof lang>]: string;
@@ -52,7 +55,20 @@ const strings: LangsStrings = {
     check_description_iframe: {
         ru: 'Проверить документ',
         eng: 'Check doc'
-    }
+    },
+    login_greeting_title: {
+        ru: 'Привет!',
+        eng: 'Hello!'
+    },
+    login_greeting_subtitle: {
+        ru: 'С ВОЗВРАЩЕНИЕМ',
+        eng: 'WELCOME BACK'
+    },
+    login_with_telegram: {
+        ru: 'Войти через телеграм',
+        eng: 'Login with telegram'
+    },
+
 };
 
 export const getLang = (key: Keys) => {

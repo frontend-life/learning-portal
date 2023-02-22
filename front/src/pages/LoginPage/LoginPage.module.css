@@ -1,0 +1,17 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    flex-grow: 1;
+    height: 100vh;
+    background-color: #FBFBFB;
+    color: black;
+    padding-top: 103px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+.logo{
+    margin-bottom: 52px;
+    width: 80%;
+}
