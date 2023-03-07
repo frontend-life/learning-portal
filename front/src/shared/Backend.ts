@@ -26,6 +26,14 @@ export class Backend {
         return myRequest.get(url);
     }
 
+    public static sendTelegramAuthData = (data) => {
+        return myRequest.post(API_ROUTES.TELEGRAM_AUTH, data);
+        //   .catch((error) => {
+        //     console.log(error); // log the error message
+        //     throw error; // throw the error to the calling code
+        //   });
+    };
+
     public static signInUser = (data) => {
         return myRequest.post(API_ROUTES.SIGN_IN, data);
     };

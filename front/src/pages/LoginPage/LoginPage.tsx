@@ -5,14 +5,10 @@ import { Logo } from 'src/components_v2/Logo/Logo';
 import { Button } from 'src/components_v2/Button/Button';
 import { getLang } from '@utils/langs';
 import { useState, useEffect } from 'react';
+import { Backend } from '@shared/Backend';
 
 export const LoginPage = () => {
     const [showLoader, setShowLoader] = useState(false)
-
-    // const onSubmit = () => {
-    //     setShowLoader(true)
-    //     setTimeout(() => setShowLoader(false), 1000)
-    // }
 
     const handleSubmit = () => {
         (window as any).Telegram.Login.auth(
@@ -23,12 +19,10 @@ export const LoginPage = () => {
             },
             (data) => {
               if (!data) {
-                // authorization failed
                 console.log('no data brev')
               }
           
-              // Here you would want to validate data like described there https://core.telegram.org/widgets/login#checking-authorization
-              console.log(data);
+              Backend.sendTelegramAuthData(data);
             }
           );
     }

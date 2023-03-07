@@ -4,6 +4,7 @@ export const baseUrl = "https://thelabl.academy/";
 export const isProd = () => process.env.NODE_ENV === "production";
 
 export const ROUTES: API_URLS = {
+  TELEGRAM_AUTH: '/telegramAuth',
   SIGN_IN: "/user/signin",
   SIGN_UP: "/user/signup",
   LESSONS: "/lesson/lessons",

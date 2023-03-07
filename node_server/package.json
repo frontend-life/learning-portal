@@ -31,7 +31,7 @@
     "typescript": "^4.8.4"
   },
   "scripts": {
-    "mongo_start": "sudo systemctl start mongod",
+    "mongo_start": "brew services start mongodb-community",
     "mongo_stop": "sudo systemctl stop mongod",
     "dev:old": "concurrently \"npx tsc --watch\" \"MODE=dev nodemon -q dist/index.js\"",
     "dev": "yarn mongo_start && NODE_ENV=development ts-node-dev src/index.ts",

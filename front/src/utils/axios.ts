@@ -29,7 +29,7 @@ myRequest.interceptors.request.use(
             // @ts-ignore
             ![API_ROUTES.SIGN_IN, API_ROUTES.SIGN_UP].includes(config.url)
         ) {
-            throw new Error(NO_TOKEN_ERROR);
+            //throw new Error(NO_TOKEN_ERROR);
         }
         config.headers = {
             ...config.headers,
@@ -66,6 +66,7 @@ myRequest.interceptors.response.use(
 );
 
 export const API_ROUTES: API_URLS = {
+    TELEGRAM_AUTH: '/telegramAuth',
     SIGN_IN: '/user/signin',
     SIGN_UP: '/user/signup',
     LESSONS: '/lesson/lessons',

@@ -5,6 +5,17 @@ import { User } from "../models/user";
 import { telegram, T_METHODS } from "../service/axios";
 
 const router = express.Router();
+
+router.post('/telegramAuth', async (req, res) => {
+  try {
+    const data = req.body; // This should contain the Telegram auth data
+    // Do something with the data, such as save it to the database
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ error: 'Something went wrong' });
+  }
+});
 /** 
    * Example of telegram update object
    * {
