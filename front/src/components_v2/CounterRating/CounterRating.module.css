@@ -1,0 +1,9 @@
+.root {
+    background-color: var(--color--our-black);
+    font-family: var(--font-mrAmazin);
+    color: white;
+    font-size: 40px;
+    padding: 13px 16px 7px;
+    border-radius: 13px;
+    border: 6px solid #f7c591;
+}
