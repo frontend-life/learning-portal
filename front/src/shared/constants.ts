@@ -10,7 +10,8 @@ import {
     Rating,
     SignInPage,
     SignUpPage,
-    Students
+    Students,
+    WelcomePage
 } from '../pages';
 
 export const pages: {
@@ -25,6 +26,11 @@ export const pages: {
     {
         path: PATHS.login,
         Element: LoginPage,
+        isPublic: true
+    },
+    {
+        path: PATHS.welcome,
+        Element: WelcomePage,
         isPublic: true
     },
     {

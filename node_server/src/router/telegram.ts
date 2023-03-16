@@ -2,15 +2,17 @@ import express from "express";
 
 import { isValidObjectId } from "mongoose";
 import { User } from "../models/user";
+import { telegramUser, TUser } from "../models/telegramUser"
 import { telegram, T_METHODS } from "../service/axios";
 
 const router = express.Router();
 
 router.post('/telegramAuth', async (req, res) => {
   try {
-    const data = req.body; // This should contain the Telegram auth data
-    // Do something with the data, such as save it to the database
-    console.log(data);
+    const data = req.body; 
+    const createdUser = new telegramUser(data);
+    await createdUser.save();
+    return res.status(201).send(createdUser.first_name);
   } catch (error) {
     console.log(error);
     res.status(500).send({ error: 'Something went wrong' });

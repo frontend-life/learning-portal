@@ -7,8 +7,10 @@ import { getLang } from '@utils/langs';
 import { useState, useEffect } from 'react';
 import { Backend } from '@shared/Backend';
 
+
 export const LoginPage = () => {
     const [showLoader, setShowLoader] = useState(false)
+    
 
     const handleSubmit = () => {
         (window as any).Telegram.Login.auth(
@@ -21,8 +23,18 @@ export const LoginPage = () => {
               if (!data) {
                 console.log('no data brev')
               }
-          
-              Backend.sendTelegramAuthData(data);
+              
+              Backend.sendTelegramAuthData(data)
+              .then((response) => {
+                  if(response) {
+                    window.location.href = `/welcome?username=${response}`;
+                  }
+              }
+              )
+              .catch((error) => {
+                console.log(error);
+                alert('Something went wrong');
+              });
             }
           );
     }
