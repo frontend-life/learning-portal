@@ -1,8 +1,14 @@
 .root {
     display: flex;
+    justify-content: center;
+}
+
+.wrapper {
+    display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: 38px;
+    max-width: 400px;
 }
 
 .header {
@@ -15,4 +21,21 @@
 
 .counter {
     margin-top: 38px;
+}
+
+.line {
+    margin-top: 50px;
+}
+
+.tasks {
+    width: 90%;
+}
+.currentTask {
+    margin-top: 50px;
+}
+
+.currentTaskText {
+    text-align: left;
+    margin-bottom: 20px;
+    display: block;
 }

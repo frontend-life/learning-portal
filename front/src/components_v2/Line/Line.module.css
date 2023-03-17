@@ -1,3 +1,6 @@
 .root {
     background-color: var(--secondary-color);
+    height: 2px;
+    width: 90%;
+    border-radius: 10px;
 }
