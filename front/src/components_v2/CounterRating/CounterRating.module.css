@@ -1,9 +1,31 @@
 .root {
+    --counter-border: #f7c591;
     background-color: var(--color--our-black);
     font-family: var(--font-mrAmazin);
     color: white;
     font-size: 40px;
     padding: 13px 16px 7px;
     border-radius: 13px;
-    border: 6px solid #f7c591;
+    border: 6px solid var(--counter-border);
+    display: flex;
+}
+
+.number {
+    display: flex;
+}
+
+.spliter {
+    width: 1px;
+    background: var(--counter-border);
+    margin: 0 5px;
+    margin-right: 10px;
+    height: 70%;
+    display: flex;
+    align-self: center;
+}
+
+.spliterSmall {
+    height: 10%;
+    align-self: center;
+    width: 3px;
 }

@@ -14,7 +14,7 @@ export const ProfilePage = () => {
             <Text size={14} className={styles.subheader}>
                 @Telegram: ____name____
             </Text>
-            <CounterRating number={2000} className={styles.counter} />
+            <CounterRating number={123456} className={styles.counter} />
         </div>
     );
 };
