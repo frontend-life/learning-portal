@@ -1,6 +1,7 @@
 .root {
     display: flex;
     justify-content: center;
+    font-family: var(--font-text);
 }
 
 .wrapper {
@@ -38,4 +39,13 @@
     text-align: left;
     margin-bottom: 20px;
     display: block;
+}
+
+.doneTasks {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.doneLessons {
+    margin-top: 12px;
 }

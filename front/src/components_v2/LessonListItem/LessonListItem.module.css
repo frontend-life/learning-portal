@@ -7,6 +7,9 @@
 
     min-width: 200px;
     max-width: 300px;
+
+    cursor: pointer;
+    position: relative;
 }
 
 .title {
@@ -21,4 +24,11 @@
     margin-top: 5px;
     color: #242424;
     font-size: 14px;
+}
+
+.icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
 }

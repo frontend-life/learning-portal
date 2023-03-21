@@ -1,10 +1,37 @@
 import s from './LessonListItem.module.css';
+import { LockedSVG } from './LockedSVG';
+import { DoneSVG } from './DoneSVG';
+import { cls } from '@utils/css';
 
-export const LessonListItem = () => {
+export interface LessonListItemProps {
+    title: string;
+    desc: string;
+    status?: 'closed' | 'done';
+    className?: string;
+}
+
+export const LessonListItem = ({
+    title,
+    desc,
+    status,
+    className
+}: LessonListItemProps) => {
     return (
-        <div className={s.root}>
-            <div className={s.title}>React 1: wwfwfewefw</div>
-            <div className={s.desc}>Ble bleew wlfwfwef</div>
+        <div className={cls(s.root, className || '')}>
+            <div className={s.title}>{title}</div>
+            <div className={s.desc}>{desc}</div>
+            <div className={s.icon}>{getIcon(status)}</div>
         </div>
     );
 };
+
+function getIcon(status: LessonListItemProps['status']) {
+    switch (status) {
+        case 'closed':
+            return <LockedSVG />;
+        case 'done':
+            return <DoneSVG />;
+        default:
+            return null;
+    }
+}
