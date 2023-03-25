@@ -16,7 +16,8 @@ export enum PATHS {
     screen_recorder = '/screen_recorder',
     logout = '/logout',
     telegramConnectionPage = '/telegramConnectionPage',
-    redesignedProfile = '/redesignedProfile'
+    redesignedProfile = '/redesignedProfile',
+    redesignedLesson = '/rLesson'
 }
 
 // url

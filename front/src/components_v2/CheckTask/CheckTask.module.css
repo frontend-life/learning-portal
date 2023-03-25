@@ -1,0 +1,26 @@
+.root {
+    display: flex;
+    align-items: center;
+    padding: 24px;
+    box-shadow: 0px 2px 40px 0px #8a959e33;
+}
+
+.error path {
+    fill: var(--color--error);
+}
+
+.text {
+    margin-left: 25px;
+}
+
+.text > * {
+    margin: 0;
+}
+
+.text > *:first-child {
+    color: #808080;
+}
+
+.text > p:not(:first-child) {
+    margin-top: 5px;
+}

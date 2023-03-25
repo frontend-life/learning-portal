@@ -13,6 +13,7 @@ import {
     Students
 } from '../pages';
 import { ProfilePage as RedesignedProfilePage } from '../pages/redesign/ProfilePage/ProfilePage';
+import { LessonPage as RedesignedLessonPage } from '../pages/redesign/LessonPage/LessonPage';
 
 export const pages: {
     path: PATHS;
@@ -26,6 +27,10 @@ export const pages: {
     {
         path: PATHS.redesignedProfile,
         Element: RedesignedProfilePage
+    },
+    {
+        path: PATHS.redesignedLesson,
+        Element: RedesignedLessonPage
     },
     {
         path: PATHS.login,
