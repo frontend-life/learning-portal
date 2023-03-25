@@ -45,5 +45,5 @@
 }
 
 .rootError {
-    border: var(--error-color) dashed 1px;
+    border: var(--color--error) dashed 1px;
 }

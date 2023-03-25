@@ -1,17 +1,26 @@
 .button {
     margin-top: 0;
     font-family: var(--font-text);
-    background: var(--color--our-black);
-    box-shadow: 0px 10px 20px rgba(48, 48, 48, 0.25);
     border-radius: 8px;
     border: none;
-    color: white;
     font-size: 18px;
     width: 80%;
     height: 50px;
 }
+
 .button:disabled {
     opacity: 0.7;
+}
+
+.buttonMain {
+    box-shadow: 0px 10px 20px rgba(48, 48, 48, 0.25);
+    background: var(--color--our-black);
+    color: white;
+}
+
+.buttonSecondary {
+    background: #f0f0f0;
+    color: var(--color--our-black);
 }
 
 .spinner {
