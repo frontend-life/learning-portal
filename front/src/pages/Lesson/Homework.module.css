@@ -31,7 +31,7 @@
 
 .hw_answer_button {
     padding: 20px;
-    background-color: var(--error-color);
+    background-color: var(--color--error);
     color: white;
     display: inline-flex;
     justify-content: center;

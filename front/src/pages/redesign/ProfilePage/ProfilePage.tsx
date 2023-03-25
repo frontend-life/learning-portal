@@ -5,6 +5,7 @@ import { Courses } from 'src/components_v2/Courses/Courses';
 import { LessonListItem } from 'src/components_v2/LessonListItem/LessonListItem';
 import { Line } from 'src/components_v2/Line/Line';
 import { Text } from 'src/components_v2/Text/Text';
+import { PageWrapper } from '../../../components_v2/PageWrapper/PageWrapper';
 
 import styles from './ProfilePage.module.css';
 
@@ -47,8 +48,8 @@ export const ProfilePage = () => {
     const [l, setL] = useState(lessonsMock);
 
     return (
-        <div className={styles.root}>
-            <div className={styles.wrapper}>
+        <PageWrapper>
+            <>
                 <Avatar />
                 <Text size={24} className={styles.header}>
                     NameFromTelegram
@@ -101,7 +102,7 @@ export const ProfilePage = () => {
                         </>
                     </div>
                 </div>
-            </div>
-        </div>
+            </>
+        </PageWrapper>
     );
 };

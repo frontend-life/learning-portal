@@ -47,14 +47,14 @@
 }
 
 .rootErr {
-    border-color: var(--error-color);
-    color: var(--error-color);
+    border-color: var(--color--error);
+    color: var(--color--error);
 }
 .rootErr .hr {
-    background-color: var(--error-color);
+    background-color: var(--color--error);
 }
 .rootErr .progress {
-    background-color: var(--error-color);
+    background-color: var(--color--error);
 }
 
 @keyframes loading {
