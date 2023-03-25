@@ -1,5 +1,5 @@
 .root {
-    --counter-border: #f7c591;
+    --counter-border: var(--important-color);
     background-color: var(--color--our-black);
     font-family: var(--font-mrAmazin);
     color: white;

@@ -11,39 +11,45 @@
 
 body {
     /* Variables */
+
+    /* COLORS */
     --background-color: #fbfbfb;
     --color: #fff;
     --primary-color: #66fcf1;
     --warning-color: #fcd266;
-    --error-color: #fc6666;
+    --error-color: #ff0000;
+    --success-color: #27ae60;
+    --important-color: #f7c591;
 
     /* Используется для заглушек в том числе */
     --secondary-color: #d9d9d9;
     --third-color: #3f4a58;
     --fourth-color: #0b0c10;
 
-    --zindex-notification-system: 100;
+    --header-title-color: #909090;
+    --header-subtitle-color: #303030;
+    --color--our-black: #242424;
 
+    /* GRADIENTS */
     --main-button-background: linear-gradient(
         315deg,
         rgb(205, 68, 86),
         rgb(239, 96, 71)
     );
 
-    margin: 0;
+    /* FONTS  */
     --readable-font: 'Arial';
-
     --base-font: MrAmazin;
-
     --font-header: 'Merriweather', serif;
     --font-text: 'Nunito Sans', sans-serif;
     --font-mrAmazin: MrAmazin;
 
-    --header-title-color: #909090;
-    --header-subtitle-color: #303030;
+    /* OTHER */
 
-    --color--our-black: #242424;
+    --zindex-notification-system: 100;
 
+    /* other css for body */
+    margin: 0;
     font-family: var(--base-font);
     background-color: var(--background-color);
     color: var(--color--our-black);

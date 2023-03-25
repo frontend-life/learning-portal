@@ -1,28 +1,21 @@
+import { cls } from '@utils/css';
 import s from './Courses.module.css';
 
-const mock = [
-    {
-        id: 0,
-        title: 'HTML'
-    },
-    {
-        id: 1,
-        title: 'CSS'
-    },
-    {
-        id: 2,
-        title: 'React'
-    }
-];
-
-export const Courses = () => {
+export const Courses = ({ courses, onClick, currentId }) => {
     return (
         <>
             <div className={s.root} style={{ width: '250px' }}>
                 <div className={s.horizontal}>
-                    {[...mock, ...mock, ...mock].map((item) => {
+                    {courses.map((item) => {
                         return (
-                            <div key={item.id} className={s.courseItem}>
+                            <div
+                                key={item.id}
+                                className={cls(s.courseItem, {
+                                    [s.courseItemSelected]:
+                                        currentId === item.id
+                                })}
+                                onClick={() => onClick(item.id)}
+                            >
                                 <div className={s.square} />
                                 <span>{item.title}</span>
                             </div>
