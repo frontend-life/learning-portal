@@ -12,6 +12,7 @@ import {
     SignUpPage,
     Students
 } from '../pages';
+import { ProfilePage as RedesignedProfilePage } from '../pages/redesign/ProfilePage/ProfilePage';
 
 export const pages: {
     path: PATHS;
@@ -21,6 +22,10 @@ export const pages: {
     {
         path: PATHS.profile,
         Element: ProfilePage
+    },
+    {
+        path: PATHS.redesignedProfile,
+        Element: RedesignedProfilePage
     },
     {
         path: PATHS.login,

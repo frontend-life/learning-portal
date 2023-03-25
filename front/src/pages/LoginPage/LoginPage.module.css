@@ -5,13 +5,13 @@
     align-items: center;
     flex-grow: 1;
     height: 100vh;
-    background-color: #FBFBFB;
+    background-color: var(--background-color);
     color: black;
     padding-top: 103px;
     max-width: 500px;
     margin: 0 auto;
 }
-.logo{
+.logo {
     margin-bottom: 52px;
     width: 80%;
 }
