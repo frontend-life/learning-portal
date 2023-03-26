@@ -17,7 +17,8 @@ export enum PATHS {
     logout = '/logout',
     telegramConnectionPage = '/telegramConnectionPage',
     redesignedProfile = '/redesignedProfile',
-    redesignedLesson = '/rLesson'
+    redesignedLesson = '/rLesson',
+    redesignedAddLesson = '/rAddLesson'
 }
 
 // url

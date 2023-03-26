@@ -26,7 +26,8 @@ export const Button = ({
                 s.button,
                 {
                     [s.buttonSecondary]: mode === 'secondary',
-                    [s.buttonMain]: !mode || mode === 'main'
+                    [s.buttonMain]: !mode || mode === 'main',
+                    [s.buttonLoading]: !!loading
                 },
                 className || ''
             )}

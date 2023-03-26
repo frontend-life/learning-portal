@@ -1,6 +1,7 @@
 .root {
     height: 500px;
-    width: 800px; /* width of the document inside iframe */
+    max-width: 800px; /* width of the document inside iframe */
+    width: 100%;
 }
 
 .root iframe {
