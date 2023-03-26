@@ -14,6 +14,7 @@ import {
 } from '../pages';
 import { ProfilePage as RedesignedProfilePage } from '../pages/redesign/ProfilePage/ProfilePage';
 import { LessonPage as RedesignedLessonPage } from '../pages/redesign/LessonPage/LessonPage';
+import { AddLesson as RedesignedAddLessonPage } from '../pages/redesign/AddLesson/AddLesson';
 
 export const pages: {
     path: PATHS;
@@ -26,11 +27,18 @@ export const pages: {
     },
     {
         path: PATHS.redesignedProfile,
-        Element: RedesignedProfilePage
+        Element: RedesignedProfilePage,
+        isPublic: true
     },
     {
         path: PATHS.redesignedLesson,
-        Element: RedesignedLessonPage
+        Element: RedesignedLessonPage,
+        isPublic: true
+    },
+    {
+        path: PATHS.redesignedAddLesson,
+        Element: RedesignedAddLessonPage,
+        isPublic: true
     },
     {
         path: PATHS.login,
