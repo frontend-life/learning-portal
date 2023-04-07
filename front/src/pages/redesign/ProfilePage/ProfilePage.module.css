@@ -1,0 +1,37 @@
+.header {
+    margin-top: 50px;
+}
+
+.subheader {
+    margin-top: 14px;
+}
+
+.counter {
+    margin-top: 38px;
+}
+
+.line {
+    margin-top: 50px;
+}
+
+.tasks {
+    width: 90%;
+}
+.currentTask {
+    margin-top: 50px;
+}
+
+.currentTaskText {
+    text-align: left;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.doneTasks {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.doneLessons {
+    margin-top: 12px;
+}

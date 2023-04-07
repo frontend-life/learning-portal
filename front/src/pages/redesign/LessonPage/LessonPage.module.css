@@ -1,0 +1,54 @@
+.googleDocs {
+    background-color: var(--secondary-color);
+    height: 500px;
+    width: 100%;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-around;
+}
+
+.button {
+    width: 148px;
+}
+
+.button:first-child {
+    margin-right: 18px;
+}
+
+.footer {
+    min-height: 400px;
+    width: 100%;
+}
+
+.droper {
+    border: 2px var(--color--our-black) dashed;
+    width: 100%;
+    max-width: 400px;
+    min-width: 300px;
+    height: 400px;
+    border-radius: 13px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    box-sizing: border-box;
+}
+
+.tasks {
+    display: flex;
+    flex-direction: column;
+}
+
+.askHelp {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.askHelp > *:not(:last-child),
+.tasks > *:not(:last-child) {
+    margin-bottom: 10px;
+}

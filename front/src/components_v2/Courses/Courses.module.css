@@ -1,0 +1,57 @@
+.root {
+    overflow-y: hidden;
+    overflow-x: auto;
+}
+
+.root::-webkit-scrollbar {
+    height: 0px;
+}
+
+.desc {
+    font-size: 12px;
+    font-style: italic;
+    margin-left: 10px;
+    opacity: 0.4;
+}
+
+.horizontal {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.courseItem {
+    cursor: pointer;
+    margin-right: 10px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    color: var(--secondary-color);
+    font-size: 14px;
+}
+
+.square {
+    --size: 44px;
+    width: var(--size);
+    height: var(--size);
+    background-color: #f5f5f5;
+    transition: background-color 0.3s linear;
+    border-radius: 12px;
+}
+
+.courseItem > span {
+    margin-top: 10px;
+}
+
+.courseItem:hover .square,
+.courseItemSelected .square {
+    background-color: var(--color--our-black);
+}
+
+.courseItem:hover,
+.courseItemSelected {
+    color: var(--color--our-black);
+}
