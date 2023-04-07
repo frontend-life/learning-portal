@@ -2,7 +2,7 @@ import { getLang } from '@utils/langs';
 
 import s from './TelegramConnectionPage.module.css';
 
-export const TelegramConnectionPage = ({ userId }: { userId: string }) => {
+export const TelegramConnectionPage = ({ userId }: { userId: number }) => {
     const reload = () => window.location.reload();
     return (
         <div className={s.root}>

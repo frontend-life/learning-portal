@@ -1,21 +1,79 @@
 import express from "express";
 
+import jwt from 'jsonwebtoken';
+import { Request, Response } from 'express';
+
 import { isValidObjectId } from "mongoose";
 import { User } from "../models/user";
-import { telegramUser, TUser } from "../models/telegramUser"
+import { telegramUser, ITelegramUser } from "../models/telegramUser"
 import { telegram, T_METHODS } from "../service/axios";
 
+interface IToken {
+  _id: string;
+}
+
 const router = express.Router();
+
+const generateAuthToken = (userId: string): string => {
+  const token = jwt.sign({_id: userId}, 'thisIsSecretForToken');
+  return token;
+};
+
+const decodeAuthToken = (token: string): string => {
+  const decoded = jwt.verify(token, 'thisIsSecretForToken') as IToken;
+  return decoded._id;
+};
+
+
 
 router.post('/telegramAuth', async (req, res) => {
   try {
     const data = req.body; 
+
+    const userExists = await telegramUser.findOne({id: data.id})
+    if (userExists) {
+      return res.status(201).send({
+        state: 1,
+        user: data
+      })
+    }
+    
     const createdUser = new telegramUser(data);
     await createdUser.save();
-    return res.status(201).send(createdUser.first_name);
+
+    const authToken = generateAuthToken(createdUser.id.toString());
+
+    return res.status(201).send({
+      state: 2, 
+      token: authToken,
+      user: createdUser
+    });
   } catch (error) {
     console.log(error);
     res.status(500).send({ error: 'Something went wrong' });
+  }
+});
+
+router.get('/myself', async (req: Request, res: Response) => {
+  try {
+      const token = req.headers.authorization?.split(' ')[1];
+      
+      if(!token) {
+          
+          return res.status(401).json({
+              message: 'Unauthorized because no token'
+          });
+      }
+      const userId = decodeAuthToken(token);
+      const user = await telegramUser.findOne({id: Number(userId)});
+      if(!user) {
+          return res.status(401).json({
+              message: 'Unauthorized because no user from token'
+          });
+      }
+      return res.status(200).send(user);
+  } catch (error) {
+      res.status(401).send({error: "Wrong token!"});
   }
 });
 /** 

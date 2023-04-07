@@ -6,12 +6,12 @@ import { Button } from 'src/components_v2/Button/Button';
 import { getLang } from '@utils/langs';
 import { useState, useEffect } from 'react';
 import { Backend } from '@shared/Backend';
+import { setToken } from '@utils/auth';
 
 
 export const LoginPage = () => {
     const [showLoader, setShowLoader] = useState(false)
     
-
     const handleSubmit = () => {
         (window as any).Telegram.Login.auth(
             { 
@@ -21,13 +21,20 @@ export const LoginPage = () => {
             },
             (data) => {
               if (!data) {
-                console.log('no data brev')
+                console.log('no data brev') 
               }
               
               Backend.sendTelegramAuthData(data)
-              .then((response) => {
+              // need to add a proper response status check or fix response (ask Sergey)
+              .then((response: any) => { 
                   if(response) {
-                    window.location.href = `/welcome?username=${response}`;
+                    if(response.state === 1) {
+                      console.log('we are here')
+                      window.location.href = `/welcome?username=${response.user.first_name}`;
+                    } else {
+                      setToken(response.token);
+                      window.location.href = `/welcome?username=${response.user.first_name}`;
+                    }
                   }
               }
               )

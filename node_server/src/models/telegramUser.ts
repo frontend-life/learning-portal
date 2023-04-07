@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-export interface TUser {
+export interface ITelegramUser {
     id: number;
     first_name: string;
     username: string;
@@ -38,4 +38,4 @@ telegramUserSchema.methods.toJSON = function () {
     return userObject;
 }
 
-export const telegramUser = mongoose.model<TUser>("TelegramUser", telegramUserSchema);
+export const telegramUser = mongoose.model<ITelegramUser>("TelegramUser", telegramUserSchema);

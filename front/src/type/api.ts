@@ -26,6 +26,16 @@ export interface IUser {
     telegramChatId: number;
 }
 
+export interface ITelegramUser {
+    
+    id: number;
+    first_name: string;
+    username: string;
+    photo_url: string;
+    auth_date: number;
+    hash: string;
+}
+
 export interface IHomework extends HomeworkCommon {}
 
 export interface IMessage extends Omit<MessageCommon, '_id' | 'createdAt'> {}
