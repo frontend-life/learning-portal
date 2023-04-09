@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 export interface ITelegramUser {
     id: number;
     first_name: string;
+    last_name: string;
     username: string;
     photo_url: string;
     auth_date: number;
@@ -15,6 +16,9 @@ const telegramUserSchema = new mongoose.Schema(
             type: Number
         },
         first_name: {
+            type: String
+        },
+        last_name: {
             type: String
         },
         username: {

@@ -8,6 +8,11 @@ import { User } from "../models/user";
 import { telegramUser, ITelegramUser } from "../models/telegramUser"
 import { telegram, T_METHODS } from "../service/axios";
 
+const TelegramBot = require('node-telegram-bot-api');
+
+const token = '5965431146:AAGXWWL1YH48beGVX28fcL-OXEUFLv_qgfQ';
+
+
 interface IToken {
   _id: string;
 }
@@ -30,10 +35,14 @@ router.post('/telegramAuth', async (req, res) => {
   try {
     const data = req.body; 
 
+    if(!data.username) return res.status(500).send('nothing happened')
+
     const userExists = await telegramUser.findOne({id: data.id})
     if (userExists) {
+      const newToken = generateAuthToken(data.id.toString());
       return res.status(201).send({
         state: 1,
+        token: newToken,
         user: data
       })
     }

@@ -11,7 +11,7 @@ import {
     SignInPage,
     SignUpPage,
     Students,
-    WelcomePage
+    LogoutInstruction
 } from '../pages';
 import { ProfilePage as RedesignedProfilePage } from '../pages/redesign/ProfilePage/ProfilePage';
 import { LessonPage as RedesignedLessonPage } from '../pages/redesign/LessonPage/LessonPage';
@@ -39,19 +39,19 @@ export const pages: {
         isPublic: true
     },
     {
-        path: PATHS.welcome,
-        Element: WelcomePage,
+        path: PATHS.logoutInstruction,
+        Element: LogoutInstruction,
         isPublic: true
     },
     {
         path: PATHS.signup,
         Element: SignUpPage,
-        isPublic: true
+        //isPublic: true
     },
     {
         path: PATHS.signin,
         Element: SignInPage,
-        isPublic: true
+        //isPublic: true
     },
     {
         path: PATHS.lesson,

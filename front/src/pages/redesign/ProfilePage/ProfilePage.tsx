@@ -1,5 +1,8 @@
+import { useUserContext } from '@store/UserDetails';
+import { PATHS } from '@utils/paths';
 import { useState } from 'react';
 import { Avatar } from 'src/components_v2/Avatar/Avatar';
+import { Button } from 'src/components_v2/Button/Button';
 import { CounterRating } from 'src/components_v2/CounterRating/CounterRating';
 import { Courses } from 'src/components_v2/Courses/Courses';
 import { LessonListItem } from 'src/components_v2/LessonListItem/LessonListItem';
@@ -43,6 +46,16 @@ const lessonsMock = [
 ];
 
 export const ProfilePage = () => {
+    const {
+        userDetails: { 
+            first_name, last_name, username
+        }
+    } = useUserContext();
+
+    const logout = () => {
+        localStorage.removeItem('authtoken');
+        window.location.assign(PATHS.login);
+    }
     const [currentCourse, setCurrentCoutse] = useState(mock[0]);
     const [c, setC] = useState(mock);
     const [l, setL] = useState(lessonsMock);
@@ -50,12 +63,13 @@ export const ProfilePage = () => {
     return (
         <PageWrapper>
             <>
-                <Avatar />
+                <Avatar  />
+                <Button text='выйти' onSubmit={logout}/>
                 <Text size={24} className={styles.header}>
-                    NameFromTelegram
+                    {`${first_name} ${last_name}`}
                 </Text>
                 <Text size={14} className={styles.subheader}>
-                    @Telegram: ____name____
+                    {username}
                 </Text>
                 <CounterRating number={123456} className={styles.counter} />
                 <Line className={styles.line} />

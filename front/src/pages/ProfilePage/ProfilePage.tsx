@@ -7,7 +7,10 @@ import s from './ProfilePage.module.css';
 
 export const ProfilePage = () => {
     const {
-        userDetails: { salary, name, telegramChatId, _id }
+        userDetails: { 
+            first_name
+            // salary, name, telegramChatId, _id 
+        }
     } = useUserContext();
 
     return (
@@ -18,8 +21,8 @@ export const ProfilePage = () => {
                         Profile avatar <br /> in future
                     </div>
                     <div className={s.textInfo}>
-                        <p className={s.name}>{name}</p>
-                        <div className={s.telegramConnection}>
+                        <p className={s.name}>{first_name}</p>
+                        {/* <div className={s.telegramConnection}>
                             <p>
                                 <i>
                                     {telegramChatId
@@ -31,10 +34,10 @@ export const ProfilePage = () => {
                                           )}
                                 </i>
                             </p>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
-                <div className={s.salary}>
+                {/* <div className={s.salary}>
                     <div>
                         {getLang('my_salary') + ' '}
                         <SalaryCounter value={salary} />
@@ -43,7 +46,7 @@ export const ProfilePage = () => {
                     <div className={s.progress}>
                         <SalaryProgressBar value={salary} />
                     </div>
-                </div>
+                </div> */}
             </div>
         </MainBlockWrapper>
     );

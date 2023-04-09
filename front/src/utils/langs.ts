@@ -12,7 +12,14 @@ type Keys =
     | 'check_description_iframe'
     | 'login_greeting_title'
     | 'login_greeting_subtitle'
-    | 'login_with_telegram';
+    | 'login_with_telegram'
+    | 'login_switch_account'
+    | 'logout_instruction_header'
+    | 'logout_instruction_chat_p'
+    | 'logout_instruction_message_p'
+    | 'logout_instruction_back_to_login_p1'
+    | 'logout_instruction_back_to_login_a'
+    | 'logout_instruction_back_to_login_p2';
 type LangsStrings = {
     [key in Keys]: {
         [key in ReturnType<typeof lang>]: string;
@@ -68,7 +75,34 @@ const strings: LangsStrings = {
         ru: 'Войти через телеграм',
         eng: 'Login with telegram'
     },
-
+    login_switch_account: {
+        ru: 'Сменить аккаунт или выйти',
+        eng: 'Switch account or sign out'
+    },
+    logout_instruction_header: {
+        ru: 'Как завершить активную сессию',
+        eng: 'How to terminate active session',
+    },
+    logout_instruction_chat_p: {
+        ru: 'Перейдите в этот чат, в котором ранее одобряли авторизацию',
+        eng: 'Go to this chat, where you previously approved the authorization'
+    },
+    logout_instruction_message_p: {
+        ru: 'Вы найдете следующее сообщение с кнопкой "завершить сеанс"',
+        eng: 'You will see the following message with "terminate session" button'
+    },
+    logout_instruction_back_to_login_p1: {
+        ru: 'После завершения сеанса, вы можете',
+        eng: 'After terminating the session you can '
+    },
+    logout_instruction_back_to_login_a: {
+        ru: 'вернуться на страницу входа',
+        eng: 'return to login page'
+    },
+    logout_instruction_back_to_login_p2: {
+        ru: ' и авторизоваться под другим или тем же аккаунтом',
+        eng: ' and sign in under different or same account'
+    }
 };
 
 export const getLang = (key: Keys) => {

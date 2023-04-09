@@ -8,4 +8,4 @@ export { SignInPage } from './SignInPage/SignInPage';
 export { SignUpPage } from './SignUpPage/SignUpPage';
 export { Students } from './Students/Students';
 export { LoginPage } from './LoginPage/LoginPage';
-export { WelcomePage } from './WelcomePage/WelcomePage';
+export { LogoutInstruction } from './LogoutInstruction/LogoutInstruction';

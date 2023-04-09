@@ -7,41 +7,43 @@ import { getLang } from '@utils/langs';
 import { useState, useEffect } from 'react';
 import { Backend } from '@shared/Backend';
 import { setToken } from '@utils/auth';
-
+import { PATHS } from '@utils/paths';
 
 export const LoginPage = () => {
     const [showLoader, setShowLoader] = useState(false)
     
     const handleSubmit = () => {
+        setShowLoader(true);
         (window as any).Telegram.Login.auth(
             { 
                 bot_id: '5965431146', 
                 request_access: true,
-                lang: 'eng',
+                lang: 'ru'
             },
             (data) => {
               if (!data) {
-                console.log('no data brev') 
+                console.log('no data') 
               }
               
               Backend.sendTelegramAuthData(data)
               // need to add a proper response status check or fix response (ask Sergey)
-              .then((response: any) => { 
-                  if(response) {
-                    if(response.state === 1) {
-                      console.log('we are here')
-                      window.location.href = `/welcome?username=${response.user.first_name}`;
-                    } else {
-                      setToken(response.token);
-                      window.location.href = `/welcome?username=${response.user.first_name}`;
+                .then((response: any) => { 
+                    setShowLoader(false)
+                    if(response) {
+                      if(response.state === 1) {
+                        setToken(response.token)
+                        window.location.assign(PATHS.redesignedProfile)
+                      } else {
+                        setToken(response.token);
+                        window.location.assign(PATHS.redesignedProfile)
+                      }
                     }
-                  }
-              }
-              )
-              .catch((error) => {
-                console.log(error);
-                alert('Something went wrong');
-              });
+                })
+                .catch((error) => {
+                  setShowLoader(false);
+                  console.log(error);
+                  alert('Something went wrong');
+                });
             }
           );
     }
@@ -56,7 +58,6 @@ export const LoginPage = () => {
         }
       }, []);
     
-
     return (
         <div className={s.root}>
             <Logo className={s.logo}/>
@@ -69,6 +70,7 @@ export const LoginPage = () => {
                 loading={showLoader}
                 onSubmit={handleSubmit}
             />
+            <a href={PATHS.logoutInstruction}>{getLang('login_switch_account')}</a>
         </div>
     );
 }

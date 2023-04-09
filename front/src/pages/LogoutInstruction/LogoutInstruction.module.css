@@ -1,0 +1,14 @@
+.root {
+    color: black;
+    font-family: var(--font-text);
+    margin: 0px 10px ;
+}
+
+h1 {
+    font-family: var(--font-header);
+}
+
+img {
+    margin-left: -2px;
+    width: 100%;
+}
