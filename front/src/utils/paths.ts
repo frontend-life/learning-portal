@@ -4,6 +4,7 @@ export enum PATHS {
     profile = '/profile',
     about = '/about',
     login = '/login',
+    logoutInstruction = '/logoutInstruction',
     signup = '/signup',
     signin = '/signin',
     lesson = '/lesson',

@@ -1,5 +1,7 @@
 // Prefix for frontend /api added in interceptor of axios
 export interface API_URLS {
+  MYSELF: '/myself',
+  TELEGRAM_AUTH: '/telegramAuth',
   SIGN_IN: `/user/signin`;
   SIGN_UP: `/user/signup`;
   LESSONS: `/lesson/lessons`;

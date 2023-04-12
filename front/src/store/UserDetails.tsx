@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { LoadingAnimation } from '@components/LoadingAnimation/LoadingAnimation';
-import { IUser, Roles } from '@type/api';
+import { IUser, Roles, ITelegramUser } from '@type/api';
 import { getToken } from '@utils/auth';
 import { Backend } from '@shared/Backend';
 import { TelegramConnectionPage } from '@app/components/TelegramConnectionPage/TelegramConnectionPage';
@@ -9,7 +9,7 @@ import { isProd } from '@utils/isProd';
 type UserData = {
     isSignedIn: boolean;
     isTeacher: boolean;
-} & IUser;
+} & ITelegramUser & IUser; //remove IUser once telegram user is fully implemented
 type StartStore = {
     userDetails: UserData;
     setUserDetails: React.Dispatch<React.SetStateAction<UserData>>;
@@ -18,7 +18,7 @@ type StartStore = {
 const start: StartStore = {
     userDetails: {
         isSignedIn: false,
-        roles: [] as Roles[],
+        // roles: [] as Roles[],
         isTeacher: false
     } as UserData,
     setUserDetails: () => {}
@@ -32,15 +32,18 @@ const UserDetailsProvider = (props) => {
     const [userDetails, setUserDetails] = useState<UserData>(start.userDetails);
     const [startAnimation, setStartAnimation] = useState(true);
 
+    // getToken()
+
     useEffect(() => {
-        Backend.getMe()
-            .then((data: IUser) => {
+        // Backend.getMe()
+        Backend.getMyself()
+            .then((data: ITelegramUser | any) => {
                 if (!userDetails.isSignedIn && getToken()) {
                     setUserDetails((prev) => ({
                         ...prev,
                         ...data,
                         isSignedIn: true,
-                        isTeacher: data.roles.includes(Roles.TEACHER)
+                        isTeacher: false //sorry if I didn't properly implement it here
                     }));
                     return null;
                 }
@@ -54,11 +57,13 @@ const UserDetailsProvider = (props) => {
         return <LoadingAnimation />;
     }
 
-    const { isSignedIn, telegramChatId } = userDetails;
+    //const { isSignedIn /*,telegramChatId */} = userDetails;
 
-    if (isProd() && isSignedIn && !telegramChatId) {
-        return <TelegramConnectionPage userId={userDetails._id} />;
-    }
+    //I think this is the page where Sergey is telling users to run the bot, and I am not 
+    //entirely sure if it is needed in the future implementation, so will coment it out for now
+    // if (isProd() && isSignedIn /* && !telegramChatId*/) {
+    //     return <TelegramConnectionPage userId={userDetails.id} />;
+    // }
 
     return (
         <UserDetailsContext.Provider value={{ userDetails, setUserDetails }}>

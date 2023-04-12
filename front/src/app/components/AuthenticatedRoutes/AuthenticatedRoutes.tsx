@@ -18,7 +18,7 @@ export function AuthenticatedRoutes() {
             <Route path="/">
                 <Route
                     index
-                    element={<Navigate to={PATHS.profile} replace={true} />}
+                    element={<Navigate to={PATHS.redesignedProfile} replace={true} />}
                 />
                 {/* PLace for tests */}
                 <Route
@@ -44,7 +44,7 @@ export function AuthenticatedRoutes() {
                     path="*"
                     element={
                         <Navigate
-                            to={isSignedIn ? PATHS.profile : PATHS.signin}
+                            to={isSignedIn ? PATHS.redesignedProfile : PATHS.login}
                             replace={true}
                         />
                     }

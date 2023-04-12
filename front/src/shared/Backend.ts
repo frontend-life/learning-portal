@@ -1,5 +1,5 @@
 import { ChatCommon } from './../../../shared/commonParts';
-import { ILesson, IUser, ICourse, IMessage } from '@type/api';
+import { ILesson, IUser, ICourse, IMessage, ITelegramUser } from '@type/api';
 import { API_ROUTES, myRequest } from '@utils/axios';
 import { AxiosRequestConfig } from 'axios';
 import { MessageCommon, ReqBodySpacePut } from '@commonTypes';
@@ -26,6 +26,14 @@ export class Backend {
         return myRequest.get(url);
     }
 
+    public static sendTelegramAuthData = (data) => {
+        return myRequest.post(API_ROUTES.TELEGRAM_AUTH, data);
+        //   .catch((error) => {
+        //     console.log(error); // log the error message
+        //     throw error; // throw the error to the calling code
+        //   });
+    };
+
     public static signInUser = (data) => {
         return myRequest.post(API_ROUTES.SIGN_IN, data);
     };
@@ -38,6 +46,10 @@ export class Backend {
         // will find me by token in myRequest headers
         return myRequest.get<any, IUser>(API_ROUTES.ME);
     };
+
+    public static getMyself = () => {
+        return myRequest.get<any, ITelegramUser>(API_ROUTES.MYSELF)
+    }
 
     public static getHomework = (config?: AxiosRequestConfig) => {
         return myRequest.get(API_ROUTES.HOMEWORK, config);

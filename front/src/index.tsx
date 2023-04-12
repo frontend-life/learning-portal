@@ -19,8 +19,8 @@ const root = ReactDOM.createRoot(
 );
 root.render(
     <UserDetailsProvider>
-        <LessonsProvider>
+        {/* <LessonsProvider> */}
             <App />
-        </LessonsProvider>
+        {/* </LessonsProvider> */}
     </UserDetailsProvider>
 );

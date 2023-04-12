@@ -15,3 +15,10 @@
     margin-bottom: 52px;
     width: 80%;
 }
+a {
+    font-family: var(--font-text);
+    text-decoration: underline;
+    color: black;
+    margin-top: 20px;
+    
+}
